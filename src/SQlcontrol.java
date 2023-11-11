@@ -11,6 +11,11 @@ public class SQlcontrol {
     static Driver driver;
     static Properties info;
     static String url;
+    private static String make1 = "CREATE TABLE IF NOT EXISTS Personal_Information(uid INT NOT NULL,uname VARCHAR(20) NOT NULL,uage INT,ugender INT,uphone VARCHAR(20),uemail VARCHAR(50));";
+    private static String make2 = "CREATE TABLE  IF NOT EXISTS Account(uid INT NOT NULL,uname VARCHAR(30) NOT NULL,upawd VARCHAR(30) NOT NULL);";
+    private static String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
+    private static String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
+    private static String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
     private static Statement st;
 
     public SQlcontrol() throws SQLException {
@@ -68,6 +73,18 @@ public class SQlcontrol {
     }
     public boolean SQLmake()//生成默认表
     {
+        try
+        {
+            SQLconnect();
+            st.execute(make1);
+            st.execute(make2);
+            st.execute(make3);
+            st.execute(make4);
+            st.execute(make5);
+        }catch (Exception e)
+        {
+            return false;
+        }
         return true;
     }
     public boolean SQLerase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)//删除，第一个输入表名，第二个输入删除字段名，第三个输入删除字段的值
