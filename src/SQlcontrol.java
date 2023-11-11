@@ -66,7 +66,7 @@ public class SQlcontrol {
         }
         return true;
     }
-    public boolean SQLmake()//生成默认表/
+    public boolean SQLmake()//生成默认表
     {
         return true;
     }
