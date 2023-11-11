@@ -8,21 +8,29 @@ public class SQlcontrol {
     public ArrayList<ArrayList<String>> back;
     private static Connection conn;
     private worktoolSQL wl;
+    static Driver driver;
+    static Properties info;
+    static String url;
+    private static String make1 = "CREATE TABLE IF NOT EXISTS Personal_Information(uid INT NOT NULL,uname VARCHAR(20) NOT NULL,uage INT,ugender INT,uphone VARCHAR(20),uemail VARCHAR(50));";
+    private static String make2 = "CREATE TABLE  IF NOT EXISTS Account(uid INT NOT NULL,uname VARCHAR(30) NOT NULL,upawd VARCHAR(30) NOT NULL);";
+    private static String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
+    private static String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
+    private static String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
     private static Statement st;
 
-    public SQlcontrol() {
+    public SQlcontrol() throws SQLException {
         wl = new worktoolSQL();
         conn = null;
         back = new ArrayList<>();
+        url = "jdbc:mysql://localhost:3306/mybd";
+        info = new Properties();
+        info.setProperty("user", "root");
+        info.setProperty("password", "root");
+        driver = new com.mysql.cj.jdbc.Driver();
     }
 
-    public static Boolean SQLconnect() {
+    private static Boolean SQLconnect() {
         try {
-            Driver driver = new com.mysql.cj.jdbc.Driver();
-            String url = "jdbc:mysql://localhost:3306/mybd";
-            Properties info = new Properties();
-            info.setProperty("user", "root");
-            info.setProperty("password", "root");
             conn = driver.connect(url, info);
             st = conn.createStatement();
             return true;
@@ -31,7 +39,7 @@ public class SQlcontrol {
         }
     }
 
-    public static Boolean SQLstop() {
+    private static Boolean SQLstop() {
         try {
             st.close();
             conn.close();
@@ -41,8 +49,46 @@ public class SQlcontrol {
         }
 
     }
-
-    public boolean SQLerase(String tableName, ArrayList<String> listName, ArrayList<String> listValue) {
+    public boolean INFOchange(String name,String nameValue,String password,String passwordValue)//更新登录库所用的账号密码,要改就开始改，别中间改，会有问题
+    {
+        try {
+            info.clear();
+            info.setProperty(name, nameValue);
+            info.setProperty(password, passwordValue);
+        }catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+    public boolean URLchange(String in)//更新库的ip地址,要改就开始改，别中间改，会有问题
+    {
+        try {
+            url = in;
+        }catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+    public boolean SQLmake()//生成默认表
+    {
+        try
+        {
+            SQLconnect();
+            st.execute(make1);
+            st.execute(make2);
+            st.execute(make3);
+            st.execute(make4);
+            st.execute(make5);
+        }catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+    public boolean SQLerase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)//删除，第一个输入表名，第二个输入删除字段名，第三个输入删除字段的值
+    {
         SQLconnect();
         StringBuffer temper = new StringBuffer("delete from ");
         temper.append(tableName);
@@ -77,7 +123,7 @@ public class SQlcontrol {
         return true;
     }
 
-    public boolean SQLinsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//要添加的表名字，要添加的字段名，要添加的字段值
+    public boolean SQLinsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//第一个要添加的表名字，第二个要添加的字段名，第三个要添加的字段值
     {
         SQLconnect();
         if (listName.size() != listValue.size()) {
@@ -107,11 +153,17 @@ public class SQlcontrol {
             }
         }
         in = new String(temper);
-        st.executeUpdate(in);
+        try {
+            st.executeUpdate(in);
+        }catch (Exception e)
+        {
+            SQLstop();
+            return false;
+        }
         SQLstop();
         return true;
     }
-    public boolean SQLchange(String tableName,ArrayList<String>changeName,ArrayList<String>changeValue,ArrayList<String>findName,ArrayList<String>findValue)
+    public boolean SQLchange(String tableName,ArrayList<String>changeName,ArrayList<String>changeValue,ArrayList<String>findName,ArrayList<String>findValue)//修改，第一个表名，第二个更改的字段名，第三个更改的字段值，第四个更改的条件字段名，第五个更改的条件字段值
     {
         try {
             SQLconnect();
@@ -205,7 +257,8 @@ public class SQlcontrol {
     }
     //tableName是指要查询哪张表,figure记录这个表有多少列,limit是指限定条件如,年级,班,limitValue是记录几年级几班,与limit相对应,flagSort表示是否排序，0不排序，-1倒序，1正序,sortNeed按哪个排序
     //经过测试,正确
-    public int SQLfind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed) {
+    public int SQLfind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
+    {
         //防注入
         SQLconnect();
         try {
