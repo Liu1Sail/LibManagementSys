@@ -328,12 +328,12 @@ public class LoginInterface extends JFrame {
         //管理员登录按钮
         var adminLoginPanel = new JPanel();
         adminLoginPanel.setLayout(null);
-        adminLoginPanel.setBounds(60, 50, 80, 100);
+        adminLoginPanel.setBounds(160, 50, 80, 100);
         adminLoginPanel.setOpaque(false);
         adminLoginPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         var adminLoginRound = new JPanel() {
             private Color unPressedColor = new Color(245, 245, 245);
-            private Color pressedColor = new Color(17, 145, 255);
+            private Color pressedColor = new Color(23, 196, 68);
             private boolean colorChangeSwitch = false;
 
             public void setColorChangeSwitch(boolean colorChangeSwitch) {
@@ -351,15 +351,15 @@ public class LoginInterface extends JFrame {
                     g2d.setColor(unPressedColor);
                 }
                 g2d.fillOval(0, 0, 79, 79);
-                var imageIcon = new ImageIcon(this.getClass().getClassLoader().getResource("img/login/UserLoginIcon.png"));
-                g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
+                var imageIcon = new ImageIcon(this.getClass().getClassLoader().getResource("img/login/AdminLoginIcon.svg"));
+                g2d.drawImage(imageIcon.getImage(), 25, 20, 30, 40, null);
             }
         };
+        adminLoginRound.setBounds(0, 0, 80, 80);
+        adminLoginRound.setOpaque(false);
+        adminLoginPanel.add(adminLoginRound);
         adminLoginPanel.add(adminLoginRound);
         rightBodyPanel.add(adminLoginPanel);
-//        adminLoginRound.setBounds(0, 0, 80, 80);
-//        adminLoginRound.setOpaque(false);
-//        adminLoginPanel.add(userLoginRound);
 //        var adminLoginText = new JLabel();
 //        adminLoginText.setOpaque(false);
 //        adminLoginText.setBounds(0, 80, 80, 20);
