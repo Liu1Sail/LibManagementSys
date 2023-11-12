@@ -10,6 +10,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 /**
  * @author 李冠良
@@ -19,17 +20,13 @@ import java.awt.event.MouseEvent;
  */
 
 public class LoginInterface extends JFrame {
-    private JFrame frame = this;
-    private Dimension initialDimension;
-    private int initialX;
-    private int initialY;
+    private final JFrame frame = this;
+    private final Dimension initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
+    private final int initialX = initialDimension.width / 4;
+    private final int initialY = initialDimension.height / 6;
     private Point offsetMouseToFrame = new Point();
     private boolean userAndAdminSwitch = false;
     public LoginInterface() {
-        initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        initialX = initialDimension.width / 4;
-        initialY = initialDimension.height / 6;
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setBounds(initialX, initialY, 800, 600);
@@ -43,20 +40,11 @@ public class LoginInterface extends JFrame {
             }
         });
         frame.addMouseMotionListener(new MouseAdapter() {
-            private Point mousePos;
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                mousePos = e.getLocationOnScreen();
-            }
-
             @Override
             public void mouseDragged(MouseEvent e) {
-                Point offset = new Point(e.getXOnScreen() - mousePos.x, e.getYOnScreen() - mousePos.y);
                 int newX = e.getXOnScreen() - offsetMouseToFrame.x;
                 int newY = e.getYOnScreen() - offsetMouseToFrame.y;
                 frame.setLocation(newX, newY);
-                mousePos = e.getLocationOnScreen();
             }
         });
         //左侧主面板
@@ -85,8 +73,8 @@ public class LoginInterface extends JFrame {
         userLoginPanel.setOpaque(false);
         userLoginPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         var userLoginRound = new JPanel() {
-            private Color unPressedColor = new Color(245, 245, 245);
-            private Color pressedColor = new Color(17, 145, 255);
+            private final Color unPressedColor = new Color(245, 245, 245);
+            private final Color pressedColor = new Color(17, 145, 255);
             private boolean colorChangeSwitch = false;
 
             public void setColorChangeSwitch(boolean colorChangeSwitch) {
@@ -104,8 +92,13 @@ public class LoginInterface extends JFrame {
                     g2d.setColor(unPressedColor);
                 }
                 g2d.fillOval(0, 0, 79, 79);
-                var imageIcon = new ImageIcon(this.getClass().getClassLoader().getResource("img/login/UserLoginIcon.png"));
-                g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
+                try {
+                    var imageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/UserLoginIcon.png")));
+                    g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
+                }
+                catch(NullPointerException e){
+                    throw new RuntimeException(e);
+                }
             }
         };
         userLoginRound.setBounds(0, 0, 80, 80);
@@ -175,33 +168,7 @@ public class LoginInterface extends JFrame {
                 g.fillRect(x, y + height - this.getThickness() - 5, width, this.getThickness()); // 顶部边框
             }
         });
-        var userPassInputPasswordField = new JPasswordField() {
-            private char defaultChar = this.getEchoChar();
-        };
-        userPassInputPasswordField.setBounds(0, 0, 180, 50);
-        userPassInputPasswordField.setBorder(null);
-        userPassInputPasswordField.setFont(textFont);
-        userPassInputPasswordField.setForeground(textColor);
-        userPassInputPasswordField.setOpaque(false);
-        userPassInputPasswordField.setEchoChar('\0');
-        userPassInputPasswordField.setText("密码");
-        userPassInputPasswordField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (userPassInputPasswordField.getText().equals("密码")) {
-                    userPassInputPasswordField.setEchoChar(userPassInputPasswordField.defaultChar);
-                    userPassInputPasswordField.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (userPassInputPasswordField.getText().isEmpty()) {
-                    userPassInputPasswordField.setEchoChar('\0');
-                    userPassInputPasswordField.setText("密码");
-                }
-            }
-        });
+        var userPassInputPasswordField = getUserInputPasswordField(textFont, textColor);
         userPassInputPasswordBorder.add(userPassInputPasswordField);
         //用户密码输入框中的登录按钮
         var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField);
@@ -216,8 +183,8 @@ public class LoginInterface extends JFrame {
         adminLoginPanel.setOpaque(false);
         adminLoginPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         var adminLoginRound = new JPanel() {
-            private Color unPressedColor = new Color(245, 245, 245);
-            private Color pressedColor = new Color(23, 196, 68);
+            private final Color unPressedColor = new Color(245, 245, 245);
+            private final Color pressedColor = new Color(23, 196, 68);
             private boolean colorChangeSwitch = false;
 
             public void setColorChangeSwitch(boolean colorChangeSwitch) {
@@ -235,8 +202,14 @@ public class LoginInterface extends JFrame {
                     g2d.setColor(unPressedColor);
                 }
                 g2d.fillOval(0, 0, 79, 79);
-                var imageIcon = new ImageIcon(this.getClass().getClassLoader().getResource("img/login/AdminLoginIcon.png"));
-                g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
+
+                try{
+                    var imageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/AdminLoginIcon.png")));
+                    g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
+                }
+                catch(NullPointerException e){
+                    throw new RuntimeException(e);
+                }
             }
         };
         adminLoginRound.setBounds(0, 0, 80, 80);
@@ -311,6 +284,37 @@ public class LoginInterface extends JFrame {
         frame.setVisible(true);
     }
 
+    private static JPasswordField getUserInputPasswordField(Font textFont, Color textColor) {
+        var userPassInputPasswordField = new JPasswordField() {
+            private final char defaultChar = this.getEchoChar();
+        };
+        userPassInputPasswordField.setBounds(0, 0, 180, 50);
+        userPassInputPasswordField.setBorder(null);
+        userPassInputPasswordField.setFont(textFont);
+        userPassInputPasswordField.setForeground(textColor);
+        userPassInputPasswordField.setOpaque(false);
+        userPassInputPasswordField.setEchoChar('\0');
+        userPassInputPasswordField.setText("密码");
+        userPassInputPasswordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (userPassInputPasswordField.getText().equals("密码")) {
+                    userPassInputPasswordField.setEchoChar(userPassInputPasswordField.defaultChar);
+                    userPassInputPasswordField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (userPassInputPasswordField.getText().isEmpty()) {
+                    userPassInputPasswordField.setEchoChar('\0');
+                    userPassInputPasswordField.setText("密码");
+                }
+            }
+        });
+        return userPassInputPasswordField;
+    }
+
     private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
@@ -363,8 +367,19 @@ public class LoginInterface extends JFrame {
                 g.fillRect(x, y + height - this.getThickness() - 5, width, this.getThickness()); // 顶部边框
             }
         });
+        var adminPassInputPasswordField = getAdminPassInputPasswordField(textFont, textColor);
+        adminPassInputPasswordBorder.add(adminPassInputPasswordField);
+        //管理员密码输入框中的登录按钮
+        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField);
+        adminPassInputPasswordBorder.add(adminLoginButton);
+        adminLoginInputPanel.add(adminInputTextBorder);
+        adminLoginInputPanel.add(adminPassInputPasswordBorder);
+        return adminLoginInputPanel;
+    }
+
+    private static JPasswordField getAdminPassInputPasswordField(Font textFont, Color textColor) {
         var adminPassInputPasswordField = new JPasswordField() {
-            private char defaultChar = this.getEchoChar();
+            private final char defaultChar = this.getEchoChar();
         };
         adminPassInputPasswordField.setBounds(0, 0, 180, 50);
         adminPassInputPasswordField.setBorder(null);
@@ -390,13 +405,7 @@ public class LoginInterface extends JFrame {
                 }
             }
         });
-        adminPassInputPasswordBorder.add(adminPassInputPasswordField);
-        //管理员密码输入框中的登录按钮
-        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField);
-        adminPassInputPasswordBorder.add(adminLoginButton);
-        adminLoginInputPanel.add(adminInputTextBorder);
-        adminLoginInputPanel.add(adminPassInputPasswordBorder);
-        return adminLoginInputPanel;
+        return adminPassInputPasswordField;
     }
 
     private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField) {
@@ -542,9 +551,14 @@ public class LoginInterface extends JFrame {
         leftPanel.setPreferredSize(new Dimension(500, 600));
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLayout(null);
-        var leftImageIcon = new ImageIcon(this.getClass().getClassLoader().getResource("img/login/LeftImage.jpg"));
-        var leftImagePanel = new ImagePanel(leftImageIcon, 0, 0, 600, 500);
-        leftPanel.add(leftImagePanel);
+        try {
+            var leftImageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/LeftImage.jpg")));
+            var leftImagePanel = new ImagePanel(leftImageIcon, 0, 0, 600, 500);
+            leftPanel.add(leftImagePanel);
+        }
+        catch(NullPointerException e){
+            throw new RuntimeException(e);
+        }
         return leftPanel;
     }
 
@@ -555,6 +569,59 @@ public class LoginInterface extends JFrame {
         rightTitleToolBar.setLayout(null);
         rightTitleToolBar.setOpaque(false);
         //创建右上角关闭按钮
+        var buttonClose = getButtonClose(frame);
+        //创建右上角设置(六边形齿轮)按钮
+        var settingButton = getSettingButton();
+        //未添加设置面板跳转
+        settingButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                frame.setVisible(false);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                settingButton.getTimerEntered().restart();
+                if (settingButton.getTimerExited().isRunning()) {
+                    settingButton.getTimerExited().stop();
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                settingButton.getTimerExited().restart();
+                if (settingButton.getTimerEntered().isRunning()) {
+                    settingButton.getTimerEntered().stop();
+                }
+            }
+        });
+        rightTitleToolBar.add(settingButton);
+        rightTitleToolBar.add(buttonClose);
+        return rightTitleToolBar;
+    }
+
+    private static ShapeDeepenJPanel getSettingButton() {
+        var settingButton = new ShapeDeepenJPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(new Color(0f, 0f, 0f, this.getOpacity()));
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setStroke(new BasicStroke(1));
+                int[] xPoints = {10, 18, 18, 10, 2, 2};//从上面中间的点开始，顺时针
+                int[] yPoints = {2, 6, 15, 19, 15, 6};//横向20px，纵向22px，纵向一条边10px，斜着的边在纵向投影6px，在横向投影5px
+                //drawPolygon若最后一个点不同，自动闭合，drawPolyline不自动闭合
+                g.drawPolygon(xPoints, yPoints, xPoints.length);
+                g.drawOval(5, 6, 10, 9);
+            }
+        };
+        settingButton.setOpaque(false);
+        settingButton.setBounds(225, 7, 20, 20);//坐标从0开始算，那宽度21时，坐标为0-20
+        return settingButton;
+    }
+
+    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
         var buttonClose = new ShapeDeepenJPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -593,49 +660,6 @@ public class LoginInterface extends JFrame {
                 }
             }
         });
-        //创建右上角设置(六边形齿轮)按钮
-        var settingButton = new ShapeDeepenJPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(0f, 0f, 0f, this.getOpacity()));
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setStroke(new BasicStroke(1));
-                int[] xPoints = {10, 18, 18, 10, 2, 2};//从上面中间的点开始，顺时针
-                int[] yPoints = {2, 6, 15, 19, 15, 6};//横向20px，纵向22px，纵向一条边10px，斜着的边在纵向投影6px，在横向投影5px
-                //drawPolygon若最后一个点不同，自动闭合，drawPolyline不自动闭合
-                g.drawPolygon(xPoints, yPoints, xPoints.length);
-                g.drawOval(5, 6, 10, 9);
-            }
-        };
-        settingButton.setOpaque(false);
-        settingButton.setBounds(225, 7, 20, 20);//坐标从0开始算，那宽度21时，坐标为0-20
-        //未添加设置面板跳转
-        settingButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                frame.setVisible(false);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                settingButton.getTimerEntered().restart();
-                if (settingButton.getTimerExited().isRunning()) {
-                    settingButton.getTimerExited().stop();
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                settingButton.getTimerExited().restart();
-                if (settingButton.getTimerEntered().isRunning()) {
-                    settingButton.getTimerEntered().stop();
-                }
-            }
-        });
-        rightTitleToolBar.add(settingButton);
-        rightTitleToolBar.add(buttonClose);
-        return rightTitleToolBar;
+        return buttonClose;
     }
 }
