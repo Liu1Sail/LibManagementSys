@@ -204,72 +204,8 @@ public class LoginInterface extends JFrame {
         });
         userPassInputPasswordBorder.add(userPassInputPasswordField);
         //用户密码输入框中的登录按钮
-        var userloginButton = new JPanel() {
-            private final Color color = new Color(230, 230, 230);
-            private final Color firstColor = new Color(245, 247, 249);
-            private final Color arrorFirstColor = new Color(129, 134, 143);
-            private final Color arrorSecondColor = new Color(70, 77, 90);
-            private boolean hasBeenReleased = false;
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(color);
-                g2d.fillOval(0, 0, this.getWidth(), this.getHeight());
-                if (hasBeenReleased) {
-                    g2d.setColor(firstColor);
-                } else {
-                    g2d.setColor(Color.WHITE);
-                }
-                g2d.fillOval(2, 2, this.getWidth() - 4, this.getHeight() - 4);
-                g2d.setColor(Color.BLACK);
-                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                var arrowStroke = new BasicStroke(2f);
-                g2d.setStroke(arrowStroke);
-                if (hasBeenReleased) {
-                    g2d.setColor(arrorSecondColor);
-                } else {
-                    g2d.setColor(arrorFirstColor);
-                }
-                g2d.drawLine(13, 20, 28, 20);
-                g2d.drawLine(22, 13, 28, 20);
-                g2d.drawLine(22, 27, 28, 20);
-            }
-
-            public void changeColor(boolean hasBeenReleased) {
-                this.hasBeenReleased = hasBeenReleased;
-            }
-        };
-        userloginButton.setBorder(null);
-        userloginButton.setOpaque(false);
-        userloginButton.setBounds(200, 5, 40, 40);
-        userloginButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                userloginButton.changeColor(true);
-                userloginButton.repaint();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                userloginButton.changeColor(false);
-                userloginButton.repaint();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                //获取用户名、密码字段
-                String userId=userInputTextField.getText();
-                String password=userPassInputPasswordField.getText();
-//                System.out.println(userId);
-//                System.out.println(password);
-                //从数据库比较用户用户名，密码
-                //若检测通过，跳转到用户开始界面
-            }
-        });
-        userPassInputPasswordBorder.add(userloginButton);
+        var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField);
+        userPassInputPasswordBorder.add(userLoginButton);
         userLoginInputPanel.add(userInputTextBorder);
         userLoginInputPanel.add(userPassInputPasswordBorder);
         rightBodyPanel.add(userLoginInputPanel);
@@ -318,6 +254,64 @@ public class LoginInterface extends JFrame {
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
         //管理员密码登录输入框Panel
+        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, userPassInputPasswordField, userInputTextField);
+        //用户登录和管理员登陆切换
+        userLoginPanel.addMouseListener(new MouseAdapter() {
+            private final Color firstColor = new Color(166, 166, 166);
+            private final Color secondColor = new Color(17, 145, 255);
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (userAndAdminSwitch) {
+                    rightBodyPanel.remove(adminLoginInputPanel);
+                    rightBodyPanel.add(userLoginInputPanel);
+                    userAndAdminSwitch = false;
+                    rightBodyPanel.repaint();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                userLoginRound.setColorChangeSwitch(true);
+                userLoginText.setForeground(secondColor);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                userLoginRound.setColorChangeSwitch(false);
+                userLoginText.setForeground(firstColor);
+            }
+        });
+        adminLoginPanel.addMouseListener(new MouseAdapter() {
+            private final Color firstColor = new Color(166, 166, 166);
+            private final Color secondColor = new Color(23, 196, 68);
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!userAndAdminSwitch) {
+                    rightBodyPanel.remove(userLoginInputPanel);
+                    rightBodyPanel.add(adminLoginInputPanel);
+                    userAndAdminSwitch = true;
+                    rightBodyPanel.repaint();
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                adminLoginRound.setColorChangeSwitch(true);
+                adminLoginText.setForeground(secondColor);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                adminLoginRound.setColorChangeSwitch(false);
+                adminLoginText.setForeground(firstColor);
+            }
+        });
+        //将右侧Body面板添加到右侧主面板
+        rightPanel.add(rightBodyPanel);
+        frame.add(rightPanel);
+        frame.setVisible(true);
+    }
+
+    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
         adminLoginInputPanel.setLayout(null);
@@ -383,7 +377,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 if (adminPassInputPasswordField.getText().equals("密码")) {
-                    adminPassInputPasswordField.setEchoChar(userPassInputPasswordField.defaultChar);
+                    adminPassInputPasswordField.setEchoChar(adminPassInputPasswordField.defaultChar);
                     adminPassInputPasswordField.setText("");
                 }
             }
@@ -398,7 +392,15 @@ public class LoginInterface extends JFrame {
         });
         adminPassInputPasswordBorder.add(adminPassInputPasswordField);
         //管理员密码输入框中的登录按钮
-        var adminloginButton = new JPanel() {
+        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField);
+        adminPassInputPasswordBorder.add(adminLoginButton);
+        adminLoginInputPanel.add(adminInputTextBorder);
+        adminLoginInputPanel.add(adminPassInputPasswordBorder);
+        return adminLoginInputPanel;
+    }
+
+    private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField) {
+        var adminLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
             private final Color arrorFirstColor = new Color(129, 134, 143);
@@ -436,92 +438,103 @@ public class LoginInterface extends JFrame {
                 this.hasBeenReleased = hasBeenReleased;
             }
         };
-        adminloginButton.setBorder(null);
-        adminloginButton.setOpaque(false);
-        adminloginButton.setBounds(200, 5, 40, 40);
-        adminloginButton.addMouseListener(new MouseAdapter() {
+        adminLoginButton.setBorder(null);
+        adminLoginButton.setOpaque(false);
+        adminLoginButton.setBounds(200, 5, 40, 40);
+        adminLoginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                userloginButton.changeColor(true);
-                userloginButton.repaint();
+                adminLoginButton.changeColor(true);
+                adminLoginButton.repaint();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                userloginButton.changeColor(false);
-                userloginButton.repaint();
+                adminLoginButton.changeColor(false);
+                adminLoginButton.repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
-                String userId=userInputTextField.getText();
-                String password=userPassInputPasswordField.getText();
+                String userId= userInputTextField.getText();
+                String password= userPassInputPasswordField.getText();
 //                System.out.println(userId);
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
                 //若检测通过，跳转到用户开始界面
             }
         });
-        adminPassInputPasswordBorder.add(adminloginButton);
-        adminLoginInputPanel.add(adminInputTextBorder);
-        adminLoginInputPanel.add(adminPassInputPasswordBorder);
-        //用户登录和管理员登陆切换
-        userLoginPanel.addMouseListener(new MouseAdapter() {
-            private final Color firstColor = new Color(166, 166, 166);
-            private final Color secondColor = new Color(17, 145, 255);
+        return adminLoginButton;
+    }
+
+    private static JPanel getUserLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField) {
+        var userLoginButton = new JPanel() {
+            private final Color color = new Color(230, 230, 230);
+            private final Color firstColor = new Color(245, 247, 249);
+            private final Color arrorFirstColor = new Color(129, 134, 143);
+            private final Color arrorSecondColor = new Color(70, 77, 90);
+            private boolean hasBeenReleased = false;
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                if (userAndAdminSwitch) {
-                    rightBodyPanel.remove(adminLoginInputPanel);
-                    rightBodyPanel.add(userLoginInputPanel);
-                    userAndAdminSwitch = false;
-                    rightBodyPanel.repaint();
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(color);
+                g2d.fillOval(0, 0, this.getWidth(), this.getHeight());
+                if (hasBeenReleased) {
+                    g2d.setColor(firstColor);
+                } else {
+                    g2d.setColor(Color.WHITE);
                 }
+                g2d.fillOval(2, 2, this.getWidth() - 4, this.getHeight() - 4);
+                g2d.setColor(Color.BLACK);
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                var arrowStroke = new BasicStroke(2f);
+                g2d.setStroke(arrowStroke);
+                if (hasBeenReleased) {
+                    g2d.setColor(arrorSecondColor);
+                } else {
+                    g2d.setColor(arrorFirstColor);
+                }
+                g2d.drawLine(13, 20, 28, 20);
+                g2d.drawLine(22, 13, 28, 20);
+                g2d.drawLine(22, 27, 28, 20);
             }
+
+            public void changeColor(boolean hasBeenReleased) {
+                this.hasBeenReleased = hasBeenReleased;
+            }
+        };
+        userLoginButton.setBorder(null);
+        userLoginButton.setOpaque(false);
+        userLoginButton.setBounds(200, 5, 40, 40);
+        userLoginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                userLoginRound.setColorChangeSwitch(true);
-                userLoginText.setForeground(secondColor);
+                userLoginButton.changeColor(true);
+                userLoginButton.repaint();
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                userLoginRound.setColorChangeSwitch(false);
-                userLoginText.setForeground(firstColor);
+                userLoginButton.changeColor(false);
+                userLoginButton.repaint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //获取用户名、密码字段
+                String userId= userInputTextField.getText();
+                String password= userPassInputPasswordField.getText();
+//                System.out.println(userId);
+//                System.out.println(password);
+                //从数据库比较用户用户名，密码
+                //若检测通过，跳转到用户开始界面
             }
         });
-        adminLoginPanel.addMouseListener(new MouseAdapter() {
-            private final Color firstColor = new Color(166, 166, 166);
-            private final Color secondColor = new Color(23, 196, 68);
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (!userAndAdminSwitch) {
-                    rightBodyPanel.remove(userLoginInputPanel);
-                    rightBodyPanel.add(adminLoginInputPanel);
-                    userAndAdminSwitch = true;
-                    rightBodyPanel.repaint();
-                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                adminLoginRound.setColorChangeSwitch(true);
-                adminLoginText.setForeground(secondColor);
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                adminLoginRound.setColorChangeSwitch(false);
-                adminLoginText.setForeground(firstColor);
-            }
-        });
-        //将右侧Body面板添加到右侧主面板
-        rightPanel.add(rightBodyPanel);
-        frame.add(rightPanel);
-        //测试代码区
-
-        frame.setVisible(true);
+        return userLoginButton;
     }
 
     private JPanel getLeftPanel() {
