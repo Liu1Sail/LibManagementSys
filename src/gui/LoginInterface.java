@@ -297,7 +297,7 @@ public class LoginInterface extends JFrame {
         });
         userLoginPanel.addMouseListener(new MouseAdapter() {
             private final Color firstColor = new Color(166, 166, 166);
-            private final Color secondColor = new Color(23, 196, 68);
+            private final Color secondColor = new Color(17, 145, 255);
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -355,70 +355,70 @@ public class LoginInterface extends JFrame {
                 g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
             }
         };
-        adminLoginRound.setBounds(0, 0, 80, 80);
-        adminLoginRound.setOpaque(false);
-        adminLoginPanel.add(userLoginRound);
-        var adminLoginText = new JLabel();
-        adminLoginText.setOpaque(false);
-        adminLoginText.setBounds(0, 80, 80, 20);
-        adminLoginText.setFont(new Font("宋体", Font.PLAIN, 13));
-        adminLoginText.setForeground(new Color(166, 166, 166));
-        adminLoginText.setText("账号登录");
-        adminLoginText.setHorizontalAlignment(JLabel.CENTER);
-        adminLoginPanel.add(adminLoginText);
+        adminLoginPanel.add(adminLoginRound);
         rightBodyPanel.add(adminLoginPanel);
-        userLoginPanel.addMouseListener(new MouseAdapter() {
-            private final Color firstColor = new Color(166, 166, 166);
-            private final Color secondColor = new Color(17, 145, 255);
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-//                if (passAndQrSwitch) {
-//                    rightBodyPanel.remove(qrcodeDisplayPanel);
-//                    rightBodyPanel.add(passLoginInputPanel);
-//                    passAndQrSwitch = false;
-//                    rightBodyPanel.repaint();
-//                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                userLoginRound.setColorChangeSwitch(true);
-                userLoginText.setForeground(secondColor);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                userLoginRound.setColorChangeSwitch(false);
-                userLoginText.setForeground(firstColor);
-            }
-        });
-        adminLoginPanel.addMouseListener(new MouseAdapter() {
-            private final Color firstColor = new Color(166, 166, 166);
-            private final Color secondColor = new Color(23, 196, 68);
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-//                if (!passAndQrSwitch) {
-//                    rightBodyPanel.remove(passLoginInputPanel);
-//                    rightBodyPanel.add(qrcodeDisplayPanel);
-//                    passAndQrSwitch = true;
-//                    rightBodyPanel.repaint();
-//                }
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                adminLoginRound.setColorChangeSwitch(true);
-                adminLoginText.setForeground(secondColor);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                adminLoginRound.setColorChangeSwitch(false);
-                adminLoginText.setForeground(firstColor);
-            }
-        });
+//        adminLoginRound.setBounds(0, 0, 80, 80);
+//        adminLoginRound.setOpaque(false);
+//        adminLoginPanel.add(userLoginRound);
+//        var adminLoginText = new JLabel();
+//        adminLoginText.setOpaque(false);
+//        adminLoginText.setBounds(0, 80, 80, 20);
+//        adminLoginText.setFont(new Font("宋体", Font.PLAIN, 13));
+//        adminLoginText.setForeground(new Color(166, 166, 166));
+//        adminLoginText.setText("账号登录");
+//        adminLoginText.setHorizontalAlignment(JLabel.CENTER);
+//        adminLoginPanel.add(adminLoginText);
+//        rightBodyPanel.add(adminLoginPanel);
+//        userLoginPanel.addMouseListener(new MouseAdapter() {
+//            private final Color firstColor = new Color(166, 166, 166);
+//            private final Color secondColor = new Color(17, 145, 255);
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+////                if (passAndQrSwitch) {
+////                    rightBodyPanel.remove(qrcodeDisplayPanel);
+////                    rightBodyPanel.add(passLoginInputPanel);
+////                    passAndQrSwitch = false;
+////                    rightBodyPanel.repaint();
+////                }
+//            }
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                userLoginRound.setColorChangeSwitch(true);
+//                userLoginText.setForeground(secondColor);
+//            }
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                userLoginRound.setColorChangeSwitch(false);
+//                userLoginText.setForeground(firstColor);
+//            }
+//        });
+//        adminLoginPanel.addMouseListener(new MouseAdapter() {
+//            private final Color firstColor = new Color(166, 166, 166);
+//            private final Color secondColor = new Color(23, 196, 68);
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+////                if (!passAndQrSwitch) {
+////                    rightBodyPanel.remove(passLoginInputPanel);
+////                    rightBodyPanel.add(qrcodeDisplayPanel);
+////                    passAndQrSwitch = true;
+////                    rightBodyPanel.repaint();
+////                }
+//            }
+//
+//            @Override
+//            public void mouseEntered(MouseEvent e) {
+//                adminLoginRound.setColorChangeSwitch(true);
+//                adminLoginText.setForeground(secondColor);
+//            }
+//            @Override
+//            public void mouseExited(MouseEvent e) {
+//                adminLoginRound.setColorChangeSwitch(false);
+//                adminLoginText.setForeground(firstColor);
+//            }
+//        });
+        //将右侧Body面板添加到右侧主面板
         rightPanel.add(rightBodyPanel);
         frame.add(rightPanel);
         //测试代码区
