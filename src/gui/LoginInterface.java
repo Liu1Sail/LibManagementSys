@@ -317,6 +317,156 @@ public class LoginInterface extends JFrame {
         adminLoginText.setHorizontalAlignment(JLabel.CENTER);
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
+        //管理员密码登录输入框Panel
+        var adminLoginInputPanel = new JPanel();
+        adminLoginInputPanel.setBounds(25, 200, 250, 120);
+        adminLoginInputPanel.setLayout(null);
+        adminLoginInputPanel.setOpaque(false);
+        //管理员账号输入TextField
+        var adminInputTextBorder = new JPanel();
+        adminInputTextBorder.setBounds(0, 0, 250, 60);
+        adminInputTextBorder.setLayout(null);
+        adminInputTextBorder.setOpaque(false);
+        adminInputTextBorder.setBorder(new CustomRoundRectBorder(textBorderColor, 1) {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.setColor(this.getColor());
+                g.fillRect(x, y + height - this.getThickness() - 5, width, this.getThickness()); // 底部边框
+            }
+        });
+        var adminInputTextField = new JTextField();
+        adminInputTextField.setBounds(0, 0, 220, 50);
+        adminInputTextField.setBorder(null);
+        adminInputTextField.setFont(textFont);
+        adminInputTextField.setForeground(textColor);
+        adminInputTextField.setText("账号");
+        adminInputTextField.setOpaque(false);
+        adminInputTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (adminInputTextField.getText().equals("账号")) {
+                    adminInputTextField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (adminInputTextField.getText().isEmpty()) {
+                    adminInputTextField.setText("账号");
+                }
+            }
+        });
+        adminInputTextBorder.add(adminInputTextField);
+        //管理员密码输入TextField
+        var adminPassInputPasswordBorder = new JPanel();
+        adminPassInputPasswordBorder.setBounds(0, 60, 250, 60);
+        adminPassInputPasswordBorder.setLayout(null);
+        adminPassInputPasswordBorder.setOpaque(false);
+        adminPassInputPasswordBorder.setBorder(new CustomRoundRectBorder(textBorderColor, 1) {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                g.setColor(this.getColor());
+                g.fillRect(x, y + height - this.getThickness() - 5, width, this.getThickness()); // 顶部边框
+            }
+        });
+        var adminPassInputPasswordField = new JPasswordField() {
+            private char defaultChar = this.getEchoChar();
+        };
+        adminPassInputPasswordField.setBounds(0, 0, 180, 50);
+        adminPassInputPasswordField.setBorder(null);
+        adminPassInputPasswordField.setFont(textFont);
+        adminPassInputPasswordField.setForeground(textColor);
+        adminPassInputPasswordField.setOpaque(false);
+        adminPassInputPasswordField.setEchoChar('\0');
+        adminPassInputPasswordField.setText("密码");
+        adminPassInputPasswordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (adminPassInputPasswordField.getText().equals("密码")) {
+                    adminPassInputPasswordField.setEchoChar(userPassInputPasswordField.defaultChar);
+                    adminPassInputPasswordField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (adminPassInputPasswordField.getText().isEmpty()) {
+                    adminPassInputPasswordField.setEchoChar('\0');
+                    adminPassInputPasswordField.setText("密码");
+                }
+            }
+        });
+        adminPassInputPasswordBorder.add(adminPassInputPasswordField);
+        //管理员密码输入框中的登录按钮
+        var adminloginButton = new JPanel() {
+            private final Color color = new Color(230, 230, 230);
+            private final Color firstColor = new Color(245, 247, 249);
+            private final Color arrorFirstColor = new Color(129, 134, 143);
+            private final Color arrorSecondColor = new Color(70, 77, 90);
+            private boolean hasBeenReleased = false;
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(color);
+                g2d.fillOval(0, 0, this.getWidth(), this.getHeight());
+                if (hasBeenReleased) {
+                    g2d.setColor(firstColor);
+                } else {
+                    g2d.setColor(Color.WHITE);
+                }
+                g2d.fillOval(2, 2, this.getWidth() - 4, this.getHeight() - 4);
+                g2d.setColor(Color.BLACK);
+                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                var arrowStroke = new BasicStroke(2f);
+                g2d.setStroke(arrowStroke);
+                if (hasBeenReleased) {
+                    g2d.setColor(arrorSecondColor);
+                } else {
+                    g2d.setColor(arrorFirstColor);
+                }
+                g2d.drawLine(13, 20, 28, 20);
+                g2d.drawLine(22, 13, 28, 20);
+                g2d.drawLine(22, 27, 28, 20);
+            }
+
+            public void changeColor(boolean hasBeenReleased) {
+                this.hasBeenReleased = hasBeenReleased;
+            }
+        };
+        adminloginButton.setBorder(null);
+        adminloginButton.setOpaque(false);
+        adminloginButton.setBounds(200, 5, 40, 40);
+        adminloginButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                userloginButton.changeColor(true);
+                userloginButton.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                userloginButton.changeColor(false);
+                userloginButton.repaint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //获取用户名、密码字段
+                String userId=userInputTextField.getText();
+                String password=userPassInputPasswordField.getText();
+//                System.out.println(userId);
+//                System.out.println(password);
+                //从数据库比较用户用户名，密码
+                //若检测通过，跳转到用户开始界面
+            }
+        });
+        adminPassInputPasswordBorder.add(adminloginButton);
+        adminLoginInputPanel.add(adminInputTextBorder);
+        adminLoginInputPanel.add(adminPassInputPasswordBorder);
+        //用户登录和管理员登陆切换
         userLoginPanel.addMouseListener(new MouseAdapter() {
             private final Color firstColor = new Color(166, 166, 166);
             private final Color secondColor = new Color(17, 145, 255);
@@ -324,8 +474,8 @@ public class LoginInterface extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (userAndAdminSwitch) {
-//                    rightBodyPanel.remove();
-//                    rightBodyPanel.add();
+                    rightBodyPanel.remove(adminLoginInputPanel);
+                    rightBodyPanel.add(userLoginInputPanel);
                     userAndAdminSwitch = false;
                     rightBodyPanel.repaint();
                 }
@@ -347,10 +497,10 @@ public class LoginInterface extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (userAndAdminSwitch) {
-//                    rightBodyPanel.remove();
-//                    rightBodyPanel.add();
-                    userAndAdminSwitch = false;
+                if (!userAndAdminSwitch) {
+                    rightBodyPanel.remove(userLoginInputPanel);
+                    rightBodyPanel.add(adminLoginInputPanel);
+                    userAndAdminSwitch = true;
                     rightBodyPanel.repaint();
                 }
             }
