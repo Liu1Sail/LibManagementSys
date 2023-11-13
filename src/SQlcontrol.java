@@ -219,26 +219,56 @@ public class SQlcontrol {
         SQLstop();
         return true;
     }
-    //子查询,用于学生搜索课程和课程搜索学生
-    //              tableOut                 tableIn                              limit     limitValue
-    //SELECT * FROM course  WHERE id=(SELECT courseid FROM studentandcourse WHERE studentid=2002)
-    public boolean SQLfindand(int figure,String tableOut,String tableIn,String limit,String limitValue)
+    public boolean SQLfindand(String tableOut,ArrayList<String>wantGet,String wantFindout,String tableIn,String wantFindin,ArrayList<String> limit,ArrayList<String> limitValue)//子查询，将第一个查找的值作为第二个搜索的条件,第一个为第二次查找的表名，第二个是第二次查找的目标字段名,空代表全部查找,第三个为第二次查找的字段名，第四个为第一次查找的表名，第五个为第一次查找的字段名,第六个为第一次查找的条件字段名，第七个为第一次查找的条件值
     {
         SQLconnect();
-        StringBuffer temper = new StringBuffer("SELECT * FROM ");
+        StringBuffer temper = new StringBuffer("SELECT ");
+        if(wantGet.isEmpty())
+        {
+            temper.append("*");
+        }
+        else
+        {
+            for(int i = 0;i<wantGet.size();i++)
+            {
+                temper.append(wantGet.get(i));
+                if(i!=wantGet.size()-1)
+                {
+                    temper.append(",");
+                }
+            }
+        }
+        temper.append(" FROM ");
         temper.append(tableOut);
-        temper.append(" WHERE id=(SELECT ");
+        temper.append(" WHERE ");
+        temper.append(wantFindout);
+        temper.append("=(SELECT ");
+        temper.append(wantFindin);
+        temper.append(" FROM ");
         temper.append(tableIn);
-        temper.append(" FROM studentandcourse WHERE ");
-        temper.append(limit);
-        temper.append("=");
-        temper.append(limitValue);
+        temper.append(" WHERE ");
+        for(int i = 0;i<limit.size();i++)
+        {
+            temper.append(limit.get(i));
+            temper.append("=");
+            temper.append(limitValue.get(i));
+            if(i!= limit.size()-1)
+            {
+                temper.append(",");
+            }
+        }
         temper.append(")");
+        int figure = wantGet.size();
         String in = new String(temper);
         try{
             ResultSet receive = st.executeQuery(in);
             ArrayList<String> nowtemper = new ArrayList<>();
             back.clear();
+            if(figure == 0)
+            {
+                ResultSetMetaData rsmd = receive.getMetaData();
+                figure = rsmd.getColumnCount();
+            }
             while (receive.next()) {
                 for (int i = 1; i <= figure; i++) {
                     nowtemper.add(String.valueOf(receive.getString(i)));
@@ -257,7 +287,7 @@ public class SQlcontrol {
     }
     //tableName是指要查询哪张表,figure记录这个表有多少列,limit是指限定条件如,年级,班,limitValue是记录几年级几班,与limit相对应,flagSort表示是否排序，0不排序，-1倒序，1正序,sortNeed按哪个排序
     //经过测试,正确
-    public int SQLfind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
+    public int SQLfind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名,空代表全部查找，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
     {
         //防注入
         SQLconnect();
