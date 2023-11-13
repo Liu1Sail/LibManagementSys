@@ -298,7 +298,7 @@ public class LoginInterface extends JFrame {
         userPassInputPasswordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (userPassInputPasswordField.getText().equals("密码")) {
+                if (new String(userPassInputPasswordField.getPassword()).equals("密码")) {
                     userPassInputPasswordField.setEchoChar(userPassInputPasswordField.defaultChar);
                     userPassInputPasswordField.setText("");
                 }
@@ -306,7 +306,7 @@ public class LoginInterface extends JFrame {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (userPassInputPasswordField.getText().isEmpty()) {
+                if (new String(userPassInputPasswordField.getPassword()).isEmpty()) {
                     userPassInputPasswordField.setEchoChar('\0');
                     userPassInputPasswordField.setText("密码");
                 }
@@ -391,7 +391,7 @@ public class LoginInterface extends JFrame {
         adminPassInputPasswordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (adminPassInputPasswordField.getText().equals("密码")) {
+                if (new String(adminPassInputPasswordField.getPassword()).equals("密码")) {
                     adminPassInputPasswordField.setEchoChar(adminPassInputPasswordField.defaultChar);
                     adminPassInputPasswordField.setText("");
                 }
@@ -399,7 +399,7 @@ public class LoginInterface extends JFrame {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (adminPassInputPasswordField.getText().isEmpty()) {
+                if (new String(adminPassInputPasswordField.getPassword()).isEmpty()) {
                     adminPassInputPasswordField.setEchoChar('\0');
                     adminPassInputPasswordField.setText("密码");
                 }
@@ -467,7 +467,7 @@ public class LoginInterface extends JFrame {
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
                 String userId= userInputTextField.getText();
-                String password= userPassInputPasswordField.getText();
+                String password= new String(userPassInputPasswordField.getPassword());
 //                System.out.println(userId);
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
@@ -537,7 +537,7 @@ public class LoginInterface extends JFrame {
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
                 String userId= userInputTextField.getText();
-                String password= userPassInputPasswordField.getText();
+                String password= new String(userPassInputPasswordField.getPassword());
 //                System.out.println(userId);
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
