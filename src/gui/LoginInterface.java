@@ -171,7 +171,7 @@ public class LoginInterface extends JFrame {
         var userPassInputPasswordField = getUserInputPasswordField(textFont, textColor);
         userPassInputPasswordBorder.add(userPassInputPasswordField);
         //用户密码输入框中的登录按钮
-        var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField);
+        var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField,frame );
         userPassInputPasswordBorder.add(userLoginButton);
         userLoginInputPanel.add(userInputTextBorder);
         userLoginInputPanel.add(userPassInputPasswordBorder);
@@ -227,7 +227,7 @@ public class LoginInterface extends JFrame {
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
         //管理员密码登录输入框Panel
-        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, userPassInputPasswordField, userInputTextField);
+        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, userPassInputPasswordField, userInputTextField,frame );
         //用户登录和管理员登陆切换
         userLoginPanel.addMouseListener(new MouseAdapter() {
             private final Color firstColor = new Color(166, 166, 166);
@@ -315,7 +315,7 @@ public class LoginInterface extends JFrame {
         return userPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField) {
+    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField, JFrame frame) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
         adminLoginInputPanel.setLayout(null);
@@ -370,7 +370,7 @@ public class LoginInterface extends JFrame {
         var adminPassInputPasswordField = getAdminPassInputPasswordField(textFont, textColor);
         adminPassInputPasswordBorder.add(adminPassInputPasswordField);
         //管理员密码输入框中的登录按钮
-        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField);
+        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField,frame );
         adminPassInputPasswordBorder.add(adminLoginButton);
         adminLoginInputPanel.add(adminInputTextBorder);
         adminLoginInputPanel.add(adminPassInputPasswordBorder);
@@ -408,7 +408,7 @@ public class LoginInterface extends JFrame {
         return adminPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField) {
+    private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
         var adminLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -472,12 +472,13 @@ public class LoginInterface extends JFrame {
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
                 //若检测通过，跳转到用户开始界面
+                frame.dispose();
             }
         });
         return adminLoginButton;
     }
 
-    private static JPanel getUserLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField) {
+    private static JPanel getUserLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
         var userLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -541,6 +542,7 @@ public class LoginInterface extends JFrame {
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
                 //若检测通过，跳转到用户开始界面
+                frame.dispose();
             }
         });
         return userLoginButton;
