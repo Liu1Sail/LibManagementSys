@@ -1,4 +1,5 @@
 import gui.LoginInterface;
+import gui.RegisterInterface;
 
 /**
  * @author 作者姓名
@@ -7,7 +8,7 @@ import gui.LoginInterface;
  * @date 2023/11/12
  */
 
-public class LoginInterfaceTest {
+public class LoginTest {
     public static void main(String[] args) {
         new LoginInterface();
     }

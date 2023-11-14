@@ -21,6 +21,7 @@ import java.util.Objects;
 
 public class LoginInterface extends JFrame {
     private final JFrame frame = this;
+    private RegisterInterface registerFrame;
     private final Dimension initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
     private final int initialX = initialDimension.width / 4;
     private final int initialY = initialDimension.height / 6;
@@ -31,6 +32,8 @@ public class LoginInterface extends JFrame {
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setBounds(initialX, initialY, 800, 600);
         frame.setUndecorated(true);
+        frame.setLocationRelativeTo(null);
+        frame.setTitle("图书管理系统");
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -61,7 +64,7 @@ public class LoginInterface extends JFrame {
         rightPanel.add(rightTitleToolBar);
         //添加右侧主面板
         var rightBodyPanel = new JPanel();
-        rightBodyPanel.setBounds(0, 80, 300, 400);
+        rightBodyPanel.setBounds(0, 80, 300, 350);
         rightBodyPanel.setOpaque(false);
         rightBodyPanel.setLayout(null);
         rightBodyPanel.setBackground(Color.WHITE);
@@ -278,10 +281,36 @@ public class LoginInterface extends JFrame {
                 adminLoginText.setForeground(firstColor);
             }
         });
-        //将右侧Body面板添加到右侧主面板
+        //将右侧Body,Below面板添加到右侧主面板
+        var rightBelowPanel = getRightBelowPanel();
+        rightPanel.add(rightBelowPanel);
         rightPanel.add(rightBodyPanel);
+        //将右侧主面板添加到右侧主面板
         frame.add(rightPanel);
         frame.setVisible(true);
+    }
+
+    private JPanel getRightBelowPanel() {
+        var rightBelowPanel=new JPanel();
+        rightBelowPanel.setBackground(Color.WHITE);
+        rightBelowPanel.setLayout(null);
+        rightBelowPanel.setOpaque(false);
+        rightBelowPanel.setBounds(0,430,300,150);
+        var registerLabel=new JLabel();
+        registerLabel.setBounds(0,0,100,50);
+        registerLabel.setFont(new Font("宋体", Font.PLAIN,14));
+        registerLabel.setForeground(new Color(117, 117, 117));
+        registerLabel.setText("注册账号");
+        registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        registerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                registerFrame =new RegisterInterface();
+            }
+        });
+        rightBelowPanel.add(registerLabel);
+        return rightBelowPanel;
     }
 
     private static JPasswordField getUserInputPasswordField(Font textFont, Color textColor) {
@@ -472,6 +501,7 @@ public class LoginInterface extends JFrame {
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
                 //若检测通过，跳转到用户开始界面
+                //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
                 frame.dispose();
             }
         });
@@ -542,6 +572,7 @@ public class LoginInterface extends JFrame {
 //                System.out.println(password);
                 //从数据库比较用户用户名，密码
                 //若检测通过，跳转到用户开始界面
+                //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
                 frame.dispose();
             }
         });

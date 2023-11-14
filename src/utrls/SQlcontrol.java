@@ -1,7 +1,5 @@
 package utrls;
 
-import utrls.worktoolSQL;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
