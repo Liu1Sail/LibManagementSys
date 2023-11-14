@@ -1,3 +1,5 @@
+package utrls;
+
 import utrls.worktoolSQL;
 
 import java.sql.*;
@@ -7,7 +9,7 @@ import java.util.Properties;
 public class SQlcontrol {
     public ArrayList<ArrayList<String>> back;
     private static Connection conn;
-    private worktoolSQL wl;
+    private worktoolSQL wl;//
     static Driver driver;
     static Properties info;
     static String url;
