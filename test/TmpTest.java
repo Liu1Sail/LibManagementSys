@@ -35,7 +35,7 @@ class TmpTest {
         linkedList.add(jPanel4);
         linkedList.add(jPanel5);
         //
-        var translation = new Translation(linkedList, 1, 2, Translation.DIRECTION_LEFT, true);
+        var translation = new Translation(linkedList, 1, 2, Translation.DIRECTION_BELOW, true);
         translation.setBounds(50, 50, 300, 300);
         frame.add(translation);
         frame.setVisible(true);
