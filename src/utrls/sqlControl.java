@@ -389,6 +389,6 @@ public class sqlControl {
             return -1;
         }
         sqlStop();
-        return 1;
+        return 1;//
     }
 }
