@@ -1,6 +1,6 @@
 package gui;
 
-import gui.component.CustomRoundRectBorder;
+import gui.border.CustomRoundRectBorder;
 import gui.component.ImagePanel;
 import gui.component.ShapeDeepenJPanel;
 

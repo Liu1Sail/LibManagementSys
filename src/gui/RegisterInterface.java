@@ -44,9 +44,22 @@ public class RegisterInterface extends JFrame {
             }
         });
         var buttonClose=getButtonClose(frame);
+        //添加注册信息输入JPanel
+        var bodyPanel=new JPanel();
+        bodyPanel.setBounds(0,70,400,400);
+//        bodyPanel.setOpaque(false);
+        bodyPanel.setBackground(Color.ORANGE);
+        bodyPanel.setLayout(null);
 
+        frame.add(bodyPanel);
         frame.add(buttonClose);
         frame.setVisible(true);
+    }
+
+    @Override
+    public void paintComponents(Graphics g) {
+        super.paintComponents(g);
+
     }
 
     private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
