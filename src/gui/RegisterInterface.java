@@ -1,6 +1,6 @@
 package gui;
 
-import gui.tool.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenJPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * @author 作者姓名
+ * @author 李冠良
  * @program LibManagementSys
  * @description
  * @date 2023/11/14
@@ -16,19 +16,17 @@ import java.awt.event.MouseEvent;
 
 public class RegisterInterface extends JFrame {
     private final JFrame frame = this;
-    private final Dimension initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
-    private final int initialX = initialDimension.width / 4;
-    private final int initialY = initialDimension.height / 6;
     private Point offsetMouseToFrame = new Point();
-    private boolean userAndAdminSwitch = false;
 
     public RegisterInterface() {
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
-        frame.setBounds(initialX, initialY, 400, 600);
+        frame.setSize(400, 600);
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setTitle("注册");
+        //测试
+        frame.getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -46,9 +44,11 @@ public class RegisterInterface extends JFrame {
             }
         });
         var buttonClose=getButtonClose(frame);
+
         frame.add(buttonClose);
         frame.setVisible(true);
     }
+
     private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
         var buttonClose = new ShapeDeepenJPanel() {
             @Override

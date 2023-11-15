@@ -1,8 +1,7 @@
 import gui.LoginInterface;
-import gui.RegisterInterface;
 
 /**
- * @author 作者姓名
+ * @author 李冠良
  * @program LibManagementSys
  * @description 测试登录页面
  * @date 2023/11/12

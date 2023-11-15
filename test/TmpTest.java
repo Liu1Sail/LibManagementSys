@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author 作者姓名
@@ -11,34 +11,49 @@ import java.awt.event.MouseEvent;
  */
 
 public class TmpTest {
-    public TmpTest(){
+    public TmpTest() {
         //测试环境
-        JFrame frame=new JFrame();
-        frame.setBounds(300,200,800,500);
+        JFrame frame = new JFrame();
+        frame.setBounds(300, 200, 800, 500);
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setBackground(null);
-        var container=new Container();
-        var password=new JPasswordField();
-        frame.add(container);
+        frame.setLayout(null);
         //测试内容
-        password.setBounds(100,100,100,100);
-        password.setEchoChar('\0');
-        password.setText("输入");
-        container.add(password);
-        var button=new JButton();
-        button.setBounds(200,200,100,100);
-        button.addMouseListener(new MouseAdapter() {
+        var panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBounds(100, 20, 400, 400);
+//        panel.setBackground(new Color(212, 239, 223));
+        var first = new JPanel();
+        var second = new JPanel();
+        first.setBounds(0, 0, 400, 400);
+        second.setBounds(400, 0, 400, 400);
+        first.setBackground(Color.ORANGE);
+        second.setBackground(Color.PINK);
+        var timer = new Timer(1, new ActionListener() {
+            private int x = 0;
+
             @Override
-            public void mouseReleased(MouseEvent e) {
-                System.out.println(new String(password.getPassword()));
+            public void actionPerformed(ActionEvent e) {
+                x -= 2;
+                if (x < -400) {
+                    x = 0;
+                }
+                first.setLocation(x, 0);
+                second.setLocation(400 + x, 0);
+                panel.repaint();
             }
         });
-        container.add(button);
+        //
+        panel.add(first);
+        panel.add(second);
+        frame.add(panel);
         //
         frame.setVisible(true);
+        timer.start();
     }
 
     public static void main(String[] args) {
         new TmpTest();
     }
 }
+

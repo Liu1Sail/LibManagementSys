@@ -1,7 +1,13 @@
-package gui.tool;
+package gui.component;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author 李冠良
+ * @program Chat
+ * @description
+ * @date 
+ */
 public class ImagePanel extends JPanel {
     private int imageHeight = 100;
     private int imageWidth = 100;

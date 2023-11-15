@@ -1,8 +1,8 @@
 package gui;
 
-import gui.tool.CustomRoundRectBorder;
-import gui.tool.ImagePanel;
-import gui.tool.ShapeDeepenJPanel;
+import gui.component.CustomRoundRectBorder;
+import gui.component.ImagePanel;
+import gui.component.ShapeDeepenJPanel;
 
 import javax.swing.*;
 import java.awt.*;

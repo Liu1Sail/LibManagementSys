@@ -1,7 +1,13 @@
-package gui.tool;
+package gui.component;
 
 import javax.swing.*;
 
+/**
+ * @author 李冠良
+ * @program Chat
+ * @description
+ * @date
+ */
 public class ShapeDeepenJPanel extends JPanel {
     private boolean hasBeenTrigger = false;
     private float opacity = 0.3f;

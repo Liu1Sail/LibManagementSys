@@ -1,7 +1,7 @@
 import gui.RegisterInterface;
 
 /**
- * @author 作者姓名
+ * @author 李冠良
  * @program LibManagementSys
  * @description
  * @date 2023/11/14
