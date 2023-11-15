@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class SQlcontrol {
+public class sqlControl {
     public ArrayList<ArrayList<String>> back;
     private static Connection conn;
     private worktoolSQL wl;//
@@ -16,9 +16,8 @@ public class SQlcontrol {
     private static String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
     private static String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
     private static String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
-    private static Statement st;
 
-    public SQlcontrol() throws SQLException {
+    public sqlControl() throws SQLException {
         wl = new worktoolSQL();
         conn = null;
         back = new ArrayList<>();
@@ -29,19 +28,17 @@ public class SQlcontrol {
         driver = new com.mysql.cj.jdbc.Driver();
     }
 
-    private static Boolean SQLconnect() {
+    private static Boolean sqlConnect() {
         try {
             conn = driver.connect(url, info);
-            st = conn.createStatement();
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    private static Boolean SQLstop() {
+    private static Boolean sqlStop() {
         try {
-            st.close();
             conn.close();
             return true;
         } catch (SQLException e) {
@@ -49,7 +46,7 @@ public class SQlcontrol {
         }
 
     }
-    public boolean INFOchange(String name,String nameValue,String password,String passwordValue)//更新登录库所用的账号密码,要改就开始改，别中间改，会有问题
+    public boolean infoChange(String name,String nameValue,String password,String passwordValue)//更新登录库所用的账号密码,要改就开始改，别中间改，会有问题
     {
         try {
             info.clear();
@@ -58,10 +55,11 @@ public class SQlcontrol {
         }catch (Exception e)
         {
             return false;
+
         }
         return true;
     }
-    public boolean URLchange(String in)//更新库的ip地址,要改就开始改，别中间改，会有问题
+    public boolean urlChange(String in)//更新库的ip地址,要改就开始改，别中间改，会有问题
     {
         try {
             url = in;
@@ -71,11 +69,12 @@ public class SQlcontrol {
         }
         return true;
     }
-    public boolean SQLmake()//生成默认表
+    public boolean sqlMake()//生成默认表
     {
         try
         {
-            SQLconnect();
+            sqlConnect();
+            Statement st = conn.createStatement();
             st.execute(make1);
             st.execute(make2);
             st.execute(make3);
@@ -87,47 +86,57 @@ public class SQlcontrol {
         }
         return true;
     }
-    public boolean SQLerase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)//删除，第一个输入表名，第二个输入删除字段名，第三个输入删除字段的值
+    public boolean sqlErase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)//删除，第一个输入表名，第二个输入删除字段名，第三个输入删除字段的值,且参数不能为空
     {
-        SQLconnect();
-        StringBuffer temper = new StringBuffer("delete from ");
-        temper.append(tableName);
-        if (listName.size() != listValue.size()) {
-            SQLstop();
+        sqlConnect();
+        if (listName.size() != listValue.size()||listName.size() == 0) {
+            sqlStop();
             return false;
         }
+        PreparedStatement st;
+        StringBuffer temper = new StringBuffer("delete from ");
+        temper.append(tableName);
         if (listName.size() != 0) {
             temper.append(" where ");
-        }
-        for (int i = 0; i < listName.size(); i++) {
-            if (i < listName.size() - 1) {
-                temper.append(listName.get(i));
-                temper.append("=");
-                temper.append(wl.addNeed(listValue.get(i)));
-                temper.append(" and ");
-            } else {
-                temper.append(listName.get(i));
-                temper.append("=");
-                temper.append(wl.addNeed(listValue.get(i)));
+            for (int i = 0; i < listName.size(); i++) {
+                if (i < listName.size() - 1) {
+                    temper.append(listName.get(i));
+                    temper.append("=");
+                    temper.append("?");
+                    temper.append(" and ");
+                } else {
+                    temper.append(listName.get(i));
+                    temper.append("=");
+                    temper.append("?");
+                }
             }
         }
         String in = new String(temper);
         try {
-            st.execute(in);
+            st = conn.prepareStatement(in);
+            int figure = 1;
+            for(int i = 0;i<listName.size();i++)
+            {
+                st.setObject(figure,listValue.get(i));
+                figure++;
+            }
+            st.execute();
+            st.close();
         } catch (Exception e)
         {
-           SQLstop();
-           return false;
+            sqlStop();
+            return false;
         }
-        SQLstop();
+        sqlStop();
         return true;
     }
 
-    public boolean SQLinsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//第一个要添加的表名字，第二个要添加的字段名，第三个要添加的字段值
+    public boolean sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//第一个要添加的表名字，第二个要添加的字段名，第三个要添加的字段值
     {
-        SQLconnect();
-        if (listName.size() != listValue.size()) {
-            SQLstop();
+        sqlConnect();
+        PreparedStatement st;
+        if (listName.size() != listValue.size()||listName.size() == 0) {
+            sqlStop();
             return false;
         }
         StringBuffer temper = new StringBuffer("insert into ");
@@ -145,34 +154,43 @@ public class SQlcontrol {
         }
         for (int i = 0; i < listValue.size(); i++) {
             if (i < listValue.size() - 1) {
-                temper.append(wl.addNeed(listValue.get(i)));
+                temper.append("?");
                 temper.append(",");
             } else {
-                temper.append(wl.addNeed(listValue.get(i)));
+                temper.append("?");
                 temper.append(")");
             }
         }
         in = new String(temper);
         try {
-            st.executeUpdate(in);
+            st = conn.prepareStatement(in);
+            int figure = 1;
+            for(int i = 0;i<listValue.size();i++)
+            {
+                st.setString(figure,listValue.get(i));
+                figure+=1;
+            }
+            st.executeUpdate();
+            st.close();
         }catch (Exception e)
         {
-            SQLstop();
+            sqlStop();
             return false;
         }
-        SQLstop();
+        sqlStop();
         return true;
     }
-    public boolean SQLchange(String tableName,ArrayList<String>changeName,ArrayList<String>changeValue,ArrayList<String>findName,ArrayList<String>findValue)//修改，第一个表名，第二个更改的字段名，第三个更改的字段值，第四个更改的条件字段名，第五个更改的条件字段值
+    public boolean sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)//修改，第一个表名，第二个更改的字段名，第三个更改的字段值，第四个更改的条件字段名，第五个更改的条件字段值
     {
         try {
-            SQLconnect();
+            sqlConnect();
+            PreparedStatement st;
             StringBuffer temper = new StringBuffer("update ");
             temper.append(tableName);
             temper.append(" set ");
-            if(changeName.size()!=changeValue.size()||findName.size()!=findValue.size())
+            if(changeName.size()==0||changeName.size()!=changeValue.size()||findName.size()!=findValue.size())
             {
-                SQLstop();
+                sqlStop();
                 return false;
             }
             for(int i = 0;i<changeName.size();i++)
@@ -181,13 +199,13 @@ public class SQlcontrol {
                 {
                     temper.append(changeName.get(i));
                     temper.append("=");
-                    temper.append(wl.addNeed(changeValue.get(i)));
+                    temper.append("?");
                     temper.append(",");
                 }
                 else {
                     temper.append(changeName.get(i));
                     temper.append("=");
-                    temper.append(wl.addNeed(changeValue.get(i)));
+                    temper.append("?");
                 }
             }
             if(findName.size()>0)
@@ -199,29 +217,45 @@ public class SQlcontrol {
                     {
                         temper.append(findName.get(i));
                         temper.append("=");
-                        temper.append(wl.addNeed(findValue.get(i)));
+                        temper.append("?");
                         temper.append(" and ");
                     }
                     else {
                         temper.append(findName.get(i));
                         temper.append("=");
-                        temper.append(wl.addNeed(findValue.get(i)));
+                        temper.append("?");
                     }
                 }
             }
             String in = new String(temper);
-            st.execute(in);
+            st = conn.prepareStatement(in);
+            int figure = 1;
+            for(int i = 0;i<changeName.size();i++)
+            {
+                st.setString(figure,changeValue.get(i));
+                figure++;
+            }
+            if(findName.size()>0)
+            {
+                for(int i = 0;i<findValue.size();i++)
+                {
+                    st.setString(figure,findValue.get(i));
+                    figure++;
+                }
+            }
+            st.execute();
+            st.close();
         }catch (Exception e)
         {
-            SQLstop();
+            sqlStop();
             return false;
         }
-        SQLstop();
+        sqlStop();
         return true;
     }
-    public boolean SQLfindand(String tableOut,ArrayList<String>wantGet,String wantFindout,String tableIn,String wantFindin,ArrayList<String> limit,ArrayList<String> limitValue)//子查询，将第一个查找的值作为第二个搜索的条件,第一个为第二次查找的表名，第二个是第二次查找的目标字段名,空代表全部查找,第三个为第二次查找的字段名，第四个为第一次查找的表名，第五个为第一次查找的字段名,第六个为第一次查找的条件字段名，第七个为第一次查找的条件值
+    public boolean sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)//子查询，将第一个查找的值作为第二个搜索的条件,第一个为第二次查找的表名，第二个是第二次查找的目标字段名,空代表全部查找,第三个为第二次查找的字段名，第四个为第一次查找的表名，第五个为第一次查找的字段名,第六个为第一次查找的条件字段名，第七个为第一次查找的条件值
     {
-        SQLconnect();
+        sqlConnect();
         StringBuffer temper = new StringBuffer("SELECT ");
         if(wantGet.isEmpty())
         {
@@ -261,6 +295,7 @@ public class SQlcontrol {
         int figure = wantGet.size();
         String in = new String(temper);
         try{
+            Statement st = conn.createStatement();
             ResultSet receive = st.executeQuery(in);
             ArrayList<String> nowtemper = new ArrayList<>();
             back.clear();
@@ -279,19 +314,20 @@ public class SQlcontrol {
             receive.close();
         }catch (Exception e)
         {
-            SQLstop();
+            sqlStop();
             return false;
         }
-        SQLstop();
+        sqlStop();
         return true;
     }
     //tableName是指要查询哪张表,figure记录这个表有多少列,limit是指限定条件如,年级,班,limitValue是记录几年级几班,与limit相对应,flagSort表示是否排序，0不排序，-1倒序，1正序,sortNeed按哪个排序
     //经过测试,正确
-    public int SQLfind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名,空代表全部查找，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
+    public int sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名,空代表全部查找，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
     {
         //防注入
-        SQLconnect();
+        sqlConnect();
         try {
+            Statement st = conn.createStatement();
             StringBuffer SQLstr = new StringBuffer("select ");
             int figure = 0;
             if(needFind.isEmpty())
@@ -351,10 +387,10 @@ public class SQlcontrol {
             temperReceive.close();
 
         } catch (SQLException e) {
-            SQLstop();
+            sqlStop();
             return -1;
         }
-        SQLstop();
+        sqlStop();
         return 1;
     }
 }
