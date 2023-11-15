@@ -16,7 +16,7 @@ public class sqlControl {
     private static String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
     private static String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
     private static String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
-
+    private static PreparedStatement st1;
     public sqlControl() throws SQLException {
         wl = new worktoolSQL();
         conn = null;
@@ -93,7 +93,7 @@ public class sqlControl {
             sqlStop();
             return false;
         }
-        PreparedStatement st;
+
         StringBuffer temper = new StringBuffer("delete from ");
         temper.append(tableName);
         if (listName.size() != 0) {
@@ -113,15 +113,15 @@ public class sqlControl {
         }
         String in = new String(temper);
         try {
-            st = conn.prepareStatement(in);
+            st1 = conn.prepareStatement(in);
             int figure = 1;
             for(int i = 0;i<listName.size();i++)
             {
-                st.setObject(figure,listValue.get(i));
+                st1.setObject(figure,listValue.get(i));
                 figure++;
             }
-            st.execute();
-            st.close();
+            st1.execute();
+            st1.close();
         } catch (Exception e)
         {
             sqlStop();
@@ -134,7 +134,6 @@ public class sqlControl {
     public boolean sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//第一个要添加的表名字，第二个要添加的字段名，第三个要添加的字段值
     {
         sqlConnect();
-        PreparedStatement st;
         if (listName.size() != listValue.size()||listName.size() == 0) {
             sqlStop();
             return false;
@@ -163,15 +162,15 @@ public class sqlControl {
         }
         in = new String(temper);
         try {
-            st = conn.prepareStatement(in);
+            st1 = conn.prepareStatement(in);
             int figure = 1;
             for(int i = 0;i<listValue.size();i++)
             {
-                st.setString(figure,listValue.get(i));
+                st1.setString(figure,listValue.get(i));
                 figure+=1;
             }
-            st.executeUpdate();
-            st.close();
+            st1.executeUpdate();
+            st1.close();
         }catch (Exception e)
         {
             sqlStop();
@@ -184,7 +183,6 @@ public class sqlControl {
     {
         try {
             sqlConnect();
-            PreparedStatement st;
             StringBuffer temper = new StringBuffer("update ");
             temper.append(tableName);
             temper.append(" set ");
@@ -228,23 +226,23 @@ public class sqlControl {
                 }
             }
             String in = new String(temper);
-            st = conn.prepareStatement(in);
+            st1 = conn.prepareStatement(in);
             int figure = 1;
             for(int i = 0;i<changeName.size();i++)
             {
-                st.setString(figure,changeValue.get(i));
+                st1.setString(figure,changeValue.get(i));
                 figure++;
             }
             if(findName.size()>0)
             {
                 for(int i = 0;i<findValue.size();i++)
                 {
-                    st.setString(figure,findValue.get(i));
+                    st1.setString(figure,findValue.get(i));
                     figure++;
                 }
             }
-            st.execute();
-            st.close();
+            st1.execute();
+            st1.close();
         }catch (Exception e)
         {
             sqlStop();
