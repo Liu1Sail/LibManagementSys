@@ -1,7 +1,6 @@
 package gui.animation;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.LinkedList;
 
 /**
@@ -27,9 +26,7 @@ public class Translation extends JPanel {
         this.intervalDistance = intervalDistance;
         this.isRecycle = isRecycle;
         this.setLayout(null);
-        timer=new Timer(intervalTime,e->{
-            translationBehavior();
-        });
+        timer=new Timer(intervalTime,e-> translationBehavior());
     }
     public Translation(LinkedList<? extends JComponent> linkedList, int intervalTime, int intervalDistance) {
         this.linkedList = linkedList;
