@@ -28,6 +28,7 @@ public class RegisterInterface extends JFrame {
         frame.setTitle("注册");
         //测试
         //frame.getRootPane().setBorder(new OutwardShadowBorder(5,5,5,5));
+//        frame.getRootPane().setBorder(new OutwardShadowBorder(10));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -120,7 +121,7 @@ public class RegisterInterface extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 frame.dispose();
-                //向数据库提交信息
+                //获取输入信息，向数据库提交信息
             }
         });
         cancelButton.addMouseListener(new MouseAdapter() {

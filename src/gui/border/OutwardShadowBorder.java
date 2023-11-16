@@ -1,6 +1,5 @@
 package gui.border;
 
-import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
@@ -32,12 +31,15 @@ public class OutwardShadowBorder implements Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         int i;
-        for (i = 0; i < pixel; i++) {
-            g.setColor(new Color(0, 0, 0, i * 10));
-            g.fillRoundRect(i,i,width,height,2,2);
-        }
-        g.setColor(new Color(255,255,255, 0));
-        g.fillRoundRect(i,i,width,height,2,2);
+//        for (i = 0; i < pixel; i++) {
+//            g.setColor(new Color(0, 0, 0, 1));
+//            g.fillRoundRect(i,i,width-1-i,height-1-i,2,2);
+//        }
+        g.setColor(new Color(0, 0, 0, 10));
+        g.fillRoundRect(0,0,width-1,height-1,5,5);
+        g.getClip();
+        g.setColor(new Color(0, 0, 0, 0));
+        g.fillRoundRect(10,10,width-1-20,height-1-20,10,10);
     }
 
     @Override
