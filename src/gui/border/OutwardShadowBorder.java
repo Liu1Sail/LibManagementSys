@@ -16,6 +16,7 @@ public class OutwardShadowBorder implements Border {
     private int bottom;
     private int left;
     private int right;
+    private int pixel;
 
     public OutwardShadowBorder(int top, int bottom, int left, int right) {
         this.top = top;
@@ -24,14 +25,24 @@ public class OutwardShadowBorder implements Border {
         this.right = right;
     }
 
+    public OutwardShadowBorder(int pixel) {
+        this.pixel = pixel;
+    }
+
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-
+        int i;
+        for (i = 0; i < pixel; i++) {
+            g.setColor(new Color(0, 0, 0, i * 10));
+            g.fillRoundRect(i,i,width,height,2,2);
+        }
+        g.setColor(new Color(255,255,255, 0));
+        g.fillRoundRect(i,i,width,height,2,2);
     }
 
     @Override
     public Insets getBorderInsets(Component c) {
-        return new Insets(top,left,bottom,right);
+        return new Insets(top, left, bottom, right);
     }
 
     @Override
