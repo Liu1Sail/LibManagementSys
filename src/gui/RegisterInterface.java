@@ -1,6 +1,5 @@
 package gui;
 
-import gui.border.OutwardShadowBorder;
 import gui.component.ShapeDeepenJPanel;
 
 import javax.swing.*;
@@ -26,8 +25,7 @@ public class RegisterInterface extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setTitle("注册");
-        //测试
-        //frame.getRootPane().setBorder(new OutwardShadowBorder(5,5,5,5));
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -120,7 +118,7 @@ public class RegisterInterface extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 frame.dispose();
-                //向数据库提交信息
+                //获取输入信息，向数据库提交信息
             }
         });
         cancelButton.addMouseListener(new MouseAdapter() {

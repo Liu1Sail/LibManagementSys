@@ -34,6 +34,7 @@ public class LoginInterface extends JFrame {
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
         frame.setTitle("图书管理系统");
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -503,6 +504,7 @@ public class LoginInterface extends JFrame {
                 //若检测通过，跳转到用户开始界面
                 //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
                 frame.dispose();
+
             }
         });
         return adminLoginButton;
