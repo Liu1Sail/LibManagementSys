@@ -1,6 +1,5 @@
 package gui;
 
-import gui.border.OutwardShadowBorder;
 import gui.component.ShapeDeepenJPanel;
 
 import javax.swing.*;
@@ -26,9 +25,7 @@ public class RegisterInterface extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setTitle("注册");
-        //测试
-        //frame.getRootPane().setBorder(new OutwardShadowBorder(5,5,5,5));
-//        frame.getRootPane().setBorder(new OutwardShadowBorder(10));
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
