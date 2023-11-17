@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class sqlControl {
-    public ArrayList<ArrayList<String>> back;
+    private ArrayList<ArrayList<String>> back;
     private static Connection conn;
     private worktoolSQL wl;//
     static Driver driver;
@@ -28,6 +28,14 @@ public class sqlControl {
         driver = new com.mysql.cj.jdbc.Driver();
     }
 
+    /**
+     * 用来取操作后的返回结果，已经按字段切割好了
+     * @return ArrayList<ArrayList<String>>
+     */
+    public ArrayList<ArrayList<String>> getSet()//取最终结果
+    {
+        return back;
+    }
     private static Boolean sqlConnect() {
         try {
             conn = driver.connect(url, info);
@@ -46,20 +54,32 @@ public class sqlControl {
         }
 
     }
-    public boolean infoChange(String name,String nameValue,String password,String passwordValue)//更新登录库所用的账号密码,要改就开始改，别中间改，会有问题
+
+    /**
+     *更新登录库所用的账号密码。
+     * @param name 登录数据库用的账户
+     * @param password 登录数据库要用的密码
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean infoChange(String name,String password)
     {
         try {
             info.clear();
-            info.setProperty(name, nameValue);
-            info.setProperty(password, passwordValue);
+            info.setProperty("user", name);
+            info.setProperty("password", password);
         }catch (Exception e)
         {
             return false;
-
         }
-        return true;
+        return true;//
     }
-    public boolean urlChange(String in)//更新库的ip地址,要改就开始改，别中间改，会有问题
+
+    /**
+     * 更新库的ip地址
+     * @param in 要更新的ip地址
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean urlChange(String in)
     {
         try {
             url = in;
@@ -69,7 +89,12 @@ public class sqlControl {
         }
         return true;
     }
-    public boolean sqlMake()//生成默认表
+
+    /**
+     * 生成默认表
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean sqlMake()
     {
         try
         {
@@ -86,33 +111,41 @@ public class sqlControl {
         }
         return true;
     }
-    public boolean sqlErase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)//删除，第一个输入表名，第二个输入删除字段名，第三个输入删除字段的值,且参数不能为空
-    {
-        sqlConnect();
-        if (listName.size() != listValue.size()||listName.size() == 0) {
-            sqlStop();
-            return false;
-        }
 
-        StringBuffer temper = new StringBuffer("delete from ");
-        temper.append(tableName);
-        if (listName.size() != 0) {
-            temper.append(" where ");
-            for (int i = 0; i < listName.size(); i++) {
-                if (i < listName.size() - 1) {
-                    temper.append(listName.get(i));
-                    temper.append("=");
-                    temper.append("?");
-                    temper.append(" and ");
-                } else {
-                    temper.append(listName.get(i));
-                    temper.append("=");
-                    temper.append("?");
+    /**
+     * 对表中行进行删除操作
+     * @param tableName 要删除行所在的表的名字
+     * @param listName 删除条件的字段名
+     * @param listValue 删除条件的字段值
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean sqlErase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)
+    {
+        try {
+            sqlConnect();
+            if (listName.size() != listValue.size()||listName.size() == 0) {
+                sqlStop();
+                return false;
+            }
+
+            StringBuffer temper = new StringBuffer("delete from ");
+            temper.append(tableName);
+            if (listName.size() != 0) {
+                temper.append(" where ");
+                for (int i = 0; i < listName.size(); i++) {
+                    if (i < listName.size() - 1) {
+                        temper.append(listName.get(i));
+                        temper.append("=");
+                        temper.append("?");
+                        temper.append(" and ");
+                    } else {
+                        temper.append(listName.get(i));
+                        temper.append("=");
+                        temper.append("?");
+                    }
                 }
             }
-        }
-        String in = new String(temper);
-        try {
+            String in = new String(temper);
             st1 = conn.prepareStatement(in);
             int figure = 1;
             for(int i = 0;i<listName.size();i++)
@@ -126,42 +159,50 @@ public class sqlControl {
         {
             sqlStop();
             return false;
+        }finally {
+            sqlStop();
+            return true;
         }
-        sqlStop();
-        return true;
     }
 
-    public boolean sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLException//第一个要添加的表名字，第二个要添加的字段名，第三个要添加的字段值
+    /**
+     * 向表中添加一行数据，注意，如果添加的字段类型与值不匹配 或 字段要求不为空但是字段值为空会导致插入失败
+     * @param tableName 要添加的表的名字
+     * @param listName 要添加的字段名
+     * @param listValue 要添加的字段值
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue)
     {
-        sqlConnect();
-        if (listName.size() != listValue.size()||listName.size() == 0) {
-            sqlStop();
-            return false;
-        }
-        StringBuffer temper = new StringBuffer("insert into ");
-        String in;
-        temper.append(tableName);
-        temper.append(" ( ");
-        for (int i = 0; i < listName.size(); i++) {
-            if (i < listName.size() - 1) {
-                temper.append(listName.get(i));
-                temper.append(",");
-            } else {
-                temper.append(listName.get(i));
-                temper.append(") values (");
-            }
-        }
-        for (int i = 0; i < listValue.size(); i++) {
-            if (i < listValue.size() - 1) {
-                temper.append("?");
-                temper.append(",");
-            } else {
-                temper.append("?");
-                temper.append(")");
-            }
-        }
-        in = new String(temper);
         try {
+            sqlConnect();
+            if (listName.size() != listValue.size()||listName.size() == 0) {
+                sqlStop();
+                return false;
+            }
+            StringBuffer temper = new StringBuffer("insert into ");
+            String in;
+            temper.append(tableName);
+            temper.append(" ( ");
+            for (int i = 0; i < listName.size(); i++) {
+                if (i < listName.size() - 1) {
+                    temper.append(listName.get(i));
+                    temper.append(",");
+                } else {
+                    temper.append(listName.get(i));
+                    temper.append(") values (");
+                }
+            }
+            for (int i = 0; i < listValue.size(); i++) {
+                if (i < listValue.size() - 1) {
+                    temper.append("?");
+                    temper.append(",");
+                } else {
+                    temper.append("?");
+                    temper.append(")");
+                }
+            }
+            in = new String(temper);
             st1 = conn.prepareStatement(in);
             int figure = 1;
             for(int i = 0;i<listValue.size();i++)
@@ -176,9 +217,21 @@ public class sqlControl {
             sqlStop();
             return false;
         }
-        sqlStop();
-        return true;
+        finally {
+            sqlStop();
+            return true;
+        }
     }
+
+    /**
+     *  对表中数据进行更改操作
+     * @param tableName 要更改的表的名字
+     * @param changeName 要更改的字段的名字
+     * @param changeValue 要更改成的字段值
+     * @param findName 更改字段的查找条件字段值
+     * @param findValue 要更改的字段的查找条件字段值
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
     public boolean sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)//修改，第一个表名，第二个更改的字段名，第三个更改的字段值，第四个更改的条件字段名，第五个更改的条件字段值
     {
         try {
@@ -248,51 +301,65 @@ public class sqlControl {
             sqlStop();
             return false;
         }
-        sqlStop();
-        return true;
-    }
-    public boolean sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)//子查询，将第一个查找的值作为第二个搜索的条件,第一个为第二次查找的表名，第二个是第二次查找的目标字段名,空代表全部查找,第三个为第二次查找的字段名，第四个为第一次查找的表名，第五个为第一次查找的字段名,第六个为第一次查找的条件字段名，第七个为第一次查找的条件值
-    {
-        sqlConnect();
-        StringBuffer temper = new StringBuffer("SELECT ");
-        if(wantGet.isEmpty())
-        {
-            temper.append("*");
+        finally {
+            sqlStop();
+            return true;
         }
-        else
-        {
-            for(int i = 0;i<wantGet.size();i++)
+    }
+
+    /**
+     * 子查询函数，第一次查询的值作为第二次查询的条件
+     * @param tableOut 第二次查询的表名
+     * @param wantGet 第二次查找的字段名，即最终希望找到的，空代表全部查找
+     * @param wantFindout  第二次查找的条件字段名
+     * @param tableIn 第一次查找的表名
+     * @param wantFindin 第一次查找的目标字段名
+     * @param limit 第一次查找的条件字段名
+     * @param limitValue 第一次查找的条件字段值
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public boolean sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)
+    {
+        try{
+            sqlConnect();
+            StringBuffer temper = new StringBuffer("SELECT ");
+            if(wantGet.isEmpty())
             {
-                temper.append(wantGet.get(i));
-                if(i!=wantGet.size()-1)
+                temper.append("*");
+            }
+            else
+            {
+                for(int i = 0;i<wantGet.size();i++)
+                {
+                    temper.append(wantGet.get(i));
+                    if(i!=wantGet.size()-1)
+                    {
+                        temper.append(",");
+                    }
+                }
+            }
+            temper.append(" FROM ");
+            temper.append(tableOut);
+            temper.append(" WHERE ");
+            temper.append(wantFindout);
+            temper.append("=(SELECT ");
+            temper.append(wantFindin);
+            temper.append(" FROM ");
+            temper.append(tableIn);
+            temper.append(" WHERE ");
+            for(int i = 0;i<limit.size();i++)
+            {
+                temper.append(limit.get(i));
+                temper.append("=");
+                temper.append(limitValue.get(i));
+                if(i!= limit.size()-1)
                 {
                     temper.append(",");
                 }
             }
-        }
-        temper.append(" FROM ");
-        temper.append(tableOut);
-        temper.append(" WHERE ");
-        temper.append(wantFindout);
-        temper.append("=(SELECT ");
-        temper.append(wantFindin);
-        temper.append(" FROM ");
-        temper.append(tableIn);
-        temper.append(" WHERE ");
-        for(int i = 0;i<limit.size();i++)
-        {
-            temper.append(limit.get(i));
-            temper.append("=");
-            temper.append(limitValue.get(i));
-            if(i!= limit.size()-1)
-            {
-                temper.append(",");
-            }
-        }
-        temper.append(")");
-        int figure = wantGet.size();
-        String in = new String(temper);
-        try{
+            temper.append(")");
+            int figure = wantGet.size();
+            String in = new String(temper);
             Statement st = conn.createStatement();
             ResultSet receive = st.executeQuery(in);
             ArrayList<String> nowtemper = new ArrayList<>();
@@ -315,16 +382,26 @@ public class sqlControl {
             sqlStop();
             return false;
         }
-        sqlStop();
-        return true;
+        finally {
+            sqlStop();
+            return true;
+        }
     }
-    //tableName是指要查询哪张表,figure记录这个表有多少列,limit是指限定条件如,年级,班,limitValue是记录几年级几班,与limit相对应,flagSort表示是否排序，0不排序，-1倒序，1正序,sortNeed按哪个排序
-    //经过测试,正确
-    public int sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)//第一个查找的表名字，第二个要查找的字段名,空代表全部查找，第三个查找条件字段名，第四个查找条件值，第五个是否排序，0不排序，1正序，-1倒序，第6个排序条件
+
+    /**
+     * 对表进行查找操作，带有对结果的排序功能，默认乱序
+     * @param tableName 要查找的表的名字
+     * @param needFind 要查找的字段名
+     * @param limit 要查找的限制条件的字段名
+     * @param limitValue 要查找的限制条件的字段值
+     * @param flagSort 是否排序，0不排序，1正序，-1倒序
+     * @param sortNeed 排序依据的字段值
+     * @return boolean，false表示运行出现错误，true表示运行成功
+     */
+    public Boolean sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)
     {
-        //防注入
-        sqlConnect();
         try {
+            sqlConnect();
             Statement st = conn.createStatement();
             StringBuffer SQLstr = new StringBuffer("select ");
             int figure = 0;
@@ -386,9 +463,12 @@ public class sqlControl {
 
         } catch (SQLException e) {
             sqlStop();
-            return -1;
+            return false;
         }
-        sqlStop();
-        return 1;//
+        finally {
+            sqlStop();
+            return true;//
+        }
+
     }
 }
