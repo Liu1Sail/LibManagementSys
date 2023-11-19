@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import utils.SqlConfig;
 
@@ -48,14 +49,10 @@ public class UserManager
             if(rowsAffected > 0){
                 resultSet = preparedStatement.getGeneratedKeys();
                 if(resultSet.next()) {
-                    int uid = resultSet.getInt(1);
-                    return uid;
+                    return resultSet.getInt(1);
                 }
             }
-        }catch (SQLException e){
-            throw e;
-        }
-        finally {
+        } finally {
             if (connection != null){
                 try {
                     connection.close();
@@ -87,10 +84,7 @@ public class UserManager
             preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE uid = ?;");
             preparedStatement.setInt(1 , uid);
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            throw e;
-        }
-        finally {
+        } finally {
             if (connection != null){
                 try {
                     connection.close();
@@ -133,10 +127,7 @@ public class UserManager
                     return localUser;
                 }
             }
-        }catch (SQLException e){
-            throw e;
-        }
-        finally {
+        } finally {
             if (connection != null){
                 try {
                     connection.close();
@@ -182,7 +173,7 @@ public class UserManager
                             ")");
             preparedStatement.executeUpdate();
         }
-        catch (SQLException e){throw e;}//抛出链接建立失败异常
+        //抛出链接建立失败异常
         finally {//处理完关闭链接
             if (connection != null){
                 try {
