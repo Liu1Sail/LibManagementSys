@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import utils.SqlConfig;
 
@@ -36,37 +35,17 @@ public class UserManager
      * @param password 密码
      */
     public int userSignUp(String uname, String password) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
+        try(Connection connection=SqlConfig.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL,PreparedStatement.RETURN_GENERATED_KEYS))
         {
-            connection = SqlConfig.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement(
-                    "INSERT INTO Users (uname, upwd) VALUES (?, ?)",
-                    PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1 , uname);
             preparedStatement.setString(2 , password);
             int rowsAffected = preparedStatement.executeUpdate();
             if(rowsAffected > 0){
-                resultSet = preparedStatement.getGeneratedKeys();
-                if(resultSet.next()) {
-                    return resultSet.getInt(1);
-                }
-            }
-        } finally {
-            if (connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if(resultSet.next()) {
+                        return resultSet.getInt(1);
+                    }
                 }
             }
         }
@@ -78,29 +57,11 @@ public class UserManager
      * @throws SQLException
      */
     public void userLogout(int uid) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try
-        {
-            connection = SqlConfig.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE uid = ?;");
+        try(Connection connection = SqlConfig.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE uid = ?;");
+        ){
             preparedStatement.setInt(1 , uid);
             preparedStatement.executeUpdate();
-        } finally {
-            if (connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -110,45 +71,21 @@ public class UserManager
      * @param password 用户密码
      * @return 一个User对象 或者 null(如果不成功)
      */
-    public User userLogin(int uid , String password) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try
+    public User userLogin(int uid , String password)throws SQLException{
+        try(Connection connection = SqlConfig.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_SQL);)
         {
-            connection = SqlConfig.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement("SELECT uname , upwd FROM Users WHERE uid = ?;");
             preparedStatement.setInt(1 , uid);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
+            try (ResultSet resultSet = preparedStatement.executeQuery())
             {
-                String pwd = resultSet.getString("upwd");
-                String name = resultSet.getString("uname");
-                if(password.equals(pwd)){
-                    localUser = new User(uid , name);
-                    return localUser;
-                }
-            }
-        } finally {
-            if (connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(resultSet != null){
-                try{
-                    resultSet.close();
-                }catch (SQLException e) {
-                    e.printStackTrace();
+                if(resultSet.next())
+                {
+                    String pwd = resultSet.getString("upwd");
+                    String name = resultSet.getString("uname");
+                    if(password.equals(pwd)) {
+                        localUser = new User(uid , name);
+                        return localUser;
+                    }
                 }
             }
         }
@@ -156,43 +93,28 @@ public class UserManager
     }
 
     //-------------------------------------------------------------------------------//
+    private static final String CREATE_TABLE_USERS_SQL =
+            "CREATE TABLE IF NOT EXISTS Users(" +
+                    "uid INT AUTO_INCREMENT PRIMARY KEY," +
+                    "uname varchar(30) NOT NULL," +
+                    "upwd varchar(30) NOT NULL" +
+                    ")";
+
+    private static final String INSERT_USERS_SQL =
+            "INSERT INTO Users (uname, upwd) VALUES (?, ?)";
+
+    private static final String DELETE_USERS_SQL =
+            "DELETE FROM Users WHERE uid = ?";
+
+    private static final String SELECT_USERS_SQL =
+            "SELECT uname, upwd FROM Users WHERE uid = ?";
     private static UserManager instance;
     private static User localUser= null;
-    private UserManager() throws SQLException {
-        /*
-          初始化User表 防止表被删除
-         */
-        PreparedStatement preparedStatement = null;
-        Connection connection = null;
-        //尝试建立连接并初始化表
-        try {
-            connection = SqlConfig.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS Users(" +
-                            "uid INT AUTO_INCREMENT PRIMARY KEY," +
-                            "uname varchar(30) NOT NULL," +
-                            "upwd varchar(30) NOT NULL" +
-                            ")");
+    private UserManager() throws SQLException {/*初始化User表 防止表被删除*/
+        try(Connection connection = SqlConfig.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USERS_SQL);) {
             preparedStatement.executeUpdate();
         }
-        //抛出链接建立失败异常
-        finally {//处理完关闭链接
-            if (connection != null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
 }
