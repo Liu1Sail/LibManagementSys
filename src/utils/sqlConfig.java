@@ -9,7 +9,7 @@ public class sqlConfig {
      * <p style="color : red">用来存储参数需要通过init(),set*()函数来设置</p>
      * @return mysql配置实例
      */
-    public sqlConfig getInstance()
+    public static sqlConfig getInstance()
     {
         if(instance == null){
             instance = new sqlConfig();
