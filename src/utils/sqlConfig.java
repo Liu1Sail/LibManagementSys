@@ -24,7 +24,6 @@ public class sqlConfig {
     /**
      *
      * @return a connection to the URL
-     * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(m_Url , m_User , m_Password);
@@ -78,7 +77,7 @@ public class sqlConfig {
     private static sqlConfig instance;
     private sqlConfig(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         }catch (ClassNotFoundException e)
         {
             e.printStackTrace();
