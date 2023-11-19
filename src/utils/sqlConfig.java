@@ -1,5 +1,9 @@
 package utils;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  * <p>用来存储sql配置的类, 比如: url,user以及password. <br> 目的为了实现数据全局共享</p>
  */
@@ -15,6 +19,10 @@ public class sqlConfig {
             instance = new sqlConfig();
         }
         return instance;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(m_Url , m_User , m_Password);
     }
 
     /**
