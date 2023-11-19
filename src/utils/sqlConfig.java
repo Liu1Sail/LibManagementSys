@@ -21,6 +21,11 @@ public class sqlConfig {
         return instance;
     }
 
+    /**
+     *
+     * @return a connection to the URL
+     * @throws SQLException
+     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(m_Url , m_User , m_Password);
     }
