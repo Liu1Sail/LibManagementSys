@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import utils.sqlConfig;
+import utils.SqlConfig;
 
 
 /**
@@ -40,7 +40,7 @@ public class UserManager
         ResultSet resultSet = null;
         try
         {
-            connection = sqlConfig.getInstance().getConnection();
+            connection = SqlConfig.getInstance().getConnection();
             preparedStatement = connection.prepareStatement("INSERT INTO Users (uname, upwd) VALUES (?, ?)");
             preparedStatement.setString(1 , uname);
             preparedStatement.setString(2 , password);
@@ -83,7 +83,7 @@ public class UserManager
         PreparedStatement preparedStatement = null;
         try
         {
-            connection = sqlConfig.getInstance().getConnection();
+            connection = SqlConfig.getInstance().getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE uid = ?;");
             preparedStatement.setInt(1 , uid);
             preparedStatement.executeUpdate();
@@ -120,7 +120,7 @@ public class UserManager
         ResultSet resultSet = null;
         try
         {
-            connection = sqlConfig.getInstance().getConnection();
+            connection = SqlConfig.getInstance().getConnection();
             preparedStatement = connection.prepareStatement("SELECT uname , upwd FROM Users WHERE uid = ?;");
             preparedStatement.setInt(1 , uid);
             resultSet = preparedStatement.executeQuery();
@@ -173,7 +173,7 @@ public class UserManager
         Connection connection = null;
         //尝试建立连接并初始化表
         try {
-            connection = sqlConfig.getInstance().getConnection();
+            connection = SqlConfig.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS Users(" +
                             "uid INT AUTO_INCREMENT PRIMARY KEY," +

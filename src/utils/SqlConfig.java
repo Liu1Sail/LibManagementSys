@@ -7,16 +7,16 @@ import java.sql.SQLException;
 /**
  * <p>用来存储sql配置的类, 比如: url,user以及password. <br> 目的为了实现数据全局共享</p>
  */
-public class sqlConfig {
+public class SqlConfig {
 
     /**
      * <p style="color : red">用来存储参数需要通过init(),set*()函数来设置</p>
      * @return mysql配置实例
      */
-    public static sqlConfig getInstance()
+    public static SqlConfig getInstance()
     {
         if(instance == null){
-            instance = new sqlConfig();
+            instance = new SqlConfig();
         }
         return instance;
     }
@@ -74,8 +74,8 @@ public class sqlConfig {
 
 
     //-------------------------------------------------------------------------------//
-    private static sqlConfig instance;
-    private sqlConfig(){
+    private static SqlConfig instance;
+    private SqlConfig(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         }catch (ClassNotFoundException e)
