@@ -93,23 +93,6 @@ public class UserManager
     }
 
     //-------------------------------------------------------------------------------//
-    private static final String CREATE_TABLE_USERS_SQL =
-            "CREATE TABLE IF NOT EXISTS Users(" +
-                    "uid INT AUTO_INCREMENT PRIMARY KEY," +
-                    "uname varchar(30) NOT NULL," +
-                    "upwd varchar(30) NOT NULL" +
-                    ")";
-
-    private static final String INSERT_USERS_SQL =
-            "INSERT INTO Users (uname, upwd) VALUES (?, ?)";
-
-    private static final String DELETE_USERS_SQL =
-            "DELETE FROM Users WHERE uid = ?";
-
-    private static final String SELECT_USERS_SQL =
-            "SELECT uname, upwd FROM Users WHERE uid = ?";
-    private static UserManager instance;
-    private static User localUser= null;
     private UserManager() throws SQLException {/*初始化User表 防止表被删除*/
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USERS_SQL);) {
@@ -117,4 +100,18 @@ public class UserManager
         }
     }
 
+    private static UserManager instance;
+    private static User localUser= null;
+    private static final String CREATE_TABLE_USERS_SQL =
+            "CREATE TABLE IF NOT EXISTS Users(" +
+                    "uid INT AUTO_INCREMENT PRIMARY KEY," +
+                    "uname varchar(30) NOT NULL," +
+                    "upwd varchar(30) NOT NULL" +
+                    ")";
+    private static final String INSERT_USERS_SQL =
+            "INSERT INTO Users (uname, upwd) VALUES (?, ?)";
+    private static final String DELETE_USERS_SQL =
+            "DELETE FROM Users WHERE uid = ?";
+    private static final String SELECT_USERS_SQL =
+            "SELECT uname, upwd FROM Users WHERE uid = ?";
 }
