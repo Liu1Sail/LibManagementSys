@@ -42,7 +42,9 @@ public class UserManager
         try
         {
             connection = SqlConfig.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO Users (uname, upwd) VALUES (?, ?)");
+            preparedStatement = connection.prepareStatement(
+                    "INSERT INTO Users (uname, upwd) VALUES (?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1 , uname);
             preparedStatement.setString(2 , password);
             int rowsAffected = preparedStatement.executeUpdate();
