@@ -57,7 +57,7 @@ public class UserManager
      */
     public void userLogout(int uid) throws SQLException {
         try(Connection connection = SqlConfig.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL)
         ){
             preparedStatement.setInt(1 , uid);
             preparedStatement.executeUpdate();
@@ -72,7 +72,7 @@ public class UserManager
      */
     public User userLogin(int uid , String password)throws SQLException{
         try(Connection connection = SqlConfig.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_SQL);)
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USERS_SQL))
         {
             preparedStatement.setInt(1 , uid);
             try (ResultSet resultSet = preparedStatement.executeQuery())
@@ -94,7 +94,7 @@ public class UserManager
     //-------------------------------------------------------------------------------//
     private UserManager() throws SQLException {/*初始化User表 防止表被删除*/
         try(Connection connection = SqlConfig.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USERS_SQL);) {
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USERS_SQL)) {
             preparedStatement.executeUpdate();
         }
     }
