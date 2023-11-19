@@ -20,6 +20,14 @@
     <p>单例类<br> 
         目的 - 全局存储 url , user , password  . 共享mysql配置数据
     </p>
+    <h3>UserManager</h3>
+    <p>单例类<br>
+        目的 - 管理注册 ，登录 ， 注销 用户(  管理Users表(Account表)  )
+    </p>
+    <h3>User</h3>
+    <p>
+        目的 - 对表格数据的reClass 存储uid 和 uname 鉴于安全考虑不保存password
+    </p>
     <h3>类名(模板)</h3>
     <p>
         简介
