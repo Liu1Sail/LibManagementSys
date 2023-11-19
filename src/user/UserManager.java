@@ -57,7 +57,7 @@ public class UserManager
      */
     public void userLogout(int uid) throws SQLException {
         try(Connection connection = SqlConfig.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Users WHERE uid = ?;");
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL);
         ){
             preparedStatement.setInt(1 , uid);
             preparedStatement.executeUpdate();
