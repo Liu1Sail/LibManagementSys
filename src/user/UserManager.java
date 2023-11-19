@@ -30,7 +30,6 @@ public class UserManager
     }
 
     /**
-     *
      * @param uname 昵称
      * @param password 密码
      * @return uid 失败则返回-1
