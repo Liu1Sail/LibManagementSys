@@ -33,6 +33,7 @@ public class UserManager
      *
      * @param uname 昵称
      * @param password 密码
+     * @return uid 失败则返回-1
      */
     public int userSignUp(String uname, String password) throws SQLException {
         try(Connection connection=SqlConfig.getInstance().getConnection();
@@ -54,7 +55,6 @@ public class UserManager
 
     /**
      * @param uid 要删除uid
-     * @throws SQLException
      */
     public void userLogout(int uid) throws SQLException {
         try(Connection connection = SqlConfig.getInstance().getConnection();
