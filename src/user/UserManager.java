@@ -100,7 +100,7 @@ public class UserManager
     }
 
     private static UserManager instance;
-    private static User localUser= null;
+    private User localUser= null;
     private static final String CREATE_TABLE_USERS_SQL =
             "CREATE TABLE IF NOT EXISTS Users(" +
                     "uid INT AUTO_INCREMENT PRIMARY KEY," +
