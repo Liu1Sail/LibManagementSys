@@ -59,7 +59,7 @@ public class SqlConfig {
     /**
      * @param url 设置url
      */
-    public void setUrl(String url){m_User = url;}
+    public void setUrl(String url){m_Url = url;}
 
     /**
      * @param user 设置user
