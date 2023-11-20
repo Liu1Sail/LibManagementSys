@@ -23,8 +23,8 @@ public class ResizeFrame extends JFrame {
     private boolean isBottomLeft;// 是否处于左下角调整窗口状态
     private boolean isLeft;// 是否处于左边界调整窗口状态
     private final static int RESIZE_WIDTH = 5;// 判定是否为调整窗口状态的范围与边界距离
-    private int min_width = 250;// 窗口最小宽度
-    private int min_height = 175;// 窗口最小高度
+    private final int min_width = 250;// 窗口最小宽度
+    private final int min_height = 175;// 窗口最小高度
     private Point offsetMouseToFrame = new Point();
 
     public ResizeFrame() {
@@ -32,7 +32,7 @@ public class ResizeFrame extends JFrame {
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                frame.setCursor(Cursor.DEFAULT_CURSOR);
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
 
             @Override
@@ -44,55 +44,52 @@ public class ResizeFrame extends JFrame {
                 offsetMouseToFrame.x = e.getXOnScreen() - frame.getLocationOnScreen().x;
                 offsetMouseToFrame.y = e.getYOnScreen() - frame.getLocationOnScreen().y;
             }
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-            }
         });
         frame.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                int cursorType=Cursor.DEFAULT_CURSOR;
+                Cursor cursorType= Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
                 int rightResizeX=frame.getWidth()-RESIZE_WIDTH;//窗口拉伸区域X坐标最小值
                 int rightResizeY=frame.getHeight()-RESIZE_WIDTH;//窗口拉伸区域Y坐标最小值
                 int nowX=e.getX();
                 int nowY=e.getY();
+                isTopLeft=isTop=isTopRight=isRight=isBottomRight=isBottom=isBottomLeft=isLeft=false;
                 if (nowY<RESIZE_WIDTH){
                     if(nowX<RESIZE_WIDTH){
                         isTopLeft=true;
-                        cursorType=Cursor.NW_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
                     }
                     else if(nowX>=rightResizeX){
                         isTopRight=true;
-                        cursorType=Cursor.NE_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
                     }
                     else{
                         isTop=true;
-                        cursorType=Cursor.N_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
                     }
                 }
                 else if(nowY>=rightResizeY){
                     if(nowX<RESIZE_WIDTH){
                         isBottomLeft=true;
-                        cursorType=Cursor.SW_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
                     }
                     else if(nowX>=rightResizeX){
                         isBottomRight=true;
-                        cursorType=Cursor.SE_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
                     }
                     else{
                         isBottom=true;
-                        cursorType=Cursor.S_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
                     }
                 }
                 else{
                     if(nowX<RESIZE_WIDTH){
                         isLeft=true;
-                        cursorType=Cursor.E_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
                     }
                     else if(nowX>=rightResizeX){
                         isRight=true;
-                        cursorType=Cursor.W_RESIZE_CURSOR;
+                        cursorType= Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
                     }
                 }
                 frame.setCursor(cursorType);
