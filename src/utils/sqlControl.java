@@ -23,7 +23,7 @@ public class sqlControl {
      * @throws closeWrong
      */
     public sqlControl() throws SQLException,connectWrong, closeWrong {
-        SqlConfig use = SqlConfig.getInstance();
+        SqlConfig use = SqlConfig.getInstance();//
         wl = new worktoolSQL();
         conn = null;
         back = new ArrayList<>();
