@@ -17,31 +17,14 @@ import java.awt.event.MouseEvent;
 
 public class AdminInterface extends ResizeFrame {
     private final ResizeFrame frame = this;
-    private Point offsetMouseToFrame = new Point();
 
     //完成阴影边框，并应用到注册和登录窗口
     public AdminInterface() {
         frame.setLayout(null);
         frame.setSize(1000, 700);
         frame.setLocationRelativeTo(null);
-//        frame.setUndecorated(true);
         frame.setTitle("注册");
         //鼠标拖动窗口
-        frame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                offsetMouseToFrame.x = e.getXOnScreen() - frame.getLocationOnScreen().x;
-                offsetMouseToFrame.y = e.getYOnScreen() - frame.getLocationOnScreen().y;
-            }
-        });
-        frame.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int newX = e.getXOnScreen() - offsetMouseToFrame.x;
-                int newY = e.getYOnScreen() - offsetMouseToFrame.y;
-                frame.setLocation(newX, newY);
-            }
-        });
         var container=new Container();
         var scrollPane =new JScrollPane();
         scrollPane.setBounds(0,0,1000,700);
