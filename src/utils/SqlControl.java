@@ -566,7 +566,7 @@ public class SqlControl {
             }catch (Exception e)
             {
                 throw new SQLException(e);
-            }
+            }//
         }
     }
 }
