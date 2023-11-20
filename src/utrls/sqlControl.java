@@ -1,9 +1,8 @@
 package utrls;
-
+import utils.SqlConfig;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-
 public class sqlControl {
     private ArrayList<ArrayList<String>> back;
     private static Connection conn;
@@ -11,21 +10,34 @@ public class sqlControl {
     static Driver driver;
     static Properties info;
     static String url;
-    private static String make1 = "CREATE TABLE IF NOT EXISTS Personal_Information(uid INT NOT NULL,uname VARCHAR(20) NOT NULL,uage INT,ugender INT,uphone VARCHAR(20),uemail VARCHAR(50));";
-    private static String make2 = "CREATE TABLE  IF NOT EXISTS Account(uid INT NOT NULL,uname VARCHAR(30) NOT NULL,upawd VARCHAR(30) NOT NULL);";
-    private static String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
-    private static String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
-    private static String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
+    private static final String make1 = "CREATE TABLE IF NOT EXISTS Personal_Information(uid INT NOT NULL,uname VARCHAR(20) NOT NULL,uage INT,ugender INT,uphone VARCHAR(20),uemail VARCHAR(50));";
+    private static final String make2 = "CREATE TABLE  IF NOT EXISTS Account(uid INT NOT NULL,uname VARCHAR(30) NOT NULL,upawd VARCHAR(30) NOT NULL);";
+    private static final String make3 = "CREATE TABLE  IF NOT EXISTS Book_Information(bid INT NOT NULL,bname VARCHAR(50) NOT NULL,bauthor VARCHAR(50),bcategory VARCHAR(20),bamount INT,bposition VARCHAR(20));";
+    private static final String make4 = "CREATE TABLE  IF NOT EXISTS Borrowing_Information(uid INT NOT NULL,bid INT NOT NULL,start_time DATETIME NOT NULL,end_time DATETIME NOT NULL);";
+    private static final String make5 = "CREATE TABLE  IF NOT EXISTS Room_LIst(rid INT NOT NULL,rname INT NOT NULL,rfloor INT NOT NULL);";
     private static PreparedStatement st1;
-    public sqlControl() throws SQLException {
+
+    /**
+     *  *在调用时会测试链接数据库，保证正常链接
+     * @throws SQLException driver链接有误
+     * @throws connectWrong 数据库链接失败，请检查
+     * @throws stopWrong
+     */
+    public sqlControl() throws SQLException,connectWrong,stopWrong {
+        SqlConfig use = SqlConfig.getInstance();
         wl = new worktoolSQL();
         conn = null;
         back = new ArrayList<>();
-        url = "jdbc:mysql://localhost:3306/mybd";
+        url = use.getUrl();
         info = new Properties();
-        info.setProperty("user", "root");
-        info.setProperty("password", "root");
-        driver = new com.mysql.cj.jdbc.Driver();
+        info.setProperty("user", use.getUser());
+        info.setProperty("password", use.getPassword());
+        try {
+            driver = new com.mysql.cj.jdbc.Driver();
+        }catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -36,60 +48,55 @@ public class sqlControl {
     {
         return back;
     }
-    private static Boolean sqlConnect() {
+    private static void sqlConnect() throws connectWrong, SQLException {
         try {
             conn = driver.connect(url, info);
-            return true;
         } catch (Exception e) {
-            return false;
+            conn = driver.connect(url, info);
+            if(conn!=null)
+            {
+                return;
+            }
+            throw new connectWrong(e);
         }
     }
 
-    private static Boolean sqlStop() {
+    private static void sqlStop() throws stopWrong, SQLException {
         try {
+            if(conn.isClosed())
+            {
+                return;
+            }
             conn.close();
-            return true;
+        } catch (Exception e) {
+            if(conn.isClosed())
+            {
+                return;
+            }
+            throw new stopWrong(e);
+        }
+
+    }
+
+    /**
+     * 为了处理断开链接失败的错误所提供的函数，当收到断开链接失败的错误stopWrong时，请调用此函数，如果本函数抛出stopWrong，那就是你的事情了,
+     * @throws stopWrong 再次尝试断开链接失败
+     */
+    public void wrongStopControl() throws stopWrong
+    {
+        try {
+            if(conn.isClosed())
+            {
+
+            }
+            else
+            {
+                conn.close();
+            }
         } catch (SQLException e) {
-            return false;
+            throw new stopWrong(e);
         }
-
     }
-
-    /**
-     *更新登录库所用的账号密码。
-     * @param name 登录数据库用的账户
-     * @param password 登录数据库要用的密码
-     * @return boolean，false表示运行出现错误，true表示运行成功
-     */
-    public boolean infoChange(String name,String password)
-    {
-        try {
-            info.clear();
-            info.setProperty("user", name);
-            info.setProperty("password", password);
-        }catch (Exception e)
-        {
-            return false;
-        }
-        return true;//
-    }
-
-    /**
-     * 更新库的ip地址
-     * @param in 要更新的ip地址
-     * @return boolean，false表示运行出现错误，true表示运行成功
-     */
-    public boolean urlChange(String in)
-    {
-        try {
-            url = in;
-        }catch (Exception e)
-        {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * 生成默认表
      * @return boolean，false表示运行出现错误，true表示运行成功
@@ -117,17 +124,21 @@ public class sqlControl {
      * @param tableName 要删除行所在的表的名字
      * @param listName 删除条件的字段名
      * @param listValue 删除条件的字段值
-     * @return boolean，false表示运行出现错误，true表示运行成功
+     * @return 无错误抛出即为正常
+     * @throws SQLException 发生数据库访问错误
+     * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配
+     * @throws connectWrong 链接数据库时出错
+     * @throws stopWrong 断开链接时出错
+     * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public boolean sqlErase(String tableName, ArrayList<String> listName, ArrayList<String> listValue)
+    public void sqlErase (String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLTimeoutException,SQLException,pushWrong,connectWrong,stopWrong
     {
         try {
             sqlConnect();
             if (listName.size() != listValue.size()||listName.size() == 0) {
                 sqlStop();
-                return false;
+                throw new pushWrong(new Exception(wl.make(listName.size(),"listName",listValue.size(),"listValue")));
             }
-
             StringBuffer temper = new StringBuffer("delete from ");
             temper.append(tableName);
             if (listName.size() != 0) {
@@ -155,13 +166,25 @@ public class sqlControl {
             }
             st1.execute();
             st1.close();
-        } catch (Exception e)
+
+        } catch (connectWrong e)
         {
+            throw new connectWrong(new Exception("链接数据库时出错"));
+        }
+        catch (stopWrong e)
+        {
+            throw new stopWrong(new Exception("断开链接时出错"));
+        }
+        catch (SQLTimeoutException e)
+        {
+            throw new SQLTimeoutException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+        finally {
             sqlStop();
-            return false;
-        }finally {
-            sqlStop();
-            return true;
         }
     }
 
@@ -170,15 +193,20 @@ public class sqlControl {
      * @param tableName 要添加的表的名字
      * @param listName 要添加的字段名
      * @param listValue 要添加的字段值
-     * @return boolean，false表示运行出现错误，true表示运行成功
+     * @return 无错误抛出即为正常
+     * @throws SQLException 发生数据库访问错误
+     * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配
+     * @throws connectWrong 链接数据库时出错
+     * @throws stopWrong 断开链接时出错
+     * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public boolean sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue)
+    public void sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue)throws connectWrong,stopWrong,pushWrong,SQLException,SQLTimeoutException
     {
         try {
             sqlConnect();
             if (listName.size() != listValue.size()||listName.size() == 0) {
                 sqlStop();
-                return false;
+                throw new pushWrong(new Exception(wl.make(listName.size(),"listName",listValue.size(),"listValue")));
             }
             StringBuffer temper = new StringBuffer("insert into ");
             String in;
@@ -212,14 +240,24 @@ public class sqlControl {
             }
             st1.executeUpdate();
             st1.close();
-        }catch (Exception e)
+        }catch (connectWrong e)
         {
-            sqlStop();
-            return false;
+            throw new connectWrong(new Exception("链接数据库时出错"));
+        }
+        catch (stopWrong e)
+        {
+            throw new stopWrong(new Exception("断开链接时出错"));
+        }
+        catch (SQLTimeoutException e)
+        {
+            throw new SQLTimeoutException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new SQLException(e);
         }
         finally {
             sqlStop();
-            return true;
         }
     }
 
@@ -228,21 +266,29 @@ public class sqlControl {
      * @param tableName 要更改的表的名字
      * @param changeName 要更改的字段的名字
      * @param changeValue 要更改成的字段值
-     * @param findName 更改字段的查找条件字段值
-     * @param findValue 要更改的字段的查找条件字段值
-     * @return boolean，false表示运行出现错误，true表示运行成功
+     * @param findName 更改字段的查找条件字段值,可以为空
+     * @param findValue 要更改的字段的查找条件字段值,可以为空
+     * @throws SQLException 发生数据库访问错误
+     * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配,或者findName与findValue数量不匹配
+     * @throws connectWrong 链接数据库时出错
+     * @throws stopWrong 断开链接时出错
+     * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public boolean sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)//修改，第一个表名，第二个更改的字段名，第三个更改的字段值，第四个更改的条件字段名，第五个更改的条件字段值
+    public void sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)throws connectWrong,stopWrong,SQLException,pushWrong,SQLTimeoutException
     {
         try {
             sqlConnect();
             StringBuffer temper = new StringBuffer("update ");
             temper.append(tableName);
             temper.append(" set ");
-            if(changeName.size()==0||changeName.size()!=changeValue.size()||findName.size()!=findValue.size())
+            if(changeName.size()==0||changeName.size()!=changeValue.size())
             {
                 sqlStop();
-                return false;
+                throw new pushWrong(new Exception(wl.make(changeName.size(),"changeName",changeValue.size(),"changeValue")));
+            }
+            else if(findName.size()!=findValue.size())
+            {
+                throw new pushWrong(new Exception(wl.make(findName.size(),"findName",findValue.size(),"findValue")));
             }
             for(int i = 0;i<changeName.size();i++)
             {
@@ -296,14 +342,24 @@ public class sqlControl {
             }
             st1.execute();
             st1.close();
-        }catch (Exception e)
+        }catch (connectWrong e)
         {
-            sqlStop();
-            return false;
+            throw new connectWrong(new Exception("链接数据库时出错"));
+        }
+        catch (stopWrong e)
+        {
+            throw new stopWrong(new Exception("断开链接时出错"));
+        }
+        catch (SQLTimeoutException e)
+        {
+            throw new SQLTimeoutException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new SQLException(e);
         }
         finally {
             sqlStop();
-            return true;
         }
     }
 
@@ -316,9 +372,12 @@ public class sqlControl {
      * @param wantFindin 第一次查找的目标字段名
      * @param limit 第一次查找的条件字段名
      * @param limitValue 第一次查找的条件字段值
-     * @return boolean，false表示运行出现错误，true表示运行成功
+     * @throws SQLException 发生数据库访问错误
+     * @throws connectWrong 链接数据库时出错
+     * @throws stopWrong 断开链接时出错
+     * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public boolean sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)
+    public void sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)throws connectWrong,stopWrong,SQLException,SQLTimeoutException
     {
         try{
             sqlConnect();
@@ -377,28 +436,37 @@ public class sqlControl {
                 nowtemper = new ArrayList<>();
             }
             receive.close();
-        }catch (Exception e)
+        }catch (connectWrong e)
         {
-            sqlStop();
-            return false;
+            throw new connectWrong(new Exception("链接数据库时出错"));
+        }
+        catch (SQLTimeoutException e)
+        {
+            throw new SQLTimeoutException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new SQLException(e);
         }
         finally {
             sqlStop();
-            return true;
         }
     }
 
     /**
      * 对表进行查找操作，带有对结果的排序功能，默认乱序
      * @param tableName 要查找的表的名字
-     * @param needFind 要查找的字段名
-     * @param limit 要查找的限制条件的字段名
-     * @param limitValue 要查找的限制条件的字段值
+     * @param needFind 要查找的字段名,可以为空
+     * @param limit 要查找的限制条件的字段名,可以为空
+     * @param limitValue 要查找的限制条件的字段值,可以为空
      * @param flagSort 是否排序，0不排序，1正序，-1倒序
-     * @param sortNeed 排序依据的字段值
-     * @return boolean，false表示运行出现错误，true表示运行成功
+     * @param sortNeed 排序依据的字段值，flagSort=0时,可以为空
+     * @throws SQLException 发生数据库访问错误
+     * @throws connectWrong 链接数据库时出错
+     * @throws stopWrong 断开链接时出错
+     * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public Boolean sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)
+    public void sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)throws connectWrong,stopWrong,SQLException,SQLTimeoutException
     {
         try {
             sqlConnect();
@@ -461,14 +529,20 @@ public class sqlControl {
             }
             temperReceive.close();
 
-        } catch (SQLException e) {
-            sqlStop();
-            return false;
+        } catch (connectWrong e)
+        {
+            throw new connectWrong(new Exception("链接数据库时出错"));
+        }
+        catch (SQLTimeoutException e)
+        {
+            throw new SQLTimeoutException(e);
+        }
+        catch (SQLException e)
+        {
+            throw new SQLException(e);
         }
         finally {
             sqlStop();
-            return true;//
         }
-
     }
 }
