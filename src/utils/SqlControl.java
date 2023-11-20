@@ -2,10 +2,10 @@ package utils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-public class sqlControl {
+public class SqlControl {
     private ArrayList<ArrayList<String>> back;
     private static Connection conn;
-    private worktoolSQL wl;//
+    private WorkToolSQL wl;//
     static Driver driver;
     static Properties info;
     static String url;
@@ -22,9 +22,9 @@ public class sqlControl {
      * @throws connectWrong 数据库链接失败，请检查
      * @throws closeWrong
      */
-    public sqlControl() throws SQLException,connectWrong, closeWrong {
+    public SqlControl() throws SQLException,connectWrong, closeWrong {
         SqlConfig use = SqlConfig.getInstance();//
-        wl = new worktoolSQL();
+        wl = new WorkToolSQL();
         conn = null;
         back = new ArrayList<>();
         url = use.getUrl();
