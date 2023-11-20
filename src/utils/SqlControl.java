@@ -183,7 +183,12 @@ public class SqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -256,7 +261,12 @@ public class SqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -358,7 +368,12 @@ public class SqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -448,7 +463,12 @@ public class SqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -541,7 +561,12 @@ public class SqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }//
         }
     }
 }
