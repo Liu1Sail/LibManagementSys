@@ -1,6 +1,6 @@
 package utils;
 
-public class worktoolSQL
+public class WorkToolSQL
 {
     public String addNeed(String in)//负责给传进来的字符串添加单引号
     {
