@@ -4,6 +4,7 @@ import gui.component.ShapeDeepenJPanel;
 import gui.frame.ResizeFrame;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,45 +18,47 @@ import java.awt.event.MouseEvent;
 
 public class AdminInterface extends ResizeFrame {
     private final ResizeFrame frame = this;
-    private Point offsetMouseToFrame = new Point();
+    private final int initialWidth=1000;
+    private final int initialHeight=700;
 
     //完成阴影边框，并应用到注册和登录窗口
     public AdminInterface() {
-        frame.setLayout(null);
-        frame.setSize(1000, 700);
+        frame.setLayout(new BorderLayout());
+        frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
-//        frame.setUndecorated(true);
         frame.setTitle("注册");
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
-        frame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                offsetMouseToFrame.x = e.getXOnScreen() - frame.getLocationOnScreen().x;
-                offsetMouseToFrame.y = e.getYOnScreen() - frame.getLocationOnScreen().y;
-            }
-        });
-        frame.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                int newX = e.getXOnScreen() - offsetMouseToFrame.x;
-                int newY = e.getYOnScreen() - offsetMouseToFrame.y;
-                frame.setLocation(newX, newY);
-            }
-        });
-        var container=new Container();
-        var scrollPane =new JScrollPane();
-        scrollPane.setBounds(0,0,1000,700);
-        scrollPane.setLayout(null);
-        var panel=new JPanel();
-        panel.setBounds(0,0,1000,700);
-        panel.setLayout(null);
-        panel.setBackground(new Color(212, 239, 223));
-        var buttonClose = getButtonClose(frame);
-        buttonClose.setBounds(this.getWidth() - 30, 14, 16, 16);
-        panel.add(buttonClose);
-        scrollPane.setViewportView(panel);
-        container.add(scrollPane);
-        frame.add(container);
+        var bottomPanel=new JPanel();
+        bottomPanel.setBounds(0,0,1000,700);
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.setBackground(Color.WHITE);
+        var leftPanel=new JPanel();//左侧面板
+        leftPanel.setBackground(Color.WHITE);
+        leftPanel.setLocation(0,0);
+        leftPanel.setPreferredSize(new Dimension(200,0));
+        bottomPanel.add(leftPanel,BorderLayout.WEST);
+
+        var topBottomPanel=new JPanel();//顶部根面板
+        topBottomPanel.setBackground(Color.WHITE);
+        topBottomPanel.setPreferredSize(new Dimension(0,100));
+        topBottomPanel.setLayout(null);
+
+        var leftTopPanel=new JPanel();//左上角图标面板
+        leftTopPanel.setBounds(0,0,leftPanel.getPreferredSize().width,200);
+        leftTopPanel.setBackground(Color.ORANGE);
+        System.out.println(leftPanel.getPreferredSize().width);
+        topBottomPanel.add(leftTopPanel);
+        var topPanel=new JPanel();
+        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,200);
+        topBottomPanel.add(topPanel);
+        bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
+        var centerPanel=new JPanel();//中心面板
+        centerPanel.setBackground(new Color(236,238,245));
+        bottomPanel.add(centerPanel,BorderLayout.CENTER);
+        //测试代码区
+        //
+        frame.add(bottomPanel,BorderLayout.CENTER);
         frame.setVisible(true);
     }
 

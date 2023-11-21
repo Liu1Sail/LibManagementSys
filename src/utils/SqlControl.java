@@ -1,12 +1,11 @@
-package utrls;
-import utils.SqlConfig;
+package utils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-public class sqlControl {
+public class SqlControl {
     private ArrayList<ArrayList<String>> back;
     private static Connection conn;
-    private worktoolSQL wl;//
+    private WorkToolSQL wl;//
     static Driver driver;
     static Properties info;
     static String url;
@@ -21,11 +20,11 @@ public class sqlControl {
      *  *在调用时会测试链接数据库，保证正常链接
      * @throws SQLException driver链接有误
      * @throws connectWrong 数据库链接失败，请检查
-     * @throws stopWrong
+     * @throws closeWrong
      */
-    public sqlControl() throws SQLException,connectWrong,stopWrong {
-        SqlConfig use = SqlConfig.getInstance();
-        wl = new worktoolSQL();
+    public SqlControl() throws SQLException,connectWrong, closeWrong {
+        SqlConfig use = SqlConfig.getInstance();//
+        wl = new WorkToolSQL();
         conn = null;
         back = new ArrayList<>();
         url = use.getUrl();
@@ -61,7 +60,7 @@ public class sqlControl {
         }
     }
 
-    private static void sqlStop() throws stopWrong, SQLException {
+    private static void sqlStop() throws closeWrong, SQLException {
         try {
             if(conn.isClosed())
             {
@@ -73,16 +72,16 @@ public class sqlControl {
             {
                 return;
             }
-            throw new stopWrong(e);
+            throw new closeWrong(e);
         }
 
     }
 
     /**
      * 为了处理断开链接失败的错误所提供的函数，当收到断开链接失败的错误stopWrong时，请调用此函数，如果本函数抛出stopWrong，那就是你的事情了,
-     * @throws stopWrong 再次尝试断开链接失败
+     * @throws closeWrong 再次尝试断开链接失败
      */
-    public void wrongStopControl() throws stopWrong
+    public void wrongStopControl() throws closeWrong
     {
         try {
             if(conn.isClosed())
@@ -94,7 +93,7 @@ public class sqlControl {
                 conn.close();
             }
         } catch (SQLException e) {
-            throw new stopWrong(e);
+            throw new closeWrong(e);
         }
     }
     /**
@@ -128,10 +127,10 @@ public class sqlControl {
      * @throws SQLException 发生数据库访问错误
      * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配
      * @throws connectWrong 链接数据库时出错
-     * @throws stopWrong 断开链接时出错
+     * @throws closeWrong 断开链接时出错
      * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public void sqlErase (String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLTimeoutException,SQLException,pushWrong,connectWrong,stopWrong
+    public void sqlErase (String tableName, ArrayList<String> listName, ArrayList<String> listValue) throws SQLTimeoutException,SQLException,pushWrong,connectWrong, closeWrong
     {
         try {
             sqlConnect();
@@ -171,9 +170,9 @@ public class sqlControl {
         {
             throw new connectWrong(new Exception("链接数据库时出错"));
         }
-        catch (stopWrong e)
+        catch (closeWrong e)
         {
-            throw new stopWrong(new Exception("断开链接时出错"));
+            throw new closeWrong(new Exception("断开链接时出错"));
         }
         catch (SQLTimeoutException e)
         {
@@ -184,7 +183,12 @@ public class sqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -197,10 +201,10 @@ public class sqlControl {
      * @throws SQLException 发生数据库访问错误
      * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配
      * @throws connectWrong 链接数据库时出错
-     * @throws stopWrong 断开链接时出错
+     * @throws closeWrong 断开链接时出错
      * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public void sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue)throws connectWrong,stopWrong,pushWrong,SQLException,SQLTimeoutException
+    public void sqlInsert(String tableName, ArrayList<String> listName, ArrayList<String> listValue)throws connectWrong, closeWrong,pushWrong,SQLException,SQLTimeoutException
     {
         try {
             sqlConnect();
@@ -244,9 +248,9 @@ public class sqlControl {
         {
             throw new connectWrong(new Exception("链接数据库时出错"));
         }
-        catch (stopWrong e)
+        catch (closeWrong e)
         {
-            throw new stopWrong(new Exception("断开链接时出错"));
+            throw new closeWrong(new Exception("断开链接时出错"));
         }
         catch (SQLTimeoutException e)
         {
@@ -257,7 +261,12 @@ public class sqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -271,10 +280,10 @@ public class sqlControl {
      * @throws SQLException 发生数据库访问错误
      * @throws pushWrong 输入的数据listName为空或者listName与listValue数量不匹配,或者findName与findValue数量不匹配
      * @throws connectWrong 链接数据库时出错
-     * @throws stopWrong 断开链接时出错
+     * @throws closeWrong 断开链接时出错
      * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public void sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)throws connectWrong,stopWrong,SQLException,pushWrong,SQLTimeoutException
+    public void sqlChange(String tableName, ArrayList<String>changeName, ArrayList<String>changeValue, ArrayList<String>findName, ArrayList<String>findValue)throws connectWrong, closeWrong,SQLException,pushWrong,SQLTimeoutException
     {
         try {
             sqlConnect();
@@ -346,9 +355,9 @@ public class sqlControl {
         {
             throw new connectWrong(new Exception("链接数据库时出错"));
         }
-        catch (stopWrong e)
+        catch (closeWrong e)
         {
-            throw new stopWrong(new Exception("断开链接时出错"));
+            throw new closeWrong(new Exception("断开链接时出错"));
         }
         catch (SQLTimeoutException e)
         {
@@ -359,7 +368,12 @@ public class sqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -374,10 +388,10 @@ public class sqlControl {
      * @param limitValue 第一次查找的条件字段值
      * @throws SQLException 发生数据库访问错误
      * @throws connectWrong 链接数据库时出错
-     * @throws stopWrong 断开链接时出错
+     * @throws closeWrong 断开链接时出错
      * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public void sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)throws connectWrong,stopWrong,SQLException,SQLTimeoutException
+    public void sqlFindAnd(String tableOut, ArrayList<String>wantGet, String wantFindout, String tableIn, String wantFindin, ArrayList<String> limit, ArrayList<String> limitValue)throws connectWrong, closeWrong,SQLException,SQLTimeoutException
     {
         try{
             sqlConnect();
@@ -449,7 +463,12 @@ public class sqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }
         }
     }
 
@@ -463,10 +482,10 @@ public class sqlControl {
      * @param sortNeed 排序依据的字段值，flagSort=0时,可以为空
      * @throws SQLException 发生数据库访问错误
      * @throws connectWrong 链接数据库时出错
-     * @throws stopWrong 断开链接时出错
+     * @throws closeWrong 断开链接时出错
      * @throws SQLTimeoutException 当驱动程序确定超过了setQueryTimeout方法指定的超时值，并且至少尝试取消当前运行的Statement时
      */
-    public void sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)throws connectWrong,stopWrong,SQLException,SQLTimeoutException
+    public void sqlFind(String tableName, ArrayList<String>needFind, ArrayList<String> limit, ArrayList<String> limitValue, int flagSort, String sortNeed)throws connectWrong, closeWrong,SQLException,SQLTimeoutException
     {
         try {
             sqlConnect();
@@ -542,7 +561,12 @@ public class sqlControl {
             throw new SQLException(e);
         }
         finally {
-            sqlStop();
+            try {
+                sqlStop();
+            }catch (Exception e)
+            {
+                throw new SQLException(e);
+            }//
         }
     }
 }
