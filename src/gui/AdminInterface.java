@@ -20,7 +20,6 @@ public class AdminInterface extends ResizeFrame {
     private final int initialWidth=1000;
     private final int initialHeight=700;
 
-    //完成阴影边框，并应用到注册和登录窗口
     public AdminInterface() {
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
@@ -40,6 +39,41 @@ public class AdminInterface extends ResizeFrame {
         leftPanel.setPreferredSize(new Dimension(200,0));
         leftPanel.setLayout(null);
         var sideBarOptionFont=new Font("宋体",Font.PLAIN,20);
+        var bookOption = getBookOption(sideBarOptionFont);
+        leftPanel.add(bookOption);
+        var accountOption=getAccountOption(sideBarOptionFont);
+        leftPanel.add(accountOption);
+        bottomPanel.add(leftPanel,BorderLayout.WEST);
+
+        var topBottomPanel=new JPanel();//顶部根面板
+        topBottomPanel.setBackground(Color.WHITE);
+        topBottomPanel.setPreferredSize(new Dimension(800,80));
+        topBottomPanel.setLayout(null);
+
+        var leftTopPanel = getLeftTopPanel(leftPanel, topBottomPanel, titleFont);//左上角标题面板
+        topBottomPanel.add(leftTopPanel);
+
+        var topPanel=new JPanel();
+        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,topBottomPanel.getPreferredSize().height);
+        topPanel.setLayout(null);
+        topPanel.setBackground(Color.WHITE);
+        var buttonClose=getButtonClose(frame);
+        buttonClose.setBounds(topPanel.getWidth()-30,10,20,20);
+        topPanel.add(buttonClose);
+        topBottomPanel.add(topPanel);
+        bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
+
+        var centerPanel=new JPanel();//中心面板
+        centerPanel.setBackground(new Color(236,238,245));
+        bottomPanel.add(centerPanel,BorderLayout.CENTER);
+        //测试代码区
+        bookOption.setBackground(Color.ORANGE);
+        //
+        frame.add(bottomPanel,BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+    private JPanel getBookOption(Font sideBarOptionFont) {
         var bookOption=new JPanel();
         bookOption.setBounds(0,0,400,80);
         bookOption.setLayout(null);
@@ -76,35 +110,46 @@ public class AdminInterface extends ResizeFrame {
             }
 
         });
-        leftPanel.add(bookOption);
-        bottomPanel.add(leftPanel,BorderLayout.WEST);
+        return bookOption;
+    }
+    private JPanel getAccountOption(Font sideBarOptionFont) {
+        var accountOption=new JPanel();
+        accountOption.setBounds(0,80,400,80);
+        accountOption.setLayout(null);
+        accountOption.setLayout(null);
+        var accountOptionText=new JLabel();
+        accountOptionText.setBounds(0,0,200,80);
+        accountOptionText.setText("图书管理");
+        accountOptionText.setFont(sideBarOptionFont);
+        accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
+        accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
+        accountOption.add(accountOptionText);
+        var accountAddChildOption = getAccountAddChildOption(sideBarOptionFont);
+        accountOption.add(accountAddChildOption);
+        var bookDeleteChildOption = getAccountDeleteChildOption(sideBarOptionFont);
+        accountOption.add(bookDeleteChildOption);
+        var bookModifyChildOption = getAccountModifyChildOption(sideBarOptionFont);
+        accountOption.add(bookModifyChildOption);
+        var bookSearchChildOption = getAccountSearchChildOption(sideBarOptionFont);
+        accountOption.add(bookSearchChildOption);
+        accountOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                accountOption.setBounds(0,80,200,400);
+            }
 
-        var topBottomPanel=new JPanel();//顶部根面板
-        topBottomPanel.setBackground(Color.WHITE);
-        topBottomPanel.setPreferredSize(new Dimension(800,80));
-        topBottomPanel.setLayout(null);
+            @Override
+            public void mouseExited(MouseEvent e) {
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    accountOption.setBounds(0,80,200,80);
+                }
+            }
 
-        var leftTopPanel = getLeftTopPanel(leftPanel, topBottomPanel, titleFont);//左上角标题面板
-        topBottomPanel.add(leftTopPanel);
-
-        var topPanel=new JPanel();
-        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,topBottomPanel.getPreferredSize().height);
-        topPanel.setLayout(null);
-        topPanel.setBackground(Color.WHITE);
-        var buttonClose=getButtonClose(frame);
-        buttonClose.setBounds(topPanel.getWidth()-30,10,20,20);
-        topPanel.add(buttonClose);
-        topBottomPanel.add(topPanel);
-        bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
-
-        var centerPanel=new JPanel();//中心面板
-        centerPanel.setBackground(new Color(236,238,245));
-        bottomPanel.add(centerPanel,BorderLayout.CENTER);
-        //测试代码区
-        bookOption.setBackground(Color.ORANGE);
-        //
-        frame.add(bottomPanel,BorderLayout.CENTER);
-        frame.setVisible(true);
+        });
+        return accountOption;
     }
 
     private JLabel getBookAddChildOption(Font sideBarOptionFont) {
@@ -151,7 +196,7 @@ public class AdminInterface extends ResizeFrame {
         return bookAddChildOption;
     }
     private JLabel getBookModifyChildOption(Font sideBarOptionFont) {
-        var bookAddChildOption=new JLabel("删除图书");
+        var bookAddChildOption=new JLabel("修改图书信息");
         bookAddChildOption.setFont(sideBarOptionFont);
         bookAddChildOption.setBounds(0,240,200,80);
         bookAddChildOption.setBackground(Color.WHITE.PINK);
@@ -172,7 +217,7 @@ public class AdminInterface extends ResizeFrame {
         return bookAddChildOption;
     }
     private JLabel getBookSearchChildOption(Font sideBarOptionFont) {
-        var bookAddChildOption=new JLabel("删除图书");
+        var bookAddChildOption=new JLabel("搜索图书信息");
         bookAddChildOption.setFont(sideBarOptionFont);
         bookAddChildOption.setBounds(0,320,200,80);
         bookAddChildOption.setBackground(Color.WHITE.PINK);
@@ -191,6 +236,91 @@ public class AdminInterface extends ResizeFrame {
             }
         });
         return bookAddChildOption;
+    }
+    private JLabel getAccountAddChildOption(Font sideBarOptionFont) {
+        var accountAddChildOption=new JLabel("增加用户信息");
+        accountAddChildOption.setFont(sideBarOptionFont);
+        accountAddChildOption.setBounds(0,80,200,80);
+        accountAddChildOption.setBackground(Color.WHITE.PINK);
+        accountAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setOpaque(true);
+        accountAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                accountAddChildOption.getParent().setBounds(0,80,200,80);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return accountAddChildOption;
+    }
+    private JLabel getAccountDeleteChildOption(Font sideBarOptionFont) {
+        var accountAddChildOption=new JLabel("删除用户信息");
+        accountAddChildOption.setFont(sideBarOptionFont);
+        accountAddChildOption.setBounds(0,160,200,80);
+        accountAddChildOption.setBackground(Color.WHITE.PINK);
+        accountAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setOpaque(true);
+        accountAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                accountAddChildOption.getParent().setBounds(0,80,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return accountAddChildOption;
+    }
+    private JLabel getAccountModifyChildOption(Font sideBarOptionFont) {
+        var accountAddChildOption=new JLabel("修改用户信息");
+        accountAddChildOption.setFont(sideBarOptionFont);
+        accountAddChildOption.setBounds(0,240,200,80);
+        accountAddChildOption.setBackground(Color.WHITE.PINK);
+        accountAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setOpaque(true);
+        accountAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                accountAddChildOption.getParent().setBounds(0,80,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return accountAddChildOption;
+    }
+    private JLabel getAccountSearchChildOption(Font sideBarOptionFont) {
+        var accountAddChildOption=new JLabel("搜索用户信息");
+        accountAddChildOption.setFont(sideBarOptionFont);
+        accountAddChildOption.setBounds(0,320,200,80);
+        accountAddChildOption.setBackground(Color.WHITE.PINK);
+        accountAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        accountAddChildOption.setOpaque(true);
+        accountAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                accountAddChildOption.getParent().setBounds(0,80,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return accountAddChildOption;
     }
 
     private static JPanel getLeftTopPanel(JPanel leftPanel, JPanel topBottomPanel, Font titleFont) {
