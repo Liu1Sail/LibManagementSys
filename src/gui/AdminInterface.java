@@ -4,6 +4,7 @@ import gui.component.ShapeDeepenJPanel;
 import gui.frame.ResizeFrame;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,7 @@ public class AdminInterface extends ResizeFrame {
 
     //完成阴影边框，并应用到注册和登录窗口
     public AdminInterface() {
-        frame.setLayout(null);
+        frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
         frame.setTitle("注册");
@@ -30,9 +31,34 @@ public class AdminInterface extends ResizeFrame {
         //鼠标拖动窗口
         var bottomPanel=new JPanel();
         bottomPanel.setBounds(0,0,1000,700);
-        bottomPanel.setLayout(null);
-        bottomPanel.setBackground(new Color(212, 239, 223));
-        frame.add(bottomPanel);
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.setBackground(Color.WHITE);
+        var leftPanel=new JPanel();//左侧面板
+        leftPanel.setBackground(Color.WHITE);
+        leftPanel.setLocation(0,0);
+        leftPanel.setPreferredSize(new Dimension(200,0));
+        bottomPanel.add(leftPanel,BorderLayout.WEST);
+
+        var topBottomPanel=new JPanel();//顶部根面板
+        topBottomPanel.setBackground(Color.WHITE);
+        topBottomPanel.setPreferredSize(new Dimension(0,100));
+        topBottomPanel.setLayout(null);
+
+        var leftTopPanel=new JPanel();//左上角图标面板
+        leftTopPanel.setBounds(0,0,leftPanel.getPreferredSize().width,200);
+        leftTopPanel.setBackground(Color.ORANGE);
+        System.out.println(leftPanel.getPreferredSize().width);
+        topBottomPanel.add(leftTopPanel);
+        var topPanel=new JPanel();
+        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,200);
+        topBottomPanel.add(topPanel);
+        bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
+        var centerPanel=new JPanel();//中心面板
+        centerPanel.setBackground(new Color(236,238,245));
+        bottomPanel.add(centerPanel,BorderLayout.CENTER);
+        //测试代码区
+        //
+        frame.add(bottomPanel,BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
