@@ -43,7 +43,6 @@ public class AdminInterface extends ResizeFrame {
         var bookOption=new JPanel();
         bookOption.setBounds(0,0,400,80);
         bookOption.setLayout(null);
-
         bookOption.setLayout(null);
         var bookOptionText=new JLabel();
         bookOptionText.setBounds(0,0,200,80);
@@ -52,26 +51,30 @@ public class AdminInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption=new JLabel("增加图书");
-        bookAddChildOption.setBounds(0,80,200,80);
-        bookAddChildOption.setBackground(Color.WHITE.PINK);
-        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
-        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
-        bookAddChildOption.setOpaque(true);
+        var bookAddChildOption = getBookAddChildOption(sideBarOptionFont);
         bookOption.add(bookAddChildOption);
-        //
+        var bookDeleteChildOption = getBookDeleteChildOption(sideBarOptionFont);
+        bookOption.add(bookDeleteChildOption);
+        var bookModifyChildOption = getBookModifyChildOption(sideBarOptionFont);
+        bookOption.add(bookModifyChildOption);
+        var bookSearchChildOption = getBookSearchChildOption(sideBarOptionFont);
+        bookOption.add(bookSearchChildOption);
         bookOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                bookOption.setBounds(0,0,200,360);
+                bookOption.setBounds(0,0,200,400);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                bookOption.setBounds(0,0,200,80);
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    bookOption.setBounds(0,0,200,80);
+                }
             }
+
         });
         leftPanel.add(bookOption);
         bottomPanel.add(leftPanel,BorderLayout.WEST);
@@ -102,6 +105,92 @@ public class AdminInterface extends ResizeFrame {
         //
         frame.add(bottomPanel,BorderLayout.CENTER);
         frame.setVisible(true);
+    }
+
+    private JLabel getBookAddChildOption(Font sideBarOptionFont) {
+        var bookAddChildOption=new JLabel("增加图书");
+        bookAddChildOption.setFont(sideBarOptionFont);
+        bookAddChildOption.setBounds(0,80,200,80);
+        bookAddChildOption.setBackground(Color.WHITE.PINK);
+        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setOpaque(true);
+        bookAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                bookAddChildOption.getParent().setBounds(0,0,200,80);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return bookAddChildOption;
+    }
+    private JLabel getBookDeleteChildOption(Font sideBarOptionFont) {
+        var bookAddChildOption=new JLabel("删除图书");
+        bookAddChildOption.setFont(sideBarOptionFont);
+        bookAddChildOption.setBounds(0,160,200,80);
+        bookAddChildOption.setBackground(Color.WHITE.PINK);
+        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setOpaque(true);
+        bookAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                bookAddChildOption.getParent().setBounds(0,0,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return bookAddChildOption;
+    }
+    private JLabel getBookModifyChildOption(Font sideBarOptionFont) {
+        var bookAddChildOption=new JLabel("删除图书");
+        bookAddChildOption.setFont(sideBarOptionFont);
+        bookAddChildOption.setBounds(0,240,200,80);
+        bookAddChildOption.setBackground(Color.WHITE.PINK);
+        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setOpaque(true);
+        bookAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                bookAddChildOption.getParent().setBounds(0,0,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return bookAddChildOption;
+    }
+    private JLabel getBookSearchChildOption(Font sideBarOptionFont) {
+        var bookAddChildOption=new JLabel("删除图书");
+        bookAddChildOption.setFont(sideBarOptionFont);
+        bookAddChildOption.setBounds(0,320,200,80);
+        bookAddChildOption.setBackground(Color.WHITE.PINK);
+        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setOpaque(true);
+        bookAddChildOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                bookAddChildOption.getParent().setBounds(0,0,200,80);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //打开增加图书面板
+            }
+        });
+        return bookAddChildOption;
     }
 
     private static JPanel getLeftTopPanel(JPanel leftPanel, JPanel topBottomPanel, Font titleFont) {
