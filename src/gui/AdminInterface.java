@@ -25,7 +25,7 @@ public class AdminInterface extends ResizeFrame {
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
-        frame.setTitle("注册");
+        frame.setTitle("管理系统");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
         var titleFont=new Font("宋体",Font.PLAIN,25);
@@ -33,22 +33,64 @@ public class AdminInterface extends ResizeFrame {
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBackground(Color.WHITE);
+
         var leftPanel=new JPanel();//左侧面板
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLocation(0,0);
-        leftPanel.setPreferredSize(new Dimension(250,0));
+        leftPanel.setPreferredSize(new Dimension(200,0));
+        leftPanel.setLayout(null);
+        var sideBarOptionFont=new Font("宋体",Font.PLAIN,20);
+        var bookOption=new JPanel();
+        bookOption.setBounds(0,0,400,80);
+        bookOption.setLayout(null);
+
+        bookOption.setLayout(null);
+        var bookOptionText=new JLabel();
+        bookOptionText.setBounds(0,0,200,80);
+        bookOptionText.setText("图书管理");
+        bookOptionText.setFont(sideBarOptionFont);
+        bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
+        bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
+        bookOption.add(bookOptionText);
+        var bookAddChildOption=new JLabel("增加图书");
+        bookAddChildOption.setBounds(0,80,200,80);
+        bookAddChildOption.setBackground(Color.WHITE.PINK);
+        bookAddChildOption.setVerticalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setHorizontalAlignment(SwingConstants.CENTER);
+        bookAddChildOption.setOpaque(true);
+        bookOption.add(bookAddChildOption);
+        //
+        bookOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                bookOption.setBounds(0,0,200,360);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                bookOption.setBounds(0,0,200,80);
+            }
+        });
+        leftPanel.add(bookOption);
         bottomPanel.add(leftPanel,BorderLayout.WEST);
 
         var topBottomPanel=new JPanel();//顶部根面板
         topBottomPanel.setBackground(Color.WHITE);
-        topBottomPanel.setPreferredSize(new Dimension(0,80));
+        topBottomPanel.setPreferredSize(new Dimension(800,80));
         topBottomPanel.setLayout(null);
 
         var leftTopPanel = getLeftTopPanel(leftPanel, topBottomPanel, titleFont);//左上角标题面板
         topBottomPanel.add(leftTopPanel);
 
         var topPanel=new JPanel();
-        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,150);
+        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,topBottomPanel.getPreferredSize().height);
+        topPanel.setLayout(null);
+        topPanel.setBackground(Color.WHITE);
+        var buttonClose=getButtonClose(frame);
+        buttonClose.setBounds(topPanel.getWidth()-30,10,20,20);
+        topPanel.add(buttonClose);
         topBottomPanel.add(topPanel);
         bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
 
@@ -56,6 +98,7 @@ public class AdminInterface extends ResizeFrame {
         centerPanel.setBackground(new Color(236,238,245));
         bottomPanel.add(centerPanel,BorderLayout.CENTER);
         //测试代码区
+        bookOption.setBackground(Color.ORANGE);
         //
         frame.add(bottomPanel,BorderLayout.CENTER);
         frame.setVisible(true);
