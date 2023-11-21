@@ -2,7 +2,7 @@ package bookmanager;
 
 import java.util.Date;
 
-public class Books {
+public class Books extends BOOK{
     Integer BookID;
     String Title;
     String ISBN;
@@ -13,18 +13,51 @@ public class Books {
     Integer BookQuantity_Visible;
     Integer BookQuantity_Hidden;
 
-    @Override
-    public String toString() {
-        return "Books{" +
-                "BookID=" + BookID +
-                ", Title='" + Title + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", Author='" + Author + '\'' +
-                ", Publisher='" + Publisher + '\'' +
-                ", ReceiptDate=" + ReceiptDate +
-                ", Genre='" + Genre + '\'' +
-                ", BookQuantity_Visible=" + BookQuantity_Visible +
-                ", BookQuantity_Hidden=" + BookQuantity_Hidden +
-                '}';
+    public Books(Integer bookID, String title, String ISBN,
+                 String author, String publisher, Date receiptDate,
+                 String genre, Integer bookQuantity_Visible,
+                 Integer bookQuantity_Hidden)
+    {
+        BookID = bookID;
+        Title = title;
+        this.ISBN = ISBN;
+        Author = author;
+        Publisher = publisher;
+        ReceiptDate = receiptDate;
+        Genre = genre;
+        BookQuantity_Visible = bookQuantity_Visible;
+        BookQuantity_Hidden = bookQuantity_Hidden;
     }
+    public Books(String title, String ISBN,
+                 String author, String publisher, Date receiptDate,
+                 String genre, Integer bookQuantity_Visible,
+                 Integer bookQuantity_Hidden)
+    {
+        Title = title;
+        this.ISBN = ISBN;
+        Author = author;
+        Publisher = publisher;
+        ReceiptDate = receiptDate;
+        Genre = genre;
+        BookQuantity_Visible = bookQuantity_Visible;
+        BookQuantity_Hidden = bookQuantity_Hidden;
+    }
+
+    public static final String INSERT_WITHOUT_KEY = """
+            INSERT INTO Books(  Title,
+                                ISBN,
+                                Author,
+                                Publisher,
+                                ReceiptDate,
+                                Genre,
+                                BookQuantity_Visible,
+                                BookQuantity_Hidden
+                                ) VALUES
+                                (?,?,?,?,?,?,?,?);"""
+            ;
+
+    public String getInsertWithoutKeyStatement(){
+        return INSERT_WITHOUT_KEY;
+    }
+
 }

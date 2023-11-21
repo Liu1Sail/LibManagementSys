@@ -1,10 +1,7 @@
 package bookmanager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
-public interface BOOK {
-
+abstract class BOOK implements ELEMENT {
+    abstract public String getInsertWithoutKeyStatement();
 
 
 }
