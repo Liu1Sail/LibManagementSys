@@ -8,7 +8,7 @@ import javax.swing.*;
  * @description
  * @date
  */
-public class ShapeDeepenJPanel extends JPanel {
+public class ShapeDeepenPanel extends JPanel {
     private boolean hasBeenTrigger = false;
     private float opacity = 0.3f;
     private float beDeepenMaxValue = 0.7f;

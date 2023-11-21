@@ -1,10 +1,9 @@
 package gui;
 
-import gui.component.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenPanel;
 import gui.frame.ResizeFrame;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,6 +28,7 @@ public class AdminInterface extends ResizeFrame {
         frame.setTitle("注册");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
+        var titleFont=new Font("宋体",Font.PLAIN,25);
         var bottomPanel=new JPanel();
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
@@ -36,23 +36,22 @@ public class AdminInterface extends ResizeFrame {
         var leftPanel=new JPanel();//左侧面板
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLocation(0,0);
-        leftPanel.setPreferredSize(new Dimension(200,0));
+        leftPanel.setPreferredSize(new Dimension(250,0));
         bottomPanel.add(leftPanel,BorderLayout.WEST);
 
         var topBottomPanel=new JPanel();//顶部根面板
         topBottomPanel.setBackground(Color.WHITE);
-        topBottomPanel.setPreferredSize(new Dimension(0,100));
+        topBottomPanel.setPreferredSize(new Dimension(0,80));
         topBottomPanel.setLayout(null);
 
-        var leftTopPanel=new JPanel();//左上角图标面板
-        leftTopPanel.setBounds(0,0,leftPanel.getPreferredSize().width,200);
-        leftTopPanel.setBackground(Color.ORANGE);
-        System.out.println(leftPanel.getPreferredSize().width);
+        var leftTopPanel = getLeftTopPanel(leftPanel, topBottomPanel, titleFont);//左上角标题面板
         topBottomPanel.add(leftTopPanel);
+
         var topPanel=new JPanel();
-        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,200);
+        topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,150);
         topBottomPanel.add(topPanel);
         bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
+
         var centerPanel=new JPanel();//中心面板
         centerPanel.setBackground(new Color(236,238,245));
         bottomPanel.add(centerPanel,BorderLayout.CENTER);
@@ -62,8 +61,23 @@ public class AdminInterface extends ResizeFrame {
         frame.setVisible(true);
     }
 
-    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
-        var buttonClose = new ShapeDeepenJPanel() {
+    private static JPanel getLeftTopPanel(JPanel leftPanel, JPanel topBottomPanel, Font titleFont) {
+        var leftTopPanel=new JPanel();//左上角图标面板
+        leftTopPanel.setBounds(0,0, leftPanel.getPreferredSize().width, topBottomPanel.getPreferredSize().height);
+        leftTopPanel.setBackground(new Color(164, 232, 255));
+        leftTopPanel.setLayout(null);
+        var leftTopTitle=new JLabel();
+        leftTopTitle.setBounds(0,0,leftTopPanel.getWidth(),leftTopPanel.getHeight());
+        leftTopTitle.setFont(titleFont);
+        leftTopTitle.setText("管理面板");
+        leftTopTitle.setVerticalAlignment(SwingConstants.CENTER);
+        leftTopTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        leftTopPanel.add(leftTopTitle);
+        return leftTopPanel;
+    }
+
+    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+        var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

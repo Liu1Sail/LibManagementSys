@@ -24,8 +24,8 @@ public class ResizeFrame extends JFrame {
     private boolean isLeft;// 是否处于左边界调整窗口状态
     private boolean isDragged;
     private final static int RESIZE_WIDTH = 5;// 判定是否为调整窗口状态的范围与边界距离
-    private final int min_width = 250;// 窗口最小宽度
-    private final int min_height = 175;// 窗口最小高度
+    private int min_width = 250;// 窗口最小宽度
+    private int min_height = 175;// 窗口最小高度
     private Point offsetMouseToFrame = new Point();
 
     public ResizeFrame() {
@@ -147,5 +147,25 @@ public class ResizeFrame extends JFrame {
                 }
             }
         });
+    }
+
+    public int getMin_width() {
+        return min_width;
+    }
+
+    public void setMin_width(int min_width) {
+        this.min_width = min_width;
+    }
+
+    public int getMin_height() {
+        return min_height;
+    }
+
+    public void setMin_height(int min_height) {
+        this.min_height = min_height;
+    }
+    public void setMinSize(int min_width,int min_height){
+        this.min_width=min_width;
+        this.min_height=min_height;
     }
 }

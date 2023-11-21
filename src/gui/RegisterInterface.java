@@ -1,6 +1,6 @@
 package gui;
 
-import gui.component.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -131,8 +131,8 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(cancelButton);
         return bodyPanel;
     }
-    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
-        var buttonClose = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+        var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

@@ -2,7 +2,7 @@ package gui;
 
 import gui.border.CustomRoundRectBorder;
 import gui.component.ImagePanel;
-import gui.component.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -635,8 +635,8 @@ public class LoginInterface extends JFrame {
         return rightTitleToolBar;
     }
 
-    private static ShapeDeepenJPanel getSettingButton() {
-        var settingButton = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getSettingButton() {
+        var settingButton = new ShapeDeepenPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -656,8 +656,8 @@ public class LoginInterface extends JFrame {
         return settingButton;
     }
 
-    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
-        var buttonClose = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+        var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
