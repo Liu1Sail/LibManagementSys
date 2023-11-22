@@ -1,5 +1,7 @@
 import gui.LoginInterface;
 
+import java.awt.*;
+
 /**
  * @author 李冠良
  * @program LibManagementSys
@@ -9,6 +11,8 @@ import gui.LoginInterface;
 
 public class LoginTest {
     public static void main(String[] args) {
-        new LoginInterface();
+        EventQueue.invokeLater(()->{
+            new LoginInterface();
+        });
     }
 }

@@ -1,5 +1,7 @@
 import gui.AdminInterface;
 
+import java.awt.*;
+
 /**
  * @author 作者姓名
  * @program LibManagementSys
@@ -9,6 +11,8 @@ import gui.AdminInterface;
 
 public class AdminTest {
     public static void main(String[] args) {
-        new AdminInterface();
+        EventQueue.invokeLater(()->{
+            new AdminInterface();
+        });
     }
 }
