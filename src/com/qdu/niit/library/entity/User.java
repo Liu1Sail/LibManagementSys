@@ -5,27 +5,28 @@ package com.qdu.niit.library.entity;
  * 存储uid 和 uname
  */
 public class User {
-    /**
-     * @return uid
-     */
-    public int getUID() {return m_UID;}
-
-    /**
-     * @return uname
-     */
-    public String getUname(){return m_Uname;}
-
-    /**
-     * @param newUname 要改的新名称
-     */
+    public int getUID() {return m_UId;}
+    public String getUName(){return m_UName;}
+    public String getUPassword(){return m_UPassword;}
     public void setUname(String newUname){
-        m_Uname = newUname;
+        m_UName = newUname;
     }
-    public User(int uid , String uname) {
-        m_UID = uid ;
-        m_Uname = uname;
+    public void setUPassword(String newPassword){m_UPassword = newPassword;}
+
+
+    public User(Integer uId , String uName , String uPassword) {
+        m_UId = uId ;
+        m_UName = uName;
+        m_UPassword = uPassword;
     }
-//---------------------------------------------------------------------------------//
-    private final int  m_UID;
-    private String m_Uname;
+
+    @Override
+    public String toString() {
+        return "[" + "  "+ m_UId+ "  " + m_UName +"  " +m_UPassword + "  "+"]";
+    }
+
+    //---------------------------------------------------------------------------------//
+    private final Integer  m_UId;
+    private String m_UName;
+    private String m_UPassword;
 }
