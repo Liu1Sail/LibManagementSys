@@ -1,4 +1,4 @@
-package user;
+package com.qdu.niit.library.entity;
 
 /**
  * 用户对象

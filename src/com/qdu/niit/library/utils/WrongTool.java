@@ -1,4 +1,4 @@
-package utils;
+package com.qdu.niit.library.utils;
 
 class pushWrong extends Exception{
     public pushWrong (Exception message)

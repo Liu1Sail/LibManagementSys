@@ -1,4 +1,4 @@
-package utils;
+package com.qdu.niit.library.utils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
