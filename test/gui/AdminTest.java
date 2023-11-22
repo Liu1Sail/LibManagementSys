@@ -1,4 +1,4 @@
-import gui.AdminInterface;
+package gui;
 
 import java.awt.*;
 
@@ -12,7 +12,7 @@ import java.awt.*;
 public class AdminTest {
     public static void main(String[] args) {
         EventQueue.invokeLater(()->{
-            new AdminInterface();
+            new AdministratorInterface();
         });
     }
 }

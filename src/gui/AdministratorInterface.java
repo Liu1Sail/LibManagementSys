@@ -2,7 +2,7 @@ package gui;
 
 import gui.component.ShapeDeepenPanel;
 import gui.frame.ResizeFrame;
-import gui.panel.centerPanelModel;
+import gui.panel.centerAddBookPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +16,15 @@ import java.awt.event.MouseEvent;
  * @date 2023/11/16
  */
 @SuppressWarnings("unused")
-public class AdminInterface extends ResizeFrame {
-    private final AdminInterface frame = this;
+public class AdministratorInterface extends ResizeFrame {
+    private final AdministratorInterface frame = this;
     private final JPanel centerBottomPanel;
     private final int initialWidth=1000;
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
 
-    public AdminInterface() {
+    public AdministratorInterface() {
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
@@ -42,7 +42,6 @@ public class AdminInterface extends ResizeFrame {
         var bottomPanel=new JPanel();
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.setBackground(Color.WHITE);
 
         var leftPanel=new JPanel();//左侧面板
         leftPanel.setBackground(Color.WHITE);
@@ -96,13 +95,13 @@ public class AdminInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"添加图书",false,1);
+        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"添加图书",4,1);
         bookOption.add(bookAddChildOption);
-        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除图书",false,2);
+        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除图书",4,2);
         bookOption.add(bookDeleteChildOption);
-        var bookModifyChildOption = getChildOption(sideBarOptionFont,240,"修改图书信息",false,3);
+        var bookModifyChildOption = getChildOption(sideBarOptionFont,240,"修改图书信息",4,3);
         bookOption.add(bookModifyChildOption);
-        var bookSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索图书信息",true,4);
+        var bookSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索图书信息",4,4);
         bookOption.add(bookSearchChildOption);
         bookOption.addMouseListener(new MouseAdapter() {
             @Override
@@ -135,13 +134,13 @@ public class AdminInterface extends ResizeFrame {
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"添加用户",false,5);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"添加用户",4,1);
         accountOption.add(accountAddChildOption);
-        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除用户",false,6);
+        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除用户",4,2);
         accountOption.add(accountDeleteChildOption);
-        var accountModifyChildOption = getChildOption(sideBarOptionFont,240,"修改用户信息",false,7);
+        var accountModifyChildOption = getChildOption(sideBarOptionFont,240,"修改用户信息",4,3);
         accountOption.add(accountModifyChildOption);
-        var accountSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索用户信息",true,8);
+        var accountSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索用户信息",4,4);
         accountOption.add(accountSearchChildOption);
         accountOption.addMouseListener(new MouseAdapter() {
             @Override
@@ -163,7 +162,7 @@ public class AdminInterface extends ResizeFrame {
 
         return accountOption;
     }
-    private JLabel getChildOption(Font sideBarOptionFont, int positionY, String text,boolean isLastOption,int number) {
+    private JLabel getChildOption(Font sideBarOptionFont, int positionY, String text,int OptionAmount,int number) {
         var childOption=new JLabel(text){
             private int panelNumber=1;
         };
@@ -179,7 +178,7 @@ public class AdminInterface extends ResizeFrame {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if(e.getX()<0||e.getX()>=200||e.getY()<0||(isLastOption)&&e.getY()>=80){
+                if(e.getX()<0||e.getX()>=200||(number==1&&e.getY()<0)||(number==OptionAmount&&e.getY()>=80)){
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     childOption.getParent().setBounds(0,childOption.getParent().getY(),200,80);
                 }
@@ -189,7 +188,7 @@ public class AdminInterface extends ResizeFrame {
             public void mouseReleased(MouseEvent e) {
                 centerBottomPanel.removeAll();
                 switch(childOption.panelNumber){
-                    case 1->{frame.repaint();}
+                    case 1->{centerBottomPanel.add(new centerAddBookPanel());frame.repaint();}
                     case 2->{frame.repaint();}
                     case 3->{frame.repaint();}
                     case 4->{frame.repaint();}
