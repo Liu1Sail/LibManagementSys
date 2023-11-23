@@ -5,7 +5,6 @@ import com.qdu.niit.library.utils.SqlConfig;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BaseSQLDaoImpl implements BaseSQLDao {
     @Override
@@ -62,9 +61,10 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
     }
 
 
-
-
-
+    /**
+     * @param resultSet 当前行有元组的resultSet
+     * @return  当前元组的各元素
+     */
     private Object[] getRowAsArrayFromResultSet(ResultSet resultSet) throws SQLException {
         java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
@@ -75,6 +75,10 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
         return row;
     }
 
+    /**
+     * @param resultSet 任意resultSet
+     * @return 查询到的各元组的列表
+     */
     private ArrayList<Object[]> getRowsFromResultSet(ResultSet resultSet)throws SQLException{
         ArrayList<Object[]> keys = new ArrayList<>();
         while (resultSet.next()) {
