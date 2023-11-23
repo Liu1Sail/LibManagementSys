@@ -1,6 +1,6 @@
 package gui;
 
-import gui.component.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +67,10 @@ public class RegisterInterface extends JFrame {
         var passwordLabel=new JLabel();
         var passwordInput=new JTextField();
         var genderLabel=new JLabel();
-        var genderInput=new JTextField();
+        var genderPanel=new JPanel();
+        var genderGroup=new ButtonGroup();
+        var maleButton=new JRadioButton("男",true);
+        var femaleButton=new JRadioButton("女",false);
         var phoneLabel=new JLabel();
         var phoneInput=new JTextField();
         var emailLabel=new JLabel();
@@ -87,7 +90,20 @@ public class RegisterInterface extends JFrame {
         genderLabel.setFont(font);
         genderLabel.setText("性别：");
         genderLabel.setOpaque(false);
-        genderInput.setBounds(120,170,200,30);
+        genderPanel.setBounds(65,170,200,30);
+        genderPanel.setOpaque(false);
+        maleButton.setOpaque(false);
+        maleButton.setFocusable(false);
+        maleButton.setFont(font);
+        maleButton.setFont(font);
+        femaleButton.setOpaque(false);
+        femaleButton.setFocusable(false);
+        femaleButton.setFont(font);
+        femaleButton.setFont(font);
+        genderGroup.add(maleButton);
+        genderGroup.add(femaleButton);
+        genderPanel.add(maleButton);
+        genderPanel.add(femaleButton);
         phoneLabel.setBounds(30,210,80,50);
         phoneLabel.setFont(font);
         phoneLabel.setText("手机号：");
@@ -103,7 +119,7 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(passwordLabel);
         bodyPanel.add(passwordInput);
         bodyPanel.add(genderLabel);
-        bodyPanel.add(genderInput);
+        bodyPanel.add(genderPanel);
         bodyPanel.add(phoneLabel);
         bodyPanel.add(phoneInput);
         bodyPanel.add(emailLabel);
@@ -131,8 +147,8 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(cancelButton);
         return bodyPanel;
     }
-    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
-        var buttonClose = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+        var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

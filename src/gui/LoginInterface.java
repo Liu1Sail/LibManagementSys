@@ -2,7 +2,7 @@ package gui;
 
 import gui.border.CustomRoundRectBorder;
 import gui.component.ImagePanel;
-import gui.component.ShapeDeepenJPanel;
+import gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,7 +113,7 @@ public class LoginInterface extends JFrame {
         userLoginText.setBounds(0, 80, 80, 20);
         userLoginText.setFont(new Font("宋体", Font.PLAIN, 13));
         userLoginText.setForeground(new Color(166, 166, 166));
-        userLoginText.setText("账号登录");
+        userLoginText.setText("用户登录");
         userLoginText.setHorizontalAlignment(JLabel.CENTER);
         userLoginPanel.add(userLoginText);
         rightBodyPanel.add(userLoginPanel);
@@ -226,7 +226,7 @@ public class LoginInterface extends JFrame {
         adminLoginText.setBounds(0, 80, 80, 20);
         adminLoginText.setFont(new Font("宋体", Font.PLAIN, 13));
         adminLoginText.setForeground(new Color(166, 166, 166));
-        adminLoginText.setText("账号登录");
+        adminLoginText.setText("管理员登录");
         adminLoginText.setHorizontalAlignment(JLabel.CENTER);
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
@@ -635,8 +635,8 @@ public class LoginInterface extends JFrame {
         return rightTitleToolBar;
     }
 
-    private static ShapeDeepenJPanel getSettingButton() {
-        var settingButton = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getSettingButton() {
+        var settingButton = new ShapeDeepenPanel() {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -656,8 +656,8 @@ public class LoginInterface extends JFrame {
         return settingButton;
     }
 
-    private static ShapeDeepenJPanel getButtonClose(JFrame frame) {
-        var buttonClose = new ShapeDeepenJPanel() {
+    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+        var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

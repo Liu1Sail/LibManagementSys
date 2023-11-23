@@ -1,4 +1,9 @@
+package gui;
+
+import gui.LoginInterface;
 import gui.RegisterInterface;
+
+import java.awt.*;
 
 /**
  * @author 李冠良
@@ -9,6 +14,9 @@ import gui.RegisterInterface;
 
 public class RegisterTest {
     public static void main(String[] args) {
-        new RegisterInterface();
+        EventQueue.invokeLater(()->{
+            new RegisterInterface();
+        });
+
     }
 }
