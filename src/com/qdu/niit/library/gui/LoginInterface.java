@@ -1,8 +1,8 @@
-package gui;
+package com.qdu.niit.library.gui;
 
-import gui.border.CustomRoundRectBorder;
-import gui.component.ImagePanel;
-import gui.component.ShapeDeepenPanel;
+import com.qdu.niit.library.gui.border.CustomRoundRectBorder;
+import com.qdu.niit.library.gui.component.ImagePanel;
+import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;

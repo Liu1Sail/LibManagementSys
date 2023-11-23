@@ -1,11 +1,13 @@
-package gui;
+package com.qdu.niit.library.gui;
 
-import gui.component.ShapeDeepenPanel;
-import gui.frame.ResizeFrame;
-import gui.panel.centerAddBookPanel;
+import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
+import com.qdu.niit.library.gui.frame.ResizeFrame;
+import com.qdu.niit.library.gui.panel.centerAddBookPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,6 +45,10 @@ public class AdministratorInterface extends ResizeFrame {
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
 
+        var buttonClose=getButtonClose();
+        buttonClose.setBounds(bottomPanel.getWidth()-30,10,20,20);
+        bottomPanel.add(buttonClose);
+
         var leftPanel=new JPanel();//左侧面板
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLocation(0,0);
@@ -67,9 +73,6 @@ public class AdministratorInterface extends ResizeFrame {
         topPanel.setBounds(leftPanel.getPreferredSize().width,0,topBottomPanel.getPreferredSize().width,topBottomPanel.getPreferredSize().height);
         topPanel.setLayout(null);
         topPanel.setBackground(Color.WHITE);
-        var buttonClose=getButtonClose();
-        buttonClose.setBounds(topPanel.getWidth()-30,10,20,20);
-        topPanel.add(buttonClose);
         topBottomPanel.add(topPanel);
         bottomPanel.add(topBottomPanel,BorderLayout.NORTH);
 
@@ -79,6 +82,12 @@ public class AdministratorInterface extends ResizeFrame {
         bottomPanel.add(centerBottomPanel,BorderLayout.CENTER);
         //测试代码区
         //
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                buttonClose.setBounds(bottomPanel.getWidth()-30,10,20,20);
+            }
+        });
         frame.add(bottomPanel,BorderLayout.CENTER);
         frame.setVisible(true);
     }

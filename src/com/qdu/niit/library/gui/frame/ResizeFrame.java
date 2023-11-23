@@ -1,4 +1,4 @@
-package gui.frame;
+package com.qdu.niit.library.gui.frame;
 
 import javax.swing.*;
 import java.awt.*;

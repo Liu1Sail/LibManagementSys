@@ -1,6 +1,6 @@
-package gui;
+package com.qdu.niit.library.gui;
 
-import gui.component.ShapeDeepenPanel;
+import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;

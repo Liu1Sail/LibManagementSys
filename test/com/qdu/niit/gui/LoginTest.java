@@ -1,6 +1,6 @@
-package gui;
+package com.qdu.niit.gui;
 
-import gui.LoginInterface;
+import com.qdu.niit.library.gui.LoginInterface;
 
 import java.awt.*;
 

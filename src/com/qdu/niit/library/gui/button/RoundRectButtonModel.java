@@ -1,6 +1,6 @@
-package gui.button;
+package com.qdu.niit.library.gui.button;
 
-import gui.border.RoundBorder;
+import com.qdu.niit.library.gui.border.RoundBorder;
 
 import javax.swing.*;
 import java.awt.*;
