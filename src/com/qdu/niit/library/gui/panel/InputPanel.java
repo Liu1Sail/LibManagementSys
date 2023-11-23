@@ -1,6 +1,6 @@
-package gui.panel;
+package com.qdu.niit.library.gui.panel;
 
-import gui.tool.CharacterProcess;
+import com.qdu.niit.library.gui.tool.CharacterProcess;
 
 import javax.swing.*;
 import java.awt.*;

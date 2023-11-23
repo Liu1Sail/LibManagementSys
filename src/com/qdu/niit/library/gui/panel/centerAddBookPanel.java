@@ -1,7 +1,7 @@
-package gui.panel;
+package com.qdu.niit.library.gui.panel;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 /**
@@ -60,9 +60,10 @@ public class centerAddBookPanel extends centerPanelModel {
         inputBottomPanel.add(genre);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
-        var resultBottomPanel=new ResultDisplayArea();
-        var resultTable=resultBottomPanel.getTextTable();
-        resultTable.addColumn(new TableColumn(1,100));
+        String[][] rowData=new String[][]{{}};
+        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间","类型"};
+        var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
+        DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
         this.add(resultBottomPanel);
     }
     public void resetInputContent(){

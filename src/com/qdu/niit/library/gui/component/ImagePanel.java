@@ -1,4 +1,4 @@
-package gui.component;
+package com.qdu.niit.library.gui.component;
 import javax.swing.*;
 import java.awt.*;
 

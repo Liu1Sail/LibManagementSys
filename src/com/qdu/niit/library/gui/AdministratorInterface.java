@@ -1,8 +1,8 @@
-package gui;
+package com.qdu.niit.library.gui;
 
-import gui.component.ShapeDeepenPanel;
-import gui.frame.ResizeFrame;
-import gui.panel.centerAddBookPanel;
+import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
+import com.qdu.niit.library.gui.frame.ResizeFrame;
+import com.qdu.niit.library.gui.panel.centerAddBookPanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package gui.border;
+package com.qdu.niit.library.gui.border;
 
 import javax.swing.border.Border;
 import java.awt.*;

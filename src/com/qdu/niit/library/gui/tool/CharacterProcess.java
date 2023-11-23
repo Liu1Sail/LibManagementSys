@@ -1,4 +1,4 @@
-package gui.tool;
+package com.qdu.niit.library.gui.tool;
 
 /**
  * @author 李冠良

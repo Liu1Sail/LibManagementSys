@@ -1,4 +1,6 @@
-package gui;
+package com.qdu.niit.gui;
+
+import com.qdu.niit.library.gui.AdministratorInterface;
 
 import java.awt.*;
 

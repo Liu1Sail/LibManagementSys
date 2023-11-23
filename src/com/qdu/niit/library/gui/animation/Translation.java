@@ -1,4 +1,4 @@
-package gui.animation;
+package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
 import java.util.LinkedList;

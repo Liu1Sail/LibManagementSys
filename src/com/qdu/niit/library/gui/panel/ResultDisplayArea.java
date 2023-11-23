@@ -1,6 +1,8 @@
-package gui.panel;
+package com.qdu.niit.library.gui.panel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 /**
@@ -16,26 +18,32 @@ public class ResultDisplayArea extends JPanel {
     private final static int DEFAULT_WIDTH = 720;
     private final static int DEFAULT_HEIGHT = 300;
     private final JPanel buttonPanel;
+    private final JScrollPane scrollPane;
+
+    private final DefaultTableModel tableModel;
     private final JTable textTable;
 
-    public ResultDisplayArea() {
+    public ResultDisplayArea(String[][] rowData,String[] columnName) {
         this.setBounds(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setBackground(Color.WHITE);
         this.setLayout(null);
         buttonPanel = new JPanel();
-        textTable = new JTable();
+        tableModel=new DefaultTableModel(rowData,columnName);
+        textTable = new JTable(tableModel);
+        scrollPane=new JScrollPane();
         buttonPanel.setBounds(0, 0, 720, 50);
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
         this.add(buttonPanel);
         textTable.setBounds(0, 50, 720, 250);
-        textTable.setBackground(Color.WHITE);
-        textTable.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
-        textTable.setFont(new Font("宋体",Font.PLAIN,15));
-        this.add(textTable);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+        scrollPane.setBounds(0,50,720,250);
+        scrollPane.setViewportView(textTable);
+        this.add(scrollPane);
     }
 
-    public JTable getTextTable() {
-        return textTable;
+    public DefaultTableModel getTextTableModel() {
+        return tableModel;
     }
 }
