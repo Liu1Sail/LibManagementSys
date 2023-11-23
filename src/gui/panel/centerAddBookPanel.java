@@ -1,6 +1,9 @@
 package gui.panel;
 
+import gui.button.RoundRectButtonModel;
+
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -25,8 +28,8 @@ public class centerAddBookPanel extends centerPanelModel {
         var publisher = new InputPanel("出版社：");
         var pubTime = new InputPanel("出版时间：");
         var genre = new InputPanel("类型：");
-        var resetButton=new JButton();
-        var defineButton=new JButton();
+        var resetButton=new JButton("清空已填信息");
+        var defineButton=new JButton("确认添加图书");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         name.setLocation(15, 35);
@@ -35,7 +38,8 @@ public class centerAddBookPanel extends centerPanelModel {
         publisher.setLocation(15, 90);
         pubTime.setLocation(235, 90);
         genre.setLocation(465, 90);
-
+        resetButton.setBounds(100,150,120,50);
+        defineButton.setBounds(300,150,120,50);
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(name);
         inputBottomPanel.add(isbn);
@@ -43,5 +47,7 @@ public class centerAddBookPanel extends centerPanelModel {
         inputBottomPanel.add(publisher);
         inputBottomPanel.add(pubTime);
         inputBottomPanel.add(genre);
+        inputBottomPanel.add(resetButton);
+        inputBottomPanel.add(defineButton);
     }
 }
