@@ -36,7 +36,7 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     @Override
     public int insert(Borrowing in)throws SQLException
     {
-        executeUpdate(INSERT_Borrowing_SQL,in.getUid(),in.getBid(),in.getStart_time(),in.getEnd_time());
+        executeUpdate(INSERT_Borrowing_SQL,in.getUid(),in.getBid(),String.valueOf(in.getStart_time()),String.valueOf(in.getEnd_time()));
         return 0;
     }
 
