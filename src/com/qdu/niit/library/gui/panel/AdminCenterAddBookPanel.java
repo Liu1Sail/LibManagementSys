@@ -11,8 +11,8 @@ import java.awt.*;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class centerAddBookPanel extends centerPanelModel {
-    private final centerAddBookPanel frame = this;
+public class AdminCenterAddBookPanel extends centerPanelModel {
+    private final AdminCenterAddBookPanel frame = this;
     private final InputPanel name;
     private final InputPanel isbn;
     private final InputPanel author;
@@ -20,7 +20,7 @@ public class centerAddBookPanel extends centerPanelModel {
     private final InputPanel pubTime;
     private final InputPanel genre;
 
-    public centerAddBookPanel() {
+    public AdminCenterAddBookPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
