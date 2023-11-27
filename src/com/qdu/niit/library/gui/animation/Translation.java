@@ -37,13 +37,20 @@ public class Translation extends JPanel {
      * @param direction        平移的组件来自哪个方向
      * @param isRecycle        平移是否循环
      */
+    public void rootPanelInitial(){
+        this.setLayout(null);
+        //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
+        //初步判断可能与组件的坐标是从0开始，左闭右开的，但通过增大子组件坐标无法解决问题。
+        //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
+        this.setOpaque(false);
+    }
     public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         this.direction = direction;
         this.isRecycle = isRecycle;
-        this.setLayout(null);
+        rootPanelInitial();
         initialComponentPos();
         switch (direction) {
             case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
@@ -62,7 +69,7 @@ public class Translation extends JPanel {
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         this.direction = direction;
-        this.setLayout(null);
+        rootPanelInitial();
         initialComponentPos();
         switch (direction) {
             case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
@@ -81,7 +88,8 @@ public class Translation extends JPanel {
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         this.isRecycle = isRecycle;
-        this.setLayout(null);
+        rootPanelInitial();
+        initialComponentPos();
         timer = new Timer(intervalTime, e -> translationFromLeft());
     }
 
@@ -89,7 +97,8 @@ public class Translation extends JPanel {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
-        this.setLayout(null);
+        rootPanelInitial();
+        initialComponentPos();
         timer = new Timer(intervalTime, e -> translationFromLeft());
     }
 
