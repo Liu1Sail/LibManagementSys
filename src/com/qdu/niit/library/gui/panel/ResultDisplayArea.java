@@ -41,10 +41,6 @@ public class ResultDisplayArea extends JPanel {
         scrollPane.setViewportView(textTable);
         this.add(scrollPane);
         //测试代码区域
-        var button=new JButton();
-        button.setBounds(0,0,30,30);
-        button.setBackground(Color.ORANGE);
-        textTable.add(button);
         //
     }
     public DefaultTableModel getTextTableModel() {

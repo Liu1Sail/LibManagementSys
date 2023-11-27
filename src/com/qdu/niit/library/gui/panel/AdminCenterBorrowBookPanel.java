@@ -11,38 +11,25 @@ import java.awt.*;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class centerAddBookPanel extends centerPanelModel {
-    private final centerAddBookPanel frame = this;
+public class AdminCenterBorrowBookPanel extends centerPanelModel {
+    private final AdminCenterBorrowBookPanel frame = this;
     private final InputPanel name;
-    private final InputPanel isbn;
-    private final InputPanel author;
-    private final InputPanel publisher;
-    private final InputPanel pubTime;
-    private final InputPanel genre;
-
-    public centerAddBookPanel() {
+    private final InputPanel bookId;
+    public AdminCenterBorrowBookPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("新增图书信息");
+        var titleLabel = new JLabel("图书借阅信息");
         name = new InputPanel("书名：");
-        isbn = new InputPanel("ISBN：");
-        author = new InputPanel("作者：");
-        publisher = new InputPanel("出版社：");
-        pubTime = new InputPanel("出版时间：");
-        genre = new InputPanel("类型：");
+        bookId=new InputPanel("编号：");
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加图书");
+        var defineButton=new JButton("确认搜索图书");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         name.setLocation(15, 35);
-        isbn.setLocation(220, 35);
-        author.setLocation(440, 35);
-        publisher.setLocation(15, 90);
-        pubTime.setLocation(235, 90);
-        genre.setLocation(465, 90);
+        bookId.setLocation(220,35);
         resetButton.setBounds(410,145,130,35);
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570,145,130,35);
@@ -54,25 +41,17 @@ public class centerAddBookPanel extends centerPanelModel {
         });
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(name);
-        inputBottomPanel.add(isbn);
-        inputBottomPanel.add(author);
-        inputBottomPanel.add(publisher);
-        inputBottomPanel.add(pubTime);
-        inputBottomPanel.add(genre);
+        inputBottomPanel.add(bookId);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
         String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间","类型"};
+        String[] columnName=new String[]{"图书编号","书名","是否被借阅","借阅开始时间","借阅结束时间"};
         var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
         DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
         this.add(resultBottomPanel);
     }
     public void resetInputContent(){
         name.setInputText("");
-        isbn.setInputText("");
-        author.setInputText("");
-        publisher.setInputText("");
-        pubTime.setInputText("");
-        genre.setInputText("");
+        bookId.setInputText("");
     }
 }
