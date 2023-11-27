@@ -7,12 +7,12 @@ import java.awt.*;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书添加面板，仅用于管理员界面中心面板
+ * @description 图书删除面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
-@SuppressWarnings("unused")
-public class centerAddBookPanel extends centerPanelModel {
-    private final centerAddBookPanel frame = this;
+
+public class centerDeleteBookPanel extends centerPanelModel {
+    private final centerDeleteBookPanel frame = this;
     private final InputPanel name;
     private final InputPanel isbn;
     private final InputPanel author;
@@ -20,13 +20,13 @@ public class centerAddBookPanel extends centerPanelModel {
     private final InputPanel pubTime;
     private final InputPanel genre;
 
-    public centerAddBookPanel() {
+    public centerDeleteBookPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("新增图书信息");
+        var titleLabel = new JLabel("删除图书信息");
         name = new InputPanel("书名：");
         isbn = new InputPanel("ISBN：");
         author = new InputPanel("作者：");
@@ -61,11 +61,15 @@ public class centerAddBookPanel extends centerPanelModel {
         inputBottomPanel.add(genre);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
-        String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间","类型"};
+        Object[][] rowData=new Object[][][][]{};
+        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间"};
         var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
         DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
         this.add(resultBottomPanel);
+        //测试代码区域
+
+        resultTableModel.addRow(new Object[]{"1"});
+        //
     }
     public void resetInputContent(){
         name.setInputText("");

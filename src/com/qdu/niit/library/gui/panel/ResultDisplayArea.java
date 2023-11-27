@@ -2,7 +2,6 @@ package com.qdu.niit.library.gui.panel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 
 /**
@@ -23,7 +22,7 @@ public class ResultDisplayArea extends JPanel {
     private final DefaultTableModel tableModel;
     private final JTable textTable;
 
-    public ResultDisplayArea(String[][] rowData,String[] columnName) {
+    public ResultDisplayArea(Object[][] rowData,Object[] columnName) {
         this.setBounds(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setBackground(Color.WHITE);
         this.setLayout(null);
@@ -42,7 +41,6 @@ public class ResultDisplayArea extends JPanel {
         scrollPane.setViewportView(textTable);
         this.add(scrollPane);
     }
-
     public DefaultTableModel getTextTableModel() {
         return tableModel;
     }

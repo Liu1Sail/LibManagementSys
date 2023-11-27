@@ -3,6 +3,7 @@ package com.qdu.niit.library.gui;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
 import com.qdu.niit.library.gui.panel.centerAddBookPanel;
+import com.qdu.niit.library.gui.panel.centerDeleteBookPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -198,7 +199,7 @@ public class AdministratorInterface extends ResizeFrame {
                 centerBottomPanel.removeAll();
                 switch(childOption.panelNumber){
                     case 1->{centerBottomPanel.add(new centerAddBookPanel());frame.repaint();}
-                    case 2->{frame.repaint();}
+                    case 2->{centerBottomPanel.add(new centerDeleteBookPanel());frame.repaint();}
                     case 3->{frame.repaint();}
                     case 4->{frame.repaint();}
                     case 5->{frame.repaint();}

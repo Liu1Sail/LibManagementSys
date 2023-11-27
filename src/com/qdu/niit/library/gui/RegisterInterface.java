@@ -4,8 +4,11 @@ import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
 
 /**
  * @author 李冠良
@@ -17,6 +20,9 @@ import java.awt.event.MouseEvent;
 public class RegisterInterface extends JFrame {
     private final JFrame frame = this;
     private Point offsetMouseToFrame = new Point();
+    private InputText inputText;
+    private int genderNumber=1;
+
     //完成阴影边框，并应用到注册和登录窗口
     public RegisterInterface() {
         frame.setLayout(null);
@@ -25,7 +31,7 @@ public class RegisterInterface extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setTitle("注册");
-        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -42,7 +48,7 @@ public class RegisterInterface extends JFrame {
                 frame.setLocation(newX, newY);
             }
         });
-        var buttonClose=getButtonClose(frame);
+        var buttonClose = getButtonClose(frame);
         //添加注册信息输入JPanel
         var bodyPanel = getBodPanel();
         frame.add(bodyPanel);
@@ -51,46 +57,65 @@ public class RegisterInterface extends JFrame {
     }
 
     private JPanel getBodPanel() {
-        var bodyPanel=new JPanel();
-        bodyPanel.setBounds(0,40,400,400);
+        var bodyPanel = new JPanel();
+        bodyPanel.setBounds(0, 40, 400, 400);
         bodyPanel.setOpaque(false);
         bodyPanel.setLayout(null);
-        var titleText=new JLabel();
-        titleText.setBounds(100,10,200,50);
-        titleText.setFont(new Font("宋体",Font.PLAIN,40));
+        var titleText = new JLabel();
+        titleText.setBounds(100, 10, 200, 50);
+        titleText.setFont(new Font("宋体", Font.PLAIN, 40));
         titleText.setText("注册");
         titleText.setHorizontalAlignment(SwingConstants.CENTER);
         titleText.setVerticalAlignment(SwingConstants.TOP);
         bodyPanel.add(titleText);
-        var nameLabel=new JLabel();
-        var nameInput=new JTextField();
-        var passwordLabel=new JLabel();
-        var passwordInput=new JTextField();
-        var genderLabel=new JLabel();
-        var genderPanel=new JPanel();
-        var genderGroup=new ButtonGroup();
-        var maleButton=new JRadioButton("男",true);
-        var femaleButton=new JRadioButton("女",false);
-        var phoneLabel=new JLabel();
-        var phoneInput=new JTextField();
-        var emailLabel=new JLabel();
-        var emailInput=new JTextField();
-        var font=new Font("宋体",Font.PLAIN,18);
-        nameLabel.setBounds(30,60,80,50);
+        var nameLabel = new JLabel();
+        var nameInput = new JTextField();
+        var passwordLabel = new JLabel();
+        var passwordInput = new JPasswordField();
+        var passwordAgainLabel = new JLabel();
+        var passwordAgainInput = new JPasswordField();
+        var genderLabel = new JLabel();
+        var genderPanel = new JPanel();
+        var genderGroup = new ButtonGroup();
+        var maleButton = new JRadioButton("男", true);
+        var femaleButton = new JRadioButton("女", false);
+        maleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                genderNumber = 1;
+            }
+        });
+        femaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                genderNumber = 2;
+            }
+        });
+        var phoneLabel = new JLabel();
+        var phoneInput = new JTextField();
+        var emailLabel = new JLabel();
+        var emailInput = new JTextField();
+        var font = new Font("宋体", Font.PLAIN, 18);
+        nameLabel.setBounds(30, 60, 80, 50);
         nameLabel.setFont(font);
         nameLabel.setText("用户名：");
         nameLabel.setOpaque(false);
-        nameInput.setBounds(120,70,200,30);
-        passwordLabel.setBounds(30,110,80,50);
+        nameInput.setBounds(120, 70, 200, 30);
+        passwordLabel.setBounds(30, 110, 80, 50);
         passwordLabel.setFont(font);
         passwordLabel.setText("密码：");
         passwordLabel.setOpaque(false);
-        passwordInput.setBounds(120,120,200,30);
-        genderLabel.setBounds(30,160,80,50);
+        passwordInput.setBounds(120, 120, 200, 30);
+        passwordAgainLabel.setBounds(30, 160, 95, 50);
+        passwordAgainLabel.setFont(font);
+        passwordAgainLabel.setText("重复密码：");
+        passwordAgainLabel.setOpaque(false);
+        passwordAgainInput.setBounds(120, 170, 200, 30);
+        genderLabel.setBounds(30, 210, 80, 50);
         genderLabel.setFont(font);
         genderLabel.setText("性别：");
         genderLabel.setOpaque(false);
-        genderPanel.setBounds(65,170,200,30);
+        genderPanel.setBounds(65, 220, 200, 30);
         genderPanel.setOpaque(false);
         maleButton.setOpaque(false);
         maleButton.setFocusable(false);
@@ -104,49 +129,48 @@ public class RegisterInterface extends JFrame {
         genderGroup.add(femaleButton);
         genderPanel.add(maleButton);
         genderPanel.add(femaleButton);
-        phoneLabel.setBounds(30,210,80,50);
+        phoneLabel.setBounds(30, 260, 80, 50);
         phoneLabel.setFont(font);
         phoneLabel.setText("手机号：");
         phoneLabel.setOpaque(false);
-        phoneInput.setBounds(120,220,200,30);
-        emailLabel.setBounds(30,260,80,50);
+        phoneInput.setBounds(120, 270, 200, 30);
+        emailLabel.setBounds(30, 310, 80, 50);
         emailLabel.setFont(font);
         emailLabel.setText("邮箱：");
         emailLabel.setOpaque(false);
-        emailInput.setBounds(120,270,200,30);
+        emailInput.setBounds(120, 320, 200, 30);
         bodyPanel.add(nameLabel);
         bodyPanel.add(nameInput);
         bodyPanel.add(passwordLabel);
         bodyPanel.add(passwordInput);
+        bodyPanel.add(passwordAgainLabel);
+        bodyPanel.add(passwordAgainInput);
         bodyPanel.add(genderLabel);
         bodyPanel.add(genderPanel);
         bodyPanel.add(phoneLabel);
         bodyPanel.add(phoneInput);
         bodyPanel.add(emailLabel);
         bodyPanel.add(emailInput);
-        var defineButton=new JButton();
-        var cancelButton=new JButton();
-        defineButton.setBounds(110,320,80,30);
-        defineButton.setText("取消");
-        cancelButton.setBounds(210,320,80,30);
-        cancelButton.setText("确认");
-        defineButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                frame.dispose();
-                //获取输入信息，向数据库提交信息
-            }
+        var cancelButton = new JButton();
+        var defineButton = new JButton();
+        cancelButton.setBounds(110, 370, 80, 30);
+        cancelButton.setText("取消");
+        defineButton.setBounds(210, 370, 80, 30);
+        defineButton.setText("确认");
+        defineButton.addActionListener(e -> {
+            inputText = new InputText(nameInput.getText(), new String(passwordInput.getPassword()),
+                    new String(passwordAgainInput.getPassword()), genderNumber,
+                    phoneInput.getText(), emailInput.getText());
+            //获取输入信息，向数据库提交信息
+            System.out.println(inputText.checkInputText());
+            frame.dispose();
         });
-        cancelButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                frame.dispose();
-            }
-        });
-        bodyPanel.add(defineButton);
+        cancelButton.addActionListener(e -> frame.dispose());
         bodyPanel.add(cancelButton);
+        bodyPanel.add(defineButton);
         return bodyPanel;
     }
+
     private static ShapeDeepenPanel getButtonClose(JFrame frame) {
         var buttonClose = new ShapeDeepenPanel() {
             @Override
@@ -185,5 +209,43 @@ public class RegisterInterface extends JFrame {
             }
         });
         return buttonClose;
+    }
+
+    private class InputText {
+        private String name;
+        private String password;
+        private String passwordAgain;
+        private int gender;
+        private String phoneNumber;
+        private String emailAddress;
+        private final int RIGHT=0;
+        private final int WRONG_NAME=1;
+        private final int WRONG_PASSWORD_NOT_SAME =2;
+        private final int WRONG_PASSWORD=3;
+        private final int WRONG_GENDER=4;
+        private final int WRONG_PHONE=5;
+        private final int WRONG_EMAIL=6;
+
+        public InputText(String name, String password, String passwordAgain, int gender, String phoneNumber, String emailAddress) {
+            this.name = name;
+            this.password = password;
+            this.passwordAgain=passwordAgain;
+            this.gender = gender;
+            this.phoneNumber = phoneNumber;
+            this.emailAddress = emailAddress;
+        }
+
+        public int checkInputText() {
+            if (!Pattern.matches("\\S{3,}", name)) return WRONG_NAME;
+            if (!password.equals(passwordAgain)) return WRONG_PASSWORD_NOT_SAME;
+            if (!Pattern.matches("\\S{8,20}", password)) return WRONG_PASSWORD;
+            if (!Pattern.matches("\\S*[A-Z]+\\S*", password)) return WRONG_PASSWORD;
+            if (!Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password)) return WRONG_PASSWORD;
+            if (gender != 1 && gender != 2) return WRONG_GENDER;
+            if (!Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber))
+                return WRONG_PHONE;
+            if (!Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress)) return WRONG_EMAIL;
+            return RIGHT;
+        }
     }
 }
