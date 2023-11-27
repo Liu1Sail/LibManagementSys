@@ -200,13 +200,12 @@ public class AdministratorInterface extends ResizeFrame {
                 switch(childOption.panelNumber){
                     case 1->{centerBottomPanel.add(new centerAddBookPanel());frame.repaint();}
                     case 2->{centerBottomPanel.add(new centerDeleteBookPanel());frame.repaint();}
-                    case 3->{frame.repaint();}
-                    case 4->{frame.repaint();}
-                    case 5->{frame.repaint();}
-                    case 6->{frame.repaint();}
-                    case 7->{frame.repaint();}
-                    case 8->{frame.repaint();}
-                    default->{frame.repaint();}
+                    case 3->{;frame.repaint();}
+                    case 4->{;frame.repaint();}
+                    case 5->{;frame.repaint();}
+                    case 6->{;frame.repaint();}
+                    case 7->{;frame.repaint();}
+                    case 8->{;frame.repaint();}
                 }
             }
         });

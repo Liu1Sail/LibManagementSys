@@ -11,11 +11,11 @@ import java.awt.*;
  * @date 2023/11/22
  */
 
-public class centerDeleteBookPanel extends centerPanelModel {
-    private final centerDeleteBookPanel frame = this;
+public class centerModifyBookPanel extends centerPanelModel {
+    private final centerModifyBookPanel frame = this;
     private final InputPanel bookId;
 
-    public centerDeleteBookPanel() {
+    public centerModifyBookPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
