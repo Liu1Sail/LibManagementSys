@@ -27,7 +27,7 @@ public class AdminCenterSearchBookPanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
 
-        var titleLabel = new JLabel("新增图书信息");
+        var titleLabel = new JLabel("搜索图书信息");
         bookIdInput=new InputPanel("图书编号：");
         bookIdInput.setLocation(100,50);
         bookKeyWordInput=new InputPanel("图书全名或关键词：");

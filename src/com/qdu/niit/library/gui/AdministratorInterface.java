@@ -2,10 +2,7 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.AdminCenterAddBookPanel;
-import com.qdu.niit.library.gui.panel.AdminCenterDeleteBookPanel;
-import com.qdu.niit.library.gui.panel.AdminCenterModifyBookPanel;
-import com.qdu.niit.library.gui.panel.AdminCenterSearchBookPanel;
+import com.qdu.niit.library.gui.panel.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,19 +104,21 @@ public class AdministratorInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"添加图书",4,1,1);
+        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"添加图书",5,1,1);
         bookOption.add(bookAddChildOption);
-        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除图书",4,2,1);
+        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除图书",5,2,1);
         bookOption.add(bookDeleteChildOption);
-        var bookModifyChildOption = getChildOption(sideBarOptionFont,240,"修改图书信息",4,3,1);
+        var bookModifyChildOption = getChildOption(sideBarOptionFont,240,"修改图书信息",5,3,1);
         bookOption.add(bookModifyChildOption);
-        var bookSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索图书信息",4,4,1);
+        var bookSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索图书信息",5,4,1);
         bookOption.add(bookSearchChildOption);
+        var bookBorrowChildOption = getChildOption(sideBarOptionFont,400,"图书借阅信息",5,5,1);
+        bookOption.add(bookBorrowChildOption);
         bookOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                bookOption.setBounds(0,0,200,400);
+                bookOption.setBounds(0,0,200,480);
             }
 
             @Override
@@ -208,6 +207,7 @@ public class AdministratorInterface extends ResizeFrame {
                             case 2->{centerBottomPanel.add(new AdminCenterDeleteBookPanel());frame.repaint();}
                             case 3->{centerBottomPanel.add(new AdminCenterModifyBookPanel());frame.repaint();}
                             case 4->{centerBottomPanel.add(new AdminCenterSearchBookPanel());frame.repaint();}
+                            case 5->{centerBottomPanel.add(new AdminCenterBorrowBookPanel());frame.repaint();}
                         }
                     }
                     case 2->{
