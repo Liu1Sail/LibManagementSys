@@ -18,6 +18,7 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     private static final String SELECT_BorrowingByUid_SQL = "SELECT * FROM Borrowing_Information Where uid = ?";
     private static final String SELECT_BorrowingByBid_SQL = "SELECT * FROM Borrowing_Information Where bid = ?";
     private static final String SELECT_BorrowingByUidAndBid_SQL = "SELECT * FROM Borrowing_Information Where uid = ? and bid = ?";
+    private static final String SELECT_BorrowingByEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)<TO_DAYS(NOW());";
     /**
      * 生成表防止表不存在
      */
@@ -34,71 +35,74 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
         return instance;
     }
     @Override
-    public int insert(Borrowing in)throws SQLException
+    public void insert(Borrowing in)throws SQLException
     {
         executeUpdate(INSERT_Borrowing_SQL,in.getUid(),in.getBid(),String.valueOf(in.getStart_time()),String.valueOf(in.getEnd_time()));
-        return 0;
     }
 
     @Override
-    public int deleteByUid(int uid)throws SQLException {
+    public void deleteByUid(int uid)throws SQLException {
         executeUpdate(DELETE_BorrowingByUid_SQL,uid);
-        return 0;
     }
 
 
     @Override
-    public int deleteByBid(int bid)throws SQLException {
+    public void deleteByBid(int bid)throws SQLException {
         executeUpdate(DELETE_BorrowingByBid_SQL,bid);
-        return 0;
     }
 
     @Override
-    public int deleteByUidAndBid(int uid, int bid)throws SQLException {
+    public void deleteByUidAndBid(int uid, int bid)throws SQLException {
         executeUpdate(DELETE_BorrowingByUidAndBid_SQL,uid,bid);
-        return 0;
     }
 
     @Override
-    public ArrayList<Borrowing> getAll()throws SQLException {
+    public Borrowing[] getAll()throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_Borrowing_SQL);
-        ArrayList<Borrowing>back = new ArrayList<>();
+        Borrowing[] back = new Borrowing[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
-            Borrowing bg = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
         }
         return back;
     }
 
     @Override
-    public ArrayList<Borrowing> getAllByUid(int uid)throws SQLException {
+    public Borrowing[] getAllByUid(int uid)throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_BorrowingByUid_SQL,uid);
-        ArrayList<Borrowing>back = new ArrayList<>();
+        Borrowing[]back = new Borrowing[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
-            Borrowing bg = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
         }
         return back;
     }
 
     @Override
-    public ArrayList<Borrowing> getAllByBid(int bid)throws SQLException {
+    public Borrowing[] getAllByBid(int bid)throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_BorrowingByBid_SQL,bid);
-        ArrayList<Borrowing>back = new ArrayList<>();
+        Borrowing[]back = new Borrowing[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
-            Borrowing bg = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
         }
         return back;
     }
 
     @Override
-    public ArrayList<Borrowing> getOneByUidAndBid(int uid,int bid)throws SQLException {
-        ArrayList<Object[]>receive = getMany(SELECT_BorrowingByUidAndBid_SQL,uid,bid);
-        ArrayList<Borrowing>back = new ArrayList<>();
+    public Borrowing getOneByUidAndBid(int uid,int bid)throws SQLException {
+        Object[] receive = getOne(SELECT_BorrowingByUidAndBid_SQL,uid,bid);
+        Borrowing back = new Borrowing((int)receive[0],(int)receive[1],(LocalDateTime) receive[2],(LocalDateTime) receive[3]);
+        return back;
+    }
+
+    @Override
+    public Borrowing[] getAllByEndTime(LocalDateTime end_time)throws SQLException {
+        ArrayList<Object[]>receive = getMany(SELECT_BorrowingByEndTime_SQL,end_time);
+        Borrowing[]back = new Borrowing[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
-            Borrowing bg = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
         }
         return back;
     }

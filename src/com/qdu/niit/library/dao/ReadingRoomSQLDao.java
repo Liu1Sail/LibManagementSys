@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 public interface ReadingRoomSQLDao
 {
-    int insert(ReadingRoom in)throws SQLException;
+    void insert(ReadingRoom in)throws SQLException;
 
-    int deleteByUid(int uid)throws SQLException;
+    void deleteByUid(int uid)throws SQLException;
 
-    int deleteByRid(int bid)throws SQLException;
+    void deleteByRid(int bid)throws SQLException;
 
-    ArrayList<ReadingRoom>getAll()throws SQLException;
-    ArrayList<ReadingRoom>getOneByUid(int uid)throws SQLException;
-    ArrayList<ReadingRoom>getOneByRid(int bid)throws SQLException;
-    ArrayList<ReadingRoom>getAllByEndTime(LocalDateTime end_time)throws SQLException;
+    ReadingRoom[]getAll()throws SQLException;
+    ReadingRoom getOneByUid(int uid)throws SQLException;
+    ReadingRoom getOneByRid(int bid)throws SQLException;
+    ReadingRoom[]getAllByEndTime(LocalDateTime end_time)throws SQLException;
 }
