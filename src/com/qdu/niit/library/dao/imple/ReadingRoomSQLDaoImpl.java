@@ -45,6 +45,10 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom[] getAll() throws SQLException {
         ArrayList<Object[]> receive = getMany(SELECT_ReadingRoom_SQL);
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         ReadingRoom[] back = new ReadingRoom[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
@@ -56,6 +60,10 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom getOneByUid(int uid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByUid_SQL,uid);
+        if(receive.length == 0)
+        {
+            return null;
+        }
         ReadingRoom back = new ReadingRoom((int)receive[0],(int)receive[1],(LocalDateTime) receive[2],(LocalDateTime) receive[3]);
         return back;
     }
@@ -63,6 +71,10 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom getOneByRid(int bid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByBid_SQL,bid);
+        if(receive.length == 0)
+        {
+            return null;
+        }
         ReadingRoom back = new ReadingRoom((int)receive[0],(int)receive[1],(LocalDateTime) receive[2],(LocalDateTime) receive[3]);
         return back;
     }
@@ -71,6 +83,10 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     public ReadingRoom[] getAllByEndTime(LocalDateTime end_time) throws SQLException {
         ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomByEndTime_SQL,end_time);
         ReadingRoom[] back = new ReadingRoom[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         for(int i = 0;i<receive.size();i++)
         {
             back[i] = new ReadingRoom((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
