@@ -13,12 +13,13 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class AdminCenterAddAccountPanel extends centerPanelModel {
     private final AdminCenterAddAccountPanel frame = this;
+    private final InputPanel id;
     private final InputPanel name;
-    private final InputPanel isbn;
-    private final InputPanel author;
-    private final InputPanel publisher;
-    private final InputPanel pubTime;
-    private final InputPanel genre;
+    private final InputPanel password;
+    private final InputPanel age;
+    private final InputPanel gender;
+    private final InputPanel phone;
+    private final InputPanel email;
 
     public AdminCenterAddAccountPanel() {
         var inputBottomPanel = new JPanel();
@@ -26,23 +27,25 @@ public class AdminCenterAddAccountPanel extends centerPanelModel {
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("新增图书信息");
-        name = new InputPanel("书名：");
-        isbn = new InputPanel("ISBN：");
-        author = new InputPanel("作者：");
-        publisher = new InputPanel("出版社：");
-        pubTime = new InputPanel("出版时间：");
-        genre = new InputPanel("类型：");
+        var titleLabel = new JLabel("添加用户");
+        id = new InputPanel("账号：");
+        name = new InputPanel("用户名：");
+        password = new InputPanel("密码：");
+        age = new InputPanel("年龄：");
+        gender = new InputPanel("性别：");
+        phone = new InputPanel("手机号：");
+        email = new InputPanel("邮箱：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认添加图书");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-        name.setLocation(15, 35);
-        isbn.setLocation(220, 35);
-        author.setLocation(440, 35);
-        publisher.setLocation(15, 90);
-        pubTime.setLocation(235, 90);
-        genre.setLocation(465, 90);
+        id.setLocation(15, 35);
+        name.setLocation(220, 35);
+        password.setLocation(440, 35);
+        age.setLocation(15, 90);
+        gender.setLocation(235, 90);
+        phone.setLocation(440, 90);
+        email.setLocation(15,145);
         resetButton.setBounds(410,145,130,35);
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570,145,130,35);
@@ -53,26 +56,27 @@ public class AdminCenterAddAccountPanel extends centerPanelModel {
             //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
         });
         inputBottomPanel.add(titleLabel);
+        inputBottomPanel.add(id);
         inputBottomPanel.add(name);
-        inputBottomPanel.add(isbn);
-        inputBottomPanel.add(author);
-        inputBottomPanel.add(publisher);
-        inputBottomPanel.add(pubTime);
-        inputBottomPanel.add(genre);
+        inputBottomPanel.add(password);
+        inputBottomPanel.add(age);
+        inputBottomPanel.add(gender);
+        inputBottomPanel.add(phone);
+        inputBottomPanel.add(email);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
         String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间","类型"};
+        String[] columnName=new String[]{"账号","用户名","密码","年龄","性别","手机号","邮箱"};
         var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
         DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
         this.add(resultBottomPanel);
     }
     public void resetInputContent(){
         name.setInputText("");
-        isbn.setInputText("");
-        author.setInputText("");
-        publisher.setInputText("");
-        pubTime.setInputText("");
-        genre.setInputText("");
+        name.setInputText("");
+        password.setInputText("");
+        age.setInputText("");
+        gender.setInputText("");
+        phone.setInputText("");
     }
 }

@@ -212,7 +212,7 @@ public class AdministratorInterface extends ResizeFrame {
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{;frame.repaint();}
+                            case 1->{centerBottomPanel.add(new AdminCenterAddAccountPanel());frame.repaint();}
                             case 2->{;frame.repaint();}
                             case 3->{;frame.repaint();}
                             case 4->{;frame.repaint();}
