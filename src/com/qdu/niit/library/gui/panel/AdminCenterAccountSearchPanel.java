@@ -13,8 +13,8 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class AdminCenterAccountSearchPanel extends centerPanelModel {
     private final AdminCenterAccountSearchPanel frame = this;
-    private final InputPanel id;
-    private final InputPanel name;
+    private final InputTextPanel id;
+    private final InputTextPanel name;
 
     public AdminCenterAccountSearchPanel() {
         var inputBottomPanel = new JPanel();
@@ -23,8 +23,8 @@ public class AdminCenterAccountSearchPanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("搜索账户");
-        id = new InputPanel("账号：");
-        name = new InputPanel("用户名：");
+        id = new InputTextPanel("账号：");
+        name = new InputTextPanel("用户名：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认添加账户");
         titleLabel.setBounds(10, 5, 120, 30);

@@ -13,13 +13,13 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class AdminCenterAccountModifyPanel extends centerPanelModel {
     private final AdminCenterAccountModifyPanel frame = this;
-    private final InputPanel id;
-    private final InputPanel name;
-    private final InputPanel password;
-    private final InputPanel age;
-    private final InputPanel gender;
-    private final InputPanel phone;
-    private final InputPanel email;
+    private final InputTextPanel id;
+    private final InputTextPanel name;
+    private final InputPasswordPanel password;
+    private final InputTextPanel age;
+    private final InputTextPanel gender;
+    private final InputTextPanel phone;
+    private final InputTextPanel email;
 
     public AdminCenterAccountModifyPanel() {
         var inputBottomPanel = new JPanel();
@@ -28,13 +28,13 @@ public class AdminCenterAccountModifyPanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("修改账户");
-        id = new InputPanel("账号：");
-        name = new InputPanel("用户名：");
-        password = new InputPanel("密码：");
-        age = new InputPanel("年龄：");
-        gender = new InputPanel("性别：");
-        phone = new InputPanel("手机号：");
-        email = new InputPanel("邮箱：");
+        id = new InputTextPanel("账号：");
+        name = new InputTextPanel("用户名：");
+        password = new InputPasswordPanel("密码：");
+        age = new InputTextPanel("年龄：");
+        gender = new InputTextPanel("性别：");
+        phone = new InputTextPanel("手机号：");
+        email = new InputTextPanel("邮箱：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认修改账户");
         titleLabel.setBounds(10, 5, 120, 30);

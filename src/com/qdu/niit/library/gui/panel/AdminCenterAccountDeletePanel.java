@@ -13,7 +13,7 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class AdminCenterAccountDeletePanel extends centerPanelModel {
     private final AdminCenterAccountDeletePanel frame = this;
-    private final InputPanel id;
+    private final InputTextPanel id;
 
     public AdminCenterAccountDeletePanel() {
         var inputBottomPanel = new JPanel();
@@ -22,7 +22,7 @@ public class AdminCenterAccountDeletePanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("删除账户");
-        id = new InputPanel("账号：");
+        id = new InputTextPanel("账号：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认删除账户");
         titleLabel.setBounds(10, 5, 120, 30);

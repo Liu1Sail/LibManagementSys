@@ -13,14 +13,14 @@ import java.awt.event.MouseEvent;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterBookSearchPanel extends centerPanelModel {
-    private final AdminCenterBookSearchPanel frame = this;
+public class UserCenterBookSearchPanel extends centerPanelModel {
+    private final UserCenterBookSearchPanel frame = this;
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;
     private int nowTabNum=1;
 
-    public AdminCenterBookSearchPanel() {
+    public UserCenterBookSearchPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
