@@ -4,7 +4,6 @@ import com.qdu.niit.library.entity.Borrowing;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public interface BorrowingSQLDao
 {
@@ -22,7 +21,7 @@ public interface BorrowingSQLDao
 
     Borrowing[]getAll()throws SQLException;
     Borrowing[]getAllByUid(int uid)throws SQLException;
-    Borrowing[]getAllByBid(int bid)throws SQLException;
+    Borrowing getOneByBid(int bid)throws SQLException;
     Borrowing getOneByUidAndBid(int uid,int bid)throws SQLException;
     Borrowing[] getAllByEndTime(LocalDateTime end_time)throws SQLException;
 }

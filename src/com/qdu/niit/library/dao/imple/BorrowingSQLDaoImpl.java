@@ -60,6 +60,10 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     public Borrowing[] getAll()throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_Borrowing_SQL);
         Borrowing[] back = new Borrowing[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         for(int i = 0;i<receive.size();i++)
         {
             back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
@@ -71,6 +75,10 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     public Borrowing[] getAllByUid(int uid)throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_BorrowingByUid_SQL,uid);
         Borrowing[]back = new Borrowing[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         for(int i = 0;i<receive.size();i++)
         {
             back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
@@ -79,19 +87,23 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     }
 
     @Override
-    public Borrowing[] getAllByBid(int bid)throws SQLException {
-        ArrayList<Object[]>receive = getMany(SELECT_BorrowingByBid_SQL,bid);
-        Borrowing[]back = new Borrowing[receive.size()];
-        for(int i = 0;i<receive.size();i++)
+    public Borrowing getOneByBid(int bid)throws SQLException {
+        Object[] receive = getOne(SELECT_BorrowingByBid_SQL,bid);
+        if(receive.length == 0)
         {
-            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+            return null;
         }
+        Borrowing back = new Borrowing((int)receive[0],(int)receive[1],(LocalDateTime) receive[2],(LocalDateTime) receive[3]);
         return back;
     }
 
     @Override
     public Borrowing getOneByUidAndBid(int uid,int bid)throws SQLException {
         Object[] receive = getOne(SELECT_BorrowingByUidAndBid_SQL,uid,bid);
+        if(receive.length == 0)
+        {
+            return null;
+        }
         Borrowing back = new Borrowing((int)receive[0],(int)receive[1],(LocalDateTime) receive[2],(LocalDateTime) receive[3]);
         return back;
     }
@@ -100,6 +112,10 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     public Borrowing[] getAllByEndTime(LocalDateTime end_time)throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_BorrowingByEndTime_SQL,end_time);
         Borrowing[]back = new Borrowing[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         for(int i = 0;i<receive.size();i++)
         {
             back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
