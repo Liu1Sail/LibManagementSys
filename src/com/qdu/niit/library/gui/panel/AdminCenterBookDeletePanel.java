@@ -11,18 +11,18 @@ import java.awt.*;
  * @date 2023/11/22
  */
 
-public class AdminCenterDeleteBookPanel extends centerPanelModel {
-    private final AdminCenterDeleteBookPanel frame = this;
-    private final InputPanel bookId;
+public class AdminCenterBookDeletePanel extends centerPanelModel {
+    private final AdminCenterBookDeletePanel frame = this;
+    private final InputTextPanel bookId;
 
-    public AdminCenterDeleteBookPanel() {
+    public AdminCenterBookDeletePanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("删除图书信息");
-        bookId=new InputPanel("待删除图书编号：");
+        bookId=new InputTextPanel("待删除图书编号：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认删除图书");
         titleLabel.setBounds(10, 5, 120, 30);

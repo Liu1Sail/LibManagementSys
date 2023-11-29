@@ -9,18 +9,18 @@ import java.awt.event.MouseEvent;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书添加面板，仅用于管理员界面中心面板
+ * @description 图书搜索面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterSearchBookPanel extends centerPanelModel {
-    private final AdminCenterSearchBookPanel frame = this;
-    private final InputPanel bookIdInput;
-    private final InputPanel bookKeyWordInput;
-    private final InputPanel bookStorageTimeInput;
+public class UserCenterBookSearchPanel extends centerPanelModel {
+    private final UserCenterBookSearchPanel frame = this;
+    private final InputTextPanel bookIdInput;
+    private final InputTextPanel bookKeyWordInput;
+    private final InputTextPanel bookStorageTimeInput;
     private int nowTabNum=1;
 
-    public AdminCenterSearchBookPanel() {
+    public UserCenterBookSearchPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
@@ -28,11 +28,11 @@ public class AdminCenterSearchBookPanel extends centerPanelModel {
         this.add(inputBottomPanel);
 
         var titleLabel = new JLabel("搜索图书信息");
-        bookIdInput=new InputPanel("图书编号：");
+        bookIdInput=new InputTextPanel("图书编号：");
         bookIdInput.setLocation(100,50);
-        bookKeyWordInput=new InputPanel("图书全名或关键词：");
+        bookKeyWordInput=new InputTextPanel("图书全名或关键词：");
         bookKeyWordInput.setLocation(100,50);
-        bookStorageTimeInput=new InputPanel("入库时间：");
+        bookStorageTimeInput=new InputTextPanel("入库时间：");
         bookStorageTimeInput.setLocation(100,50);
         inputBottomPanel.add(bookIdInput);
 

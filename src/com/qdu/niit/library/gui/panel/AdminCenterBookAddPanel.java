@@ -11,28 +11,28 @@ import java.awt.*;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterAddBookPanel extends centerPanelModel {
-    private final AdminCenterAddBookPanel frame = this;
-    private final InputPanel name;
-    private final InputPanel isbn;
-    private final InputPanel author;
-    private final InputPanel publisher;
-    private final InputPanel pubTime;
-    private final InputPanel genre;
+public class AdminCenterBookAddPanel extends centerPanelModel {
+    private final AdminCenterBookAddPanel frame = this;
+    private final InputTextPanel name;
+    private final InputTextPanel isbn;
+    private final InputTextPanel author;
+    private final InputTextPanel publisher;
+    private final InputTextPanel pubTime;
+    private final InputTextPanel genre;
 
-    public AdminCenterAddBookPanel() {
+    public AdminCenterBookAddPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("新增图书信息");
-        name = new InputPanel("书名：");
-        isbn = new InputPanel("ISBN：");
-        author = new InputPanel("作者：");
-        publisher = new InputPanel("出版社：");
-        pubTime = new InputPanel("出版时间：");
-        genre = new InputPanel("类型：");
+        name = new InputTextPanel("书名：");
+        isbn = new InputTextPanel("ISBN：");
+        author = new InputTextPanel("作者：");
+        publisher = new InputTextPanel("出版社：");
+        pubTime = new InputTextPanel("出版时间：");
+        genre = new InputTextPanel("类型：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认添加图书");
         titleLabel.setBounds(10, 5, 120, 30);

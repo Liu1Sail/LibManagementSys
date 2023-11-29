@@ -2,7 +2,11 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.*;
+import com.qdu.niit.library.gui.panel.UserCenterAccountChangeInfoPanel;
+import com.qdu.niit.library.gui.panel.UserCenterAccountChangePasswordPanel;
+import com.qdu.niit.library.gui.panel.UserCenterBookBorrowPanel;
+import com.qdu.niit.library.gui.panel.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.tool.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,23 +18,25 @@ import java.awt.event.MouseEvent;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 管理员管理界面
+ * @description 用户使用界面
  * @date 2023/11/16
  */
 @SuppressWarnings("unused")
-public class AdministratorInterface extends ResizeFrame {
-    private final AdministratorInterface frame = this;
+public class UserInterface extends ResizeFrame {
+    private final UserInterface frame = this;
     private final JPanel centerBottomPanel;
     private final int initialWidth=1000;
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
+    private final User loggedUser;
 
-    public AdministratorInterface() {
+    public UserInterface(String id,String name,String password) {
+        loggedUser=new User(id,name,password);
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
-        frame.setTitle("管理系统");
+        frame.setTitle("图书馆系统");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         frame.addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -40,7 +46,7 @@ public class AdministratorInterface extends ResizeFrame {
             }
         });
         //鼠标拖动窗口
-        var titleFont=new Font("宋体",Font.PLAIN,25);
+        var titleFont=new Font("宋体",Font.PLAIN,20);
         var bottomPanel=new JPanel();
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
@@ -104,16 +110,10 @@ public class AdministratorInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"添加图书",5,1,1);
+        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"查询图书",2,1,1);
         bookOption.add(bookAddChildOption);
-        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除图书",5,2,1);
+        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"查询个人借书记录",2,2,1);
         bookOption.add(bookDeleteChildOption);
-        var bookModifyChildOption = getChildOption(sideBarOptionFont,240,"修改图书信息",5,3,1);
-        bookOption.add(bookModifyChildOption);
-        var bookSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索图书信息",5,4,1);
-        bookOption.add(bookSearchChildOption);
-        var bookBorrowChildOption = getChildOption(sideBarOptionFont,400,"图书借阅信息",5,5,1);
-        bookOption.add(bookBorrowChildOption);
         bookOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -140,24 +140,20 @@ public class AdministratorInterface extends ResizeFrame {
         accountOption.setBackground(Color.WHITE);
         var accountOptionText=new JLabel();
         accountOptionText.setBounds(0,0,200,80);
-        accountOptionText.setText("账户管理");
+        accountOptionText.setText("账户信息");
         accountOptionText.setFont(sideBarOptionFont);
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"添加账户",4,1,2);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改密码",2,1,2);
         accountOption.add(accountAddChildOption);
-        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除账户",4,2,2);
+        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"修改个人信息",2,2,2);
         accountOption.add(accountDeleteChildOption);
-        var accountModifyChildOption = getChildOption(sideBarOptionFont,240,"修改账户信息",4,3,2);
-        accountOption.add(accountModifyChildOption);
-        var accountSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索账户信息",4,4,2);
-        accountOption.add(accountSearchChildOption);
         accountOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                accountOption.setBounds(0,80,200,400);
+                accountOption.setBounds(0,80,200,240);
             }
 
             @Override
@@ -203,19 +199,14 @@ public class AdministratorInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new AdminCenterBookAddPanel());frame.repaint();}
-                            case 2->{centerBottomPanel.add(new AdminCenterBookDeletePanel());frame.repaint();}
-                            case 3->{centerBottomPanel.add(new AdminCenterBookModifyPanel());frame.repaint();}
-                            case 4->{centerBottomPanel.add(new AdminCenterBookSearchPanel());frame.repaint();}
-                            case 5->{centerBottomPanel.add(new AdminCenterBookBorrowPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterBookSearchPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterBookBorrowPanel());frame.repaint();}
                         }
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new AdminCenterAccountAddPanel());frame.repaint();}
-                            case 2->{centerBottomPanel.add(new AdminCenterAccountDeletePanel());frame.repaint();}
-                            case 3->{centerBottomPanel.add(new AdminCenterAccountModifyPanel());frame.repaint();}
-                            case 4->{centerBottomPanel.add(new AdminCenterAccountSearchPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel());frame.repaint();}
                         }
                     }
                 }
@@ -233,7 +224,7 @@ public class AdministratorInterface extends ResizeFrame {
         var leftTopTitle=new JLabel();
         leftTopTitle.setBounds(0,0,leftTopPanel.getWidth(),leftTopPanel.getHeight());
         leftTopTitle.setFont(titleFont);
-        leftTopTitle.setText("管理面板");
+        leftTopTitle.setText("欢迎使用图书馆系统");
         leftTopTitle.setVerticalAlignment(SwingConstants.CENTER);
         leftTopTitle.setHorizontalAlignment(SwingConstants.CENTER);
         leftTopPanel.add(leftTopTitle);
@@ -278,7 +269,6 @@ public class AdministratorInterface extends ResizeFrame {
         });
         return buttonClose;
     }
-
     public int getMouseX() {
         return mouseX;
     }
