@@ -7,27 +7,31 @@ import java.awt.*;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书删除面板，仅用于管理员界面中心面板
+ * @description 账户搜索面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
+@SuppressWarnings("unused")
+public class AdminCenterAccountSearchPanel extends centerPanelModel {
+    private final AdminCenterAccountSearchPanel frame = this;
+    private final InputPanel id;
+    private final InputPanel name;
 
-public class AdminCenterDeleteBookPanel extends centerPanelModel {
-    private final AdminCenterDeleteBookPanel frame = this;
-    private final InputPanel bookId;
-
-    public AdminCenterDeleteBookPanel() {
+    public AdminCenterAccountSearchPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("删除图书信息");
-        bookId=new InputPanel("待删除图书编号：");
+        var titleLabel = new JLabel("搜索账户");
+        id = new InputPanel("账号：");
+        name = new InputPanel("用户名：");
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认删除图书");
+        var defineButton=new JButton("确认添加账户");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-        bookId.setLocation(100,50);
+        id.setLocation(15, 35);
+        name.setLocation(220, 35);
+
         resetButton.setBounds(410,145,130,35);
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570,145,130,35);
@@ -38,20 +42,18 @@ public class AdminCenterDeleteBookPanel extends centerPanelModel {
             //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
         });
         inputBottomPanel.add(titleLabel);
-        inputBottomPanel.add(bookId);
+        inputBottomPanel.add(id);
+        inputBottomPanel.add(name);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
-        Object[][] rowData=new Object[][][][]{};
-        String[] columnName=new String[]{"图书编号","书名","ISBN","作者","出版社","出版时间"};
+        String[][] rowData=new String[][]{};
+        String[] columnName=new String[]{"账号","用户名","密码","年龄","性别","手机号","邮箱"};
         var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
         DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
         this.add(resultBottomPanel);
-        //测试代码区域
-
-        resultTableModel.addRow(new Object[]{"1"});
-        //
     }
     public void resetInputContent(){
-        bookId.setInputText("");
+        id.setInputText("");
+        name.setInputText("");
     }
 }

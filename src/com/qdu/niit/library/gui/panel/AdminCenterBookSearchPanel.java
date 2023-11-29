@@ -9,18 +9,18 @@ import java.awt.event.MouseEvent;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书添加面板，仅用于管理员界面中心面板
+ * @description 图书搜索面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterSearchBookPanel extends centerPanelModel {
-    private final AdminCenterSearchBookPanel frame = this;
+public class AdminCenterBookSearchPanel extends centerPanelModel {
+    private final AdminCenterBookSearchPanel frame = this;
     private final InputPanel bookIdInput;
     private final InputPanel bookKeyWordInput;
     private final InputPanel bookStorageTimeInput;
     private int nowTabNum=1;
 
-    public AdminCenterSearchBookPanel() {
+    public AdminCenterBookSearchPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
