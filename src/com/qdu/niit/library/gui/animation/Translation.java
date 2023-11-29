@@ -15,28 +15,22 @@ import java.util.LinkedList;
 
 @SuppressWarnings({"unused"})
 public class Translation extends JPanel {
+    public static final int CONSTANT_SPEED=1;
+    private static int Translation_Style=CONSTANT_SPEED;
     public static final int DIRECTION_LEFT = 1;
     public static final int DIRECTION_RIGHT = 2;
     public static final int DIRECTION_UPPER = 3;
     public static final int DIRECTION_BELOW = 4;
+    private int direction = DIRECTION_LEFT;
     private LinkedList<JComponent> linkedList;
     private int intervalTime;
     private int intervalDistance;
-    private int direction = DIRECTION_LEFT;
     private boolean isRecycle = true;
     private int width;
     private int height;
     private Timer timer;
     private int moveDistance = 0;
     private boolean isStart = false;
-
-    /**
-     * @param linkedList       包含要被平移的组件的LinkedList链表
-     * @param intervalTime     平移间隔时间
-     * @param intervalDistance 一次平移的距离
-     * @param direction        平移的组件来自哪个方向
-     * @param isRecycle        平移是否循环
-     */
     public void rootPanelInitial(){
         this.setLayout(null);
         //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
@@ -44,6 +38,13 @@ public class Translation extends JPanel {
         //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
         this.setOpaque(false);
     }
+    /**
+     * @param linkedList       包含要被平移的组件的LinkedList链表
+     * @param intervalTime     平移间隔时间
+     * @param intervalDistance 一次平移的距离
+     * @param direction        平移的组件来自哪个方向
+     * @param isRecycle        平移是否循环
+     */
     public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
@@ -57,10 +58,6 @@ public class Translation extends JPanel {
             case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
             case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
             case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
-            default -> {
-                direction = DIRECTION_LEFT;
-                timer = new Timer(intervalTime, e -> translationFromLeft());
-            }
         }
     }
 
@@ -76,10 +73,6 @@ public class Translation extends JPanel {
             case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
             case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
             case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
-            default -> {
-                direction = DIRECTION_LEFT;
-                timer = new Timer(intervalTime, e -> translationFromLeft());
-            }
         }
     }
 
@@ -263,10 +256,6 @@ public class Translation extends JPanel {
                 case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
                 case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
                 case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
-                default -> {
-                    direction = DIRECTION_LEFT;
-                    timer = new Timer(intervalTime, e -> translationFromLeft());
-                }
             }
         }
     }
@@ -292,5 +281,11 @@ public class Translation extends JPanel {
         if (!isStart) {
             this.timer = timer;
         }
+    }
+    public static int getTranslation_Style() {
+        return Translation_Style;
+    }
+    public static void setTranslation_Style(int translation_Style) {
+        Translation_Style = translation_Style;
     }
 }

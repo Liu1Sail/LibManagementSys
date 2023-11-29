@@ -25,7 +25,6 @@ public class AdministratorInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-
     public AdministratorInterface() {
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
