@@ -2,6 +2,11 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
+import com.qdu.niit.library.gui.panel.UserCenterAccountChangeInfoPanel;
+import com.qdu.niit.library.gui.panel.UserCenterAccountChangePasswordPanel;
+import com.qdu.niit.library.gui.panel.UserCenterBookBorrowPanel;
+import com.qdu.niit.library.gui.panel.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.tool.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,8 +29,10 @@ public class UserInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
+    private final User loggedUser;
 
-    public UserInterface() {
+    public UserInterface(String id,String name,String password) {
+        loggedUser=new User(id,name,password);
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);
@@ -39,7 +46,7 @@ public class UserInterface extends ResizeFrame {
             }
         });
         //鼠标拖动窗口
-        var titleFont=new Font("宋体",Font.PLAIN,25);
+        var titleFont=new Font("宋体",Font.PLAIN,20);
         var bottomPanel=new JPanel();
         bottomPanel.setBounds(0,0,1000,700);
         bottomPanel.setLayout(new BorderLayout());
@@ -192,14 +199,14 @@ public class UserInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-                            case 1->{frame.repaint();}
-                            case 2->{frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterBookSearchPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterBookBorrowPanel());frame.repaint();}
                         }
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{frame.repaint();}
-                            case 2->{frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel());frame.repaint();}
                         }
                     }
                 }
@@ -217,7 +224,7 @@ public class UserInterface extends ResizeFrame {
         var leftTopTitle=new JLabel();
         leftTopTitle.setBounds(0,0,leftTopPanel.getWidth(),leftTopPanel.getHeight());
         leftTopTitle.setFont(titleFont);
-        leftTopTitle.setText("管理面板");
+        leftTopTitle.setText("欢迎使用图书馆系统");
         leftTopTitle.setVerticalAlignment(SwingConstants.CENTER);
         leftTopTitle.setHorizontalAlignment(SwingConstants.CENTER);
         leftTopPanel.add(leftTopTitle);
@@ -262,7 +269,6 @@ public class UserInterface extends ResizeFrame {
         });
         return buttonClose;
     }
-
     public int getMouseX() {
         return mouseX;
     }

@@ -11,6 +11,6 @@ import com.qdu.niit.library.gui.UserInterface;
 
 public class UserTest {
     public static void main(String[] args) {
-        new UserInterface();
+        new UserInterface("1","1","1");
     }
 }

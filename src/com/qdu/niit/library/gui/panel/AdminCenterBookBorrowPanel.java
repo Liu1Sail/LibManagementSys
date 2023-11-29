@@ -13,8 +13,8 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class AdminCenterBookBorrowPanel extends centerPanelModel {
     private final AdminCenterBookBorrowPanel frame = this;
-    private final InputPanel name;
-    private final InputPanel bookId;
+    private final InputTextPanel name;
+    private final InputTextPanel bookId;
     public AdminCenterBookBorrowPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
@@ -22,8 +22,8 @@ public class AdminCenterBookBorrowPanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("图书借阅信息");
-        name = new InputPanel("书名：");
-        bookId=new InputPanel("编号：");
+        name = new InputTextPanel("书名：");
+        bookId=new InputTextPanel("编号：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认搜索图书");
         titleLabel.setBounds(10, 5, 120, 30);

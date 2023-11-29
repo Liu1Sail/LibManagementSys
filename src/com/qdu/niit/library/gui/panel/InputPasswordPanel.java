@@ -11,14 +11,13 @@ import java.awt.*;
  * @description 前方带提示文字的输入框
  * @date 2023/11/22
  */
+@SuppressWarnings("unused")
+public class InputPasswordPanel extends JPanel {
+    private final JLabel textLabel = new JLabel();
+    private final JPasswordField inputField = new JPasswordField();
+    private final Font defaultFont = new Font("宋体", Font.PLAIN, 18);
 
-public class InputPanel extends JPanel {
-    private final InputPanel panel = this;
-    private JLabel textLabel = new JLabel();
-    private JTextField inputField = new JTextField();
-    private Font defaultFont = new Font("宋体", Font.PLAIN, 18);
-
-    public InputPanel(String text) {
+    public InputPasswordPanel(String text) {
         var chProcess = CharacterProcess.getInstance(text);
         int singleCharLength = 10;
         int textWidth = (int) (chProcess.doubleByteNumber() * singleCharLength * 1.5) + chProcess.singleByteNumber() * singleCharLength;
@@ -50,7 +49,7 @@ public class InputPanel extends JPanel {
         inputField.setText(text);
     }
     public String getInputText() {
-        return inputField.getText();
+        return new String(inputField.getPassword());
     }
 
     public void setTextFont(Font font) {

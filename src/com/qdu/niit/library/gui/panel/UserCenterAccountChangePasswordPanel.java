@@ -7,21 +7,21 @@ import java.awt.*;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 账户添加面板，仅用于管理员界面中心面板
+ * @description 修改密码面板，仅用于用户界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterAccountAddPanel extends centerPanelModel {
-    private final AdminCenterAccountAddPanel frame = this;
+public class UserCenterAccountChangePasswordPanel extends centerPanelModel {
+    private final UserCenterAccountChangePasswordPanel frame = this;
     private final InputTextPanel id;
     private final InputTextPanel name;
-    private final InputPasswordPanel password;
+    private final InputTextPanel password;
     private final InputTextPanel age;
     private final InputTextPanel gender;
     private final InputTextPanel phone;
     private final InputTextPanel email;
 
-    public AdminCenterAccountAddPanel() {
+    public UserCenterAccountChangePasswordPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
@@ -30,7 +30,7 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         var titleLabel = new JLabel("添加账户");
         id = new InputTextPanel("账号：");
         name = new InputTextPanel("用户名：");
-        password = new InputPasswordPanel("密码：");
+        password = new InputTextPanel("密码：");
         age = new InputTextPanel("年龄：");
         gender = new InputTextPanel("性别：");
         phone = new InputTextPanel("手机号：");

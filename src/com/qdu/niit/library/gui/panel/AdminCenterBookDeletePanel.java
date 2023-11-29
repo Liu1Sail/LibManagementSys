@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class AdminCenterBookDeletePanel extends centerPanelModel {
     private final AdminCenterBookDeletePanel frame = this;
-    private final InputPanel bookId;
+    private final InputTextPanel bookId;
 
     public AdminCenterBookDeletePanel() {
         var inputBottomPanel = new JPanel();
@@ -22,7 +22,7 @@ public class AdminCenterBookDeletePanel extends centerPanelModel {
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
         var titleLabel = new JLabel("删除图书信息");
-        bookId=new InputPanel("待删除图书编号：");
+        bookId=new InputTextPanel("待删除图书编号：");
         var resetButton=new JButton("清空已填信息");
         var defineButton=new JButton("确认删除图书");
         titleLabel.setBounds(10, 5, 120, 30);
