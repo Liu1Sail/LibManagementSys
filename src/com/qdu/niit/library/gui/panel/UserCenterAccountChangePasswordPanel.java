@@ -1,8 +1,9 @@
 package com.qdu.niit.library.gui.panel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author 李冠良
@@ -12,71 +13,36 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangePasswordPanel extends centerPanelModel {
-    private final UserCenterAccountChangePasswordPanel frame = this;
-    private final InputTextPanel id;
-    private final InputTextPanel name;
-    private final InputTextPanel password;
-    private final InputTextPanel age;
-    private final InputTextPanel gender;
-    private final InputTextPanel phone;
-    private final InputTextPanel email;
-
+//    private final UserGui loggedUser;//存储当前用户
     public UserCenterAccountChangePasswordPanel() {
-        var inputBottomPanel = new JPanel();
-        inputBottomPanel.setBounds(40, 40, 720, 210);
-        inputBottomPanel.setBackground(Color.WHITE);
-        inputBottomPanel.setLayout(null);
-        this.add(inputBottomPanel);
-        var titleLabel = new JLabel("添加账户");
-        id = new InputTextPanel("账号：");
-        name = new InputTextPanel("用户名：");
-        password = new InputTextPanel("密码：");
-        age = new InputTextPanel("年龄：");
-        gender = new InputTextPanel("性别：");
-        phone = new InputTextPanel("手机号：");
-        email = new InputTextPanel("邮箱：");
-        var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加账户");
-        titleLabel.setBounds(10, 5, 120, 30);
-        titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-        id.setLocation(15, 35);
-        name.setLocation(220, 35);
-        password.setLocation(440, 35);
-        age.setLocation(15, 90);
-        gender.setLocation(235, 90);
-        phone.setLocation(440, 90);
-        email.setLocation(15,145);
-        resetButton.setBounds(410,145,130,35);
-        resetButton.addActionListener(e -> resetInputContent());
-        defineButton.setBounds(570,145,130,35);
-        defineButton.addActionListener(e -> {
-            //获取信息
-            resetInputContent();
-            //SwingWorker调用中间层
-            //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
+        var inputPanel=new JPanel();
+        inputPanel.setBounds(40,40,720,550);
+        inputPanel.setBackground(Color.WHITE);
+        this.add(inputPanel);
+        var originalPass=new InputPasswordPanel("原密码：");
+        var newPass=new InputPasswordPanel("新密码：");
+        var newPassRepeat=new InputPasswordPanel("重复密码：");
+        newPass.setLocation(50,50);
+        inputPanel.add(newPass);
+        originalPass.setLocation(50,100);
+        inputPanel.add(originalPass);
+        newPassRepeat.setLocation(50,150);
+        inputPanel.add(newPassRepeat);
+        var defineButton=new JButton();
+        defineButton.setText("确认");
+        defineButton.setFont(new Font("宋体",Font.PLAIN,18));
+        defineButton.setBounds(300,200,100,40);
+        inputPanel.add(defineButton);
+        defineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //比对原密码是否正确
+                //若正确，发送新密码
+                //弹出修改成功提示
+                originalPass.setInputText("");
+                newPass.setInputText("");
+                newPassRepeat.setInputText("");
+            }
         });
-        inputBottomPanel.add(titleLabel);
-        inputBottomPanel.add(id);
-        inputBottomPanel.add(name);
-        inputBottomPanel.add(password);
-        inputBottomPanel.add(age);
-        inputBottomPanel.add(gender);
-        inputBottomPanel.add(phone);
-        inputBottomPanel.add(email);
-        inputBottomPanel.add(resetButton);
-        inputBottomPanel.add(defineButton);
-        String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"账号","用户名","密码","年龄","性别","手机号","邮箱"};
-        var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
-        DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
-        this.add(resultBottomPanel);
-    }
-    public void resetInputContent(){
-        id.setInputText("");
-        name.setInputText("");
-        password.setInputText("");
-        age.setInputText("");
-        gender.setInputText("");
-        phone.setInputText("");
     }
 }

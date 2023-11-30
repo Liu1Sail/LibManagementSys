@@ -12,7 +12,6 @@ import java.awt.*;
  */
 
 public class AdminCenterBookDeletePanel extends centerPanelModel {
-    private final AdminCenterBookDeletePanel frame = this;
     private final InputTextPanel bookId;
 
     public AdminCenterBookDeletePanel() {
