@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
-    private final UserCenterAccountChangeInfoPanel frame = this;
     private final InputTextPanel id;
     private final InputTextPanel name;
     private final InputTextPanel password;

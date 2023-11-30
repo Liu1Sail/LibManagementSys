@@ -6,7 +6,7 @@ import com.qdu.niit.library.gui.panel.UserCenterAccountChangeInfoPanel;
 import com.qdu.niit.library.gui.panel.UserCenterAccountChangePasswordPanel;
 import com.qdu.niit.library.gui.panel.UserCenterBookBorrowPanel;
 import com.qdu.niit.library.gui.panel.UserCenterBookSearchPanel;
-import com.qdu.niit.library.gui.tool.User;
+import com.qdu.niit.library.gui.tool.UserGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,10 +29,10 @@ public class UserInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-    private final User loggedUser;
+    private final UserGui loggedUser;
 
     public UserInterface(String id,String name,String password) {
-        loggedUser=new User(id,name,password);
+        loggedUser=new UserGui(id,name,password);
         frame.setLayout(new BorderLayout());
         frame.setSize(initialWidth, initialHeight);
         frame.setLocationRelativeTo(null);

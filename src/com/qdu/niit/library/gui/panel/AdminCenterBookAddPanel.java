@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class AdminCenterBookAddPanel extends centerPanelModel {
-    private final AdminCenterBookAddPanel frame = this;
     private final InputTextPanel name;
     private final InputTextPanel isbn;
     private final InputTextPanel author;

@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui.animation;
+package com.qdu.niit.gui;
 
 import javax.swing.*;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
  */
 
 @SuppressWarnings({"unused"})
-public class Translation extends JPanel {
+public class TranslationTest extends JPanel {
     public static final int CONSTANT_SPEED=1;
     private static int Translation_Style=CONSTANT_SPEED;
     public static final int DIRECTION_LEFT = 1;
@@ -24,7 +24,7 @@ public class Translation extends JPanel {
     private int direction = DIRECTION_LEFT;
     private LinkedList<JComponent> linkedList;
     private int intervalTime;
-    private int intervalDistance;
+    private double intervalDistance;
     private boolean isRecycle = true;
     private int width;
     private int height;
@@ -45,7 +45,7 @@ public class Translation extends JPanel {
      * @param direction        平移的组件来自哪个方向
      * @param isRecycle        平移是否循环
      */
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
+    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
@@ -55,13 +55,10 @@ public class Translation extends JPanel {
         initialComponentPos();
         switch (direction) {
             case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
         }
     }
 
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
+    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
@@ -70,13 +67,10 @@ public class Translation extends JPanel {
         initialComponentPos();
         switch (direction) {
             case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
         }
     }
 
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
+    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
@@ -87,7 +81,10 @@ public class Translation extends JPanel {
 
     private void translationFromLeft() {
         int i = 0;
-        moveDistance += intervalDistance;
+        if(intervalDistance<=4){
+            intervalDistance+=0.01;
+        }
+        moveDistance += (int) intervalDistance;
         for (JComponent a : linkedList) {
             a.setLocation(i * width - moveDistance, 0);
             i++;
@@ -99,55 +96,6 @@ public class Translation extends JPanel {
             linkedList.add(tmp);
         }
     }
-
-    private void translationFromRight() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(-i * width + moveDistance, 0);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= width && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
-    private void translationFromUpper() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(0, -i * height+moveDistance);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= height && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
-    private void translationFromBelow() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(0, i * height - moveDistance);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= height && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
     private void initialComponentPos() {
         width = this.getWidth();
         height = this.getHeight();
@@ -225,9 +173,6 @@ public class Translation extends JPanel {
         this.intervalTime = intervalTime;
     }
 
-    public int getIntervalDistance() {
-        return intervalDistance;
-    }
 
     public void setIntervalDistance(int intervalDistance) {
         this.intervalDistance = intervalDistance;
@@ -243,9 +188,6 @@ public class Translation extends JPanel {
             initialComponentPos();
             switch (direction) {
                 case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-                case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-                case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-                case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
             }
         }
     }

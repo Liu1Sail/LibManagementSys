@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("unused")
 public class AdminCenterBookSearchPanel extends centerPanelModel {
-    private final AdminCenterBookSearchPanel frame = this;
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;

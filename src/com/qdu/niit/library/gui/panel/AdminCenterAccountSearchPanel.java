@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class AdminCenterAccountSearchPanel extends centerPanelModel {
-    private final AdminCenterAccountSearchPanel frame = this;
     private final InputTextPanel id;
     private final InputTextPanel name;
 
