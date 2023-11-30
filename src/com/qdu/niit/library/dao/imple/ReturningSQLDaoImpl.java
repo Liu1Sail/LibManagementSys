@@ -69,6 +69,10 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     @Override
     public Returning getOneByUidAndBid(int uid, int bid) throws SQLException {
        Object[]receive = getOne(SELECT_ReturningByUidAndBid_SQL,uid,bid);
+        if(receive == null)
+        {
+            return null;
+        }
        Returning back = new Returning((int)receive[0],(int)receive[1],(LocalDateTime) receive[2]);
        return back;
     }

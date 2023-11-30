@@ -61,7 +61,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom getOneByUid(int uid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByUid_SQL,uid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
@@ -72,7 +72,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom getOneByBid(int bid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByBid_SQL,bid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
