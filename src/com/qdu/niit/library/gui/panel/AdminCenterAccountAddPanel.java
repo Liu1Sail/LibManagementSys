@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class AdminCenterAccountAddPanel extends centerPanelModel {
-    private final AdminCenterAccountAddPanel frame = this;
     private final InputTextPanel id;
     private final InputTextPanel name;
     private final InputPasswordPanel password;

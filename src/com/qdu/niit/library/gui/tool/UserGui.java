@@ -7,7 +7,7 @@ package com.qdu.niit.library.gui.tool;
  * @date 2023/11/29
  */
 
-public class User {
+public class UserGui {
     private String id;
     private String name;
     private String password;
@@ -16,7 +16,7 @@ public class User {
     private String phone;
     private String email;
 
-    public User(String id, String name, String password, String age, String gender, String phone, String email) {
+    public UserGui(String id, String name, String password, String age, String gender, String phone, String email) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -26,13 +26,13 @@ public class User {
         this.email = email;
     }
 
-    public User(String id, String name, String password) {
+    public UserGui(String id, String name, String password) {
         this.id = id;
         this.name = name;
         this.password = password;
     }
 
-    public User(String id) {
+    public UserGui(String id) {
         this.id = id;
     }
 

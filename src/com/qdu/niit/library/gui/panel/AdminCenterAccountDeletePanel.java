@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class AdminCenterAccountDeletePanel extends centerPanelModel {
-    private final AdminCenterAccountDeletePanel frame = this;
     private final InputTextPanel id;
 
     public AdminCenterAccountDeletePanel() {

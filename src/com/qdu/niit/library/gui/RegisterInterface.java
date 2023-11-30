@@ -50,13 +50,13 @@ public class RegisterInterface extends JFrame {
         });
         var buttonClose = getButtonClose(frame);
         //添加注册信息输入JPanel
-        var bodyPanel = getBodPanel();
+        var bodyPanel = getBodyPanel();
         frame.add(bodyPanel);
         frame.add(buttonClose);
         frame.setVisible(true);
     }
 
-    private JPanel getBodPanel() {
+    private JPanel getBodyPanel() {
         var bodyPanel = new JPanel();
         bodyPanel.setBounds(0, 40, 400, 400);
         bodyPanel.setOpaque(false);

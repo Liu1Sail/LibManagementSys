@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("unused")
 public class UserCenterBookSearchPanel extends centerPanelModel {
-    private final UserCenterBookSearchPanel frame = this;
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;
@@ -28,16 +27,16 @@ public class UserCenterBookSearchPanel extends centerPanelModel {
         this.add(inputBottomPanel);
 
         var titleLabel = new JLabel("搜索图书信息");
-        bookIdInput=new InputTextPanel("图书编号：");
+        bookIdInput=new InputTextPanel("作者：");
         bookIdInput.setLocation(100,50);
-        bookKeyWordInput=new InputTextPanel("图书全名或关键词：");
+        bookKeyWordInput=new InputTextPanel("书名：");
         bookKeyWordInput.setLocation(100,50);
-        bookStorageTimeInput=new InputTextPanel("入库时间：");
+        bookStorageTimeInput=new InputTextPanel("作者和书名：");
         bookStorageTimeInput.setLocation(100,50);
         inputBottomPanel.add(bookIdInput);
 
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加图书");
+        var defineButton=new JButton("搜索");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         resetButton.setBounds(410,145,130,35);
@@ -66,7 +65,7 @@ public class UserCenterBookSearchPanel extends centerPanelModel {
         var bookIdPanel=new JPanel();
         bookIdPanel.setBounds(150,5,80,25);
         bookIdPanel.setBackground(new Color(164, 232, 255));
-        var bookIdPanelText=new JLabel("编号查询");
+        var bookIdPanelText=new JLabel("作者查询");
         bookIdPanelText.setBounds(0,0,80,25);
         bookIdPanelText.setFont(tabNameFont);
         bookIdPanelText.setVerticalAlignment(SwingConstants.CENTER);
@@ -106,7 +105,7 @@ public class UserCenterBookSearchPanel extends centerPanelModel {
         var bookStorageTimePanel=new JPanel();
         bookStorageTimePanel.setBounds(310,5,80,25);
         bookStorageTimePanel.setBackground(new Color(164, 232, 255));
-        var bookStorageTimePanelText=new JLabel("时间查询");
+        var bookStorageTimePanelText=new JLabel("作者和书名");
         bookStorageTimePanelText.setBounds(0,0,80,25);
         bookStorageTimePanelText.setFont(tabNameFont);
         bookStorageTimePanelText.setVerticalAlignment(SwingConstants.CENTER);

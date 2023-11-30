@@ -24,7 +24,7 @@ public class InputTextPanel extends JPanel {
         if(textWidth==0){
             textWidth=150;
         }
-        this.setSize(textWidth + 130, 100);
+        this.setSize(textWidth + 130, 50);
         this.setOpaque(false);
         this.setLayout(null);
         this.textLabel.setText(text);

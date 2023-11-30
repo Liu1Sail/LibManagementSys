@@ -22,14 +22,13 @@ public class TmpTest extends JFrame {
         list.add(panel1);
         list.add(panel2);
         list.add(panel3);
-        var a=new Translation(list,1,2,Translation.DIRECTION_UPPER);
+        var a=new TranslationTest(list,1,2,Translation.DIRECTION_LEFT);
         a.setBounds(100,100,200,200);
         frame.add(a);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         a.start();
     }
-
     public static void main(String[] args) {
         TmpTest frame = new TmpTest();
     }

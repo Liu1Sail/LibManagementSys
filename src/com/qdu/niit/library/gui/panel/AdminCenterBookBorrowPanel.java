@@ -12,7 +12,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class AdminCenterBookBorrowPanel extends centerPanelModel {
-    private final AdminCenterBookBorrowPanel frame = this;
     private final InputTextPanel name;
     private final InputTextPanel bookId;
     public AdminCenterBookBorrowPanel() {
