@@ -16,6 +16,7 @@ import java.util.LinkedList;
 @SuppressWarnings({"unused"})
 public class TranslationTest extends JPanel {
     public static final int CONSTANT_SPEED=1;
+    public static final int LINEAR_SPEED=2;
     private static int Translation_Style=CONSTANT_SPEED;
     public static final int DIRECTION_LEFT = 1;
     public static final int DIRECTION_RIGHT = 2;
@@ -81,9 +82,6 @@ public class TranslationTest extends JPanel {
 
     private void translationFromLeft() {
         int i = 0;
-        if(intervalDistance<=4){
-            intervalDistance+=0.01;
-        }
         moveDistance += (int) intervalDistance;
         for (JComponent a : linkedList) {
             a.setLocation(i * width - moveDistance, 0);

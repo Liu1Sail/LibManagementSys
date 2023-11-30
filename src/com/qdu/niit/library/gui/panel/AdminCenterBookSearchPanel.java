@@ -36,7 +36,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         inputBottomPanel.add(bookIdInput);
 
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加图书");
+        var defineButton=new JButton("搜索");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         resetButton.setBounds(410,145,130,35);
