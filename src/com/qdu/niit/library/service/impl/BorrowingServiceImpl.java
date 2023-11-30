@@ -31,36 +31,27 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
+    public Borrowing[] findAll() throws SQLException {
+        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+        return use.getAll();
+    }
+
+    @Override
     public Borrowing[] findAllByEndTime(LocalDateTime end_time)throws SQLException {
         BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        Borrowing[] receive = use.getAllByEndTime(end_time);
-        if(receive == null)
-        {
-            return null;
-        }
-        return receive;
+        return use.getAllByEndTime(end_time);
     }
 
     @Override
     public Borrowing[] findAllByUid(int uid)throws SQLException {
         BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        Borrowing[] receive = use.getAllByUid(uid);
-        if(receive == null)
-        {
-            return null;
-        }
-        return receive;
+        return  use.getAllByUid(uid);
     }
 
     @Override
     public Borrowing findOneByBid(int bid)throws SQLException {
         BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        Borrowing receive = use.getOneByBid(bid);
-        if(receive == null)
-        {
-            return null;
-        }
-        return receive;
+        return use.getOneByBid(bid);
     }
 
     @Override
