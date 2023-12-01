@@ -17,12 +17,13 @@ import java.util.regex.Pattern;
  * @date 2023/11/14
  */
 
-public class RegisterInterface extends JFrame {
+public class RegisterInterfaceSave extends JFrame {
     private final JFrame frame = this;
     private Point offsetMouseToFrame = new Point();
     private InputText inputText;
     private int genderNumber=1;
-    public RegisterInterface() {
+
+    public RegisterInterfaceSave() {
         frame.setLayout(null);
         frame.getContentPane().setBackground(new Color(212, 239, 223));
         frame.setSize(400, 600);
@@ -169,7 +170,7 @@ public class RegisterInterface extends JFrame {
         return bodyPanel;
     }
 
-    private static ShapeDeepenPanel getButtonClose(JFrame frame) {
+    private ShapeDeepenPanel getButtonClose(JFrame frame) {
         var buttonClose = new ShapeDeepenPanel() {
             @Override
             protected void paintComponent(Graphics g) {

@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
+import com.qdu.niit.library.gui.panel.input.InputTextPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,13 +16,13 @@ import java.awt.event.MouseEvent;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterBookSearchPanel extends centerPanelModel {
+public class UserCenterBookSearchPanel extends centerPanelModel {
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;
     private int nowTabNum=1;
 
-    public AdminCenterBookSearchPanel() {
+    public UserCenterBookSearchPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
@@ -27,11 +30,11 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         this.add(inputBottomPanel);
 
         var titleLabel = new JLabel("搜索图书信息");
-        bookIdInput=new InputTextPanel("图书编号：");
+        bookIdInput=new InputTextPanel("作者：");
         bookIdInput.setLocation(100,50);
-        bookKeyWordInput=new InputTextPanel("图书全名或关键词：");
+        bookKeyWordInput=new InputTextPanel("书名：");
         bookKeyWordInput.setLocation(100,50);
-        bookStorageTimeInput=new InputTextPanel("入库时间：");
+        bookStorageTimeInput=new InputTextPanel("作者和书名：");
         bookStorageTimeInput.setLocation(100,50);
         inputBottomPanel.add(bookIdInput);
 
@@ -65,7 +68,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         var bookIdPanel=new JPanel();
         bookIdPanel.setBounds(150,5,80,25);
         bookIdPanel.setBackground(new Color(164, 232, 255));
-        var bookIdPanelText=new JLabel("编号查询");
+        var bookIdPanelText=new JLabel("作者查询");
         bookIdPanelText.setBounds(0,0,80,25);
         bookIdPanelText.setFont(tabNameFont);
         bookIdPanelText.setVerticalAlignment(SwingConstants.CENTER);
@@ -105,7 +108,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         var bookStorageTimePanel=new JPanel();
         bookStorageTimePanel.setBounds(310,5,80,25);
         bookStorageTimePanel.setBackground(new Color(164, 232, 255));
-        var bookStorageTimePanelText=new JLabel("时间查询");
+        var bookStorageTimePanelText=new JLabel("作者和书名");
         bookStorageTimePanelText.setBounds(0,0,80,25);
         bookStorageTimePanelText.setFont(tabNameFont);
         bookStorageTimePanelText.setVerticalAlignment(SwingConstants.CENTER);

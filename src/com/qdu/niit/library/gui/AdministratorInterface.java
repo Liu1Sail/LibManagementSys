@@ -2,7 +2,7 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.*;
+import com.qdu.niit.library.gui.panel.center.*;
 
 import javax.swing.*;
 import java.awt.*;

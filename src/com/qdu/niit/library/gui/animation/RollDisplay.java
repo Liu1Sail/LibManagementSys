@@ -15,8 +15,8 @@ import java.util.LinkedList;
 
 @SuppressWarnings({"unused"})
 public class RollDisplay extends JPanel {
-    public static final int CONSTANT_SPEED=1;
-    private int rollDisplay_Style=CONSTANT_SPEED;
+    public static final int CONSTANT_SPEED = 1;
+    private int rollDisplay_Style = CONSTANT_SPEED;
     public static final int DIRECTION_LEFT = 1;
     public static final int DIRECTION_RIGHT = 2;
     public static final int DIRECTION_UPPER = 3;
@@ -31,13 +31,15 @@ public class RollDisplay extends JPanel {
     private Timer timer;
     private int moveDistance = 0;
     private boolean isStart = false;
-    public void rootPanelInitial(){
+
+    public void rootPanelInitial() {
         this.setLayout(null);
         //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
         //初步判断可能与组件的坐标是从0开始，左闭右开的，但通过增大子组件坐标无法解决问题。
         //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
         this.setOpaque(false);
     }
+
     /**
      * @param linkedList       包含要被平移的组件的LinkedList链表
      * @param intervalTime     平移间隔时间
@@ -53,11 +55,12 @@ public class RollDisplay extends JPanel {
         this.isRecycle = isRecycle;
         rootPanelInitial();
         switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
+            case DIRECTION_LEFT -> timer = new Timer(0, e -> translationFromLeft());
+            case DIRECTION_RIGHT -> timer = new Timer(0, e -> translationFromRight());
+            case DIRECTION_UPPER -> timer = new Timer(0, e -> translationFromUpper());
+            case DIRECTION_BELOW -> timer = new Timer(0, e -> translationFromBelow());
         }
+        timer.setDelay(intervalTime);
     }
 
     public RollDisplay(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
@@ -67,11 +70,12 @@ public class RollDisplay extends JPanel {
         this.direction = direction;
         rootPanelInitial();
         switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
+            case DIRECTION_LEFT -> timer = new Timer(0, e -> translationFromLeft());
+            case DIRECTION_RIGHT -> timer = new Timer(0, e -> translationFromRight());
+            case DIRECTION_UPPER -> timer = new Timer(0, e -> translationFromUpper());
+            case DIRECTION_BELOW -> timer = new Timer(0, e -> translationFromBelow());
         }
+        timer.setDelay(intervalTime);
     }
 
     public RollDisplay(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
@@ -80,7 +84,8 @@ public class RollDisplay extends JPanel {
         this.intervalDistance = intervalDistance;
         rootPanelInitial();
         initialComponentPos();
-        timer = new Timer(intervalTime, e -> translationFromLeft());
+        timer = new Timer(0, e -> translationFromLeft());
+        timer.setDelay(intervalTime);
     }
 
     private void translationFromLeft() {
@@ -118,7 +123,7 @@ public class RollDisplay extends JPanel {
         int i = 0;
         moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(0, -i * height+moveDistance);
+            a.setLocation(0, -i * height + moveDistance);
             i++;
         }
         this.repaint();
@@ -193,11 +198,12 @@ public class RollDisplay extends JPanel {
     /**
      * 重写setBounds方法，用于在RollDisplay组件的位置设定后，立刻设定待移动组件的位置和大小<br>
      * 避免在构造函数中初始化待移动组件导致获取到的RollDisplay的长和宽为0。
-     * @param x the new <i>x</i>-coordinate of this component
-     * @param y the new <i>y</i>-coordinate of this component
-     * @param width the new {@code width} of this component
+     *
+     * @param x      the new <i>x</i>-coordinate of this component
+     * @param y      the new <i>y</i>-coordinate of this component
+     * @param width  the new {@code width} of this component
      * @param height the new {@code height} of this
-     *          component
+     *               component
      */
     @Override
     public void setBounds(int x, int y, int width, int height) {
@@ -285,9 +291,11 @@ public class RollDisplay extends JPanel {
             this.timer = timer;
         }
     }
+
     public int getRollDisplay_Style() {
         return rollDisplay_Style;
     }
+
     public void setRollDisplay_Style(int rollDisplay_Style) {
         this.rollDisplay_Style = rollDisplay_Style;
     }

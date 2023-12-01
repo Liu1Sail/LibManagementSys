@@ -2,10 +2,10 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.UserCenterAccountChangeInfoPanel;
-import com.qdu.niit.library.gui.panel.UserCenterAccountChangePasswordPanel;
-import com.qdu.niit.library.gui.panel.UserCenterBookBorrowPanel;
-import com.qdu.niit.library.gui.panel.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangePasswordPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
 import com.qdu.niit.library.gui.tool.UserGui;
 
 import javax.swing.*;

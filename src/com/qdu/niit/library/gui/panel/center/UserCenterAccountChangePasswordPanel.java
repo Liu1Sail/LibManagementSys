@@ -1,4 +1,6 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.panel.input.InputPasswordPanel;
 
 import javax.swing.*;
 import java.awt.*;

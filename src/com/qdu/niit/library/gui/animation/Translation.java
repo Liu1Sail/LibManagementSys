@@ -63,11 +63,12 @@ public class Translation extends JPanel {
         this.direction = direction;
         rootPanelInitial();
         switch (direction) {
-            case TO_LEFT -> timer = new Timer(intervalTime, e -> translationToLeft());
-            case TO_RIGHT -> timer = new Timer(intervalTime, e -> translationToRight());
-            case TO_UPPER -> timer = new Timer(intervalTime, e -> translationToUpper());
-            case TO_BELOW -> timer = new Timer(intervalTime, e -> translationToBelow());
+            case TO_LEFT -> timer = new Timer(0, e -> translationToLeft());
+            case TO_RIGHT -> timer = new Timer(0, e -> translationToRight());
+            case TO_UPPER -> timer = new Timer(0, e -> translationToUpper());
+            case TO_BELOW -> timer = new Timer(0, e -> translationToBelow());
         }
+        timer.setDelay(intervalTime);
     }
     public Translation(JComponent targetComponent, int intervalTime, int intervalDistance, int maxMoveDistance) {
         this.targetComponent = targetComponent;
@@ -75,7 +76,8 @@ public class Translation extends JPanel {
         this.intervalDistance = intervalDistance;
         this.maxMoveDistance=maxMoveDistance;
         rootPanelInitial();
-        timer = new Timer(intervalTime, e -> translationToLeft());
+        timer = new Timer(0, e -> translationToLeft());
+        timer.setDelay(intervalTime);
     }
     private void translationToLeft() {
         if(moveDistance<=maxMoveDistance){
