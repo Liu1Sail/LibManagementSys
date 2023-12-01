@@ -2,8 +2,6 @@ package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * @author 李冠良

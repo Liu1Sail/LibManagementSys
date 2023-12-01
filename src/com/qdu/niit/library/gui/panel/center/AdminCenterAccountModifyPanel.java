@@ -1,8 +1,8 @@
 package com.qdu.niit.library.gui.panel.center;
 
+import com.qdu.niit.library.gui.input.InputPasswordPanel;
+import com.qdu.niit.library.gui.input.InputTextPanel;
 import com.qdu.niit.library.gui.panel.ResultDisplayArea;
-import com.qdu.niit.library.gui.panel.input.InputPasswordPanel;
-import com.qdu.niit.library.gui.panel.input.InputTextPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

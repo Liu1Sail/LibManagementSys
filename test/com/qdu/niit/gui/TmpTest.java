@@ -3,10 +3,12 @@ package com.qdu.niit.gui;
 import com.qdu.niit.library.gui.animation.RollDisplay;
 import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;
+import com.qdu.niit.library.gui.input.InputInnerTextPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
+
 
 public class TmpTest extends JFrame {
     public TmpTest(){
@@ -18,17 +20,42 @@ public class TmpTest extends JFrame {
         panel.setBounds(0,0,800,500);
         panel.setLayout(null);
         frame.add(panel);
-        var text=new TextEmergeLabel("测试",0.2,0,255,Color.BLACK);
+        var text=new InputInnerTextPanel("测试");
+        text.setFont(new Font("宋体",Font.PLAIN,40));
         text.setBounds(200,200,200,200);
-        text.setFont(new Font("宋体",Font.PLAIN,50));
         panel.add(text);
-        text.start();
+        var text1=new InputInnerTextPanel("测试");
+        text1.setFont(new Font("宋体",Font.PLAIN,40));
+        text1.setBounds(400,400,200,200);
+        panel.add(text1);
         frame.setVisible(true);
     }
     public static void main(String[] args) {
         TmpTest frame = new TmpTest();
     }
 }
+
+//public class TmpTest extends JFrame {
+//    public TmpTest(){
+//        JFrame frame=new JFrame();
+//        frame.setBounds(200,100,800,500);
+//        frame.setLayout(null);
+//        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        var panel=new JPanel();
+//        panel.setBounds(0,0,800,500);
+//        panel.setLayout(null);
+//        frame.add(panel);
+//        var text=new TextEmergeLabel("测试",0.2,0,255,Color.BLACK);
+//        text.setBounds(200,200,200,200);
+//        text.setFont(new Font("宋体",Font.PLAIN,50));
+//        panel.add(text);
+//        text.start();
+//        frame.setVisible(true);
+//    }
+//    public static void main(String[] args) {
+//        TmpTest frame = new TmpTest();
+//    }
+//}
 
 
 //
