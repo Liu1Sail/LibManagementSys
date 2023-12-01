@@ -7,7 +7,7 @@ public class ReadingRoom {
     int bid;
     LocalDateTime start_time;
     LocalDateTime end_time;
-    public ReadingRoom(int bid, int uid, LocalDateTime start_time, LocalDateTime end_time)
+    public ReadingRoom(int uid, int bid, LocalDateTime start_time, LocalDateTime end_time)
     {
         this.bid = bid;
         this.uid = uid;

@@ -17,6 +17,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     private static final String SELECT_ReadingRoomByUid_SQL = "SELECT * FROM Reading_Room Where uid = ?";
     private static final String SELECT_ReadingRoomByBid_SQL = "SELECT * FROM Reading_Room Where bid = ?";
     private static final String SELECT_ReadingRoomByEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(?)<TO_DAYS(NOW());";
+    private static final String SELECT_ReadingRoomBySmallEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(?)>TO_DAYS(NOW());";
     private ReadingRoomSQLDaoImpl()throws SQLException
     {
         executeUpdate(CREATE_TABLE_ReadingRoom_SQL);
@@ -38,7 +39,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     }
 
     @Override
-    public void deleteByRid(int bid) throws SQLException {
+    public void deleteByBid(int bid) throws SQLException {
         executeUpdate(DELETE_ReadingRoomByBid_SQL,bid);
     }
 
@@ -60,7 +61,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom getOneByUid(int uid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByUid_SQL,uid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
@@ -69,9 +70,9 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     }
 
     @Override
-    public ReadingRoom getOneByRid(int bid) throws SQLException {
+    public ReadingRoom getOneByBid(int bid) throws SQLException {
         Object[] receive = getOne(SELECT_ReadingRoomByBid_SQL,bid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
@@ -82,6 +83,21 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     @Override
     public ReadingRoom[] getAllByEndTime(LocalDateTime end_time) throws SQLException {
         ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomByEndTime_SQL,end_time);
+        ReadingRoom[] back = new ReadingRoom[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
+        for(int i = 0;i<receive.size();i++)
+        {
+            back[i] = new ReadingRoom((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+        }
+        return back;
+    }
+
+    @Override
+    public ReadingRoom[] getAllBySmallEndTime(LocalDateTime end_time) throws SQLException {
+        ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomBySmallEndTime_SQL,end_time);
         ReadingRoom[] back = new ReadingRoom[receive.size()];
         if(receive.isEmpty())
         {
