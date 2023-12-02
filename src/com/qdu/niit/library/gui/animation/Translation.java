@@ -1,6 +1,7 @@
 package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
+import java.util.Queue;
 
 /**
  * @author 李冠良
@@ -146,19 +147,19 @@ public class Translation extends JPanel {
 
     public void start() {
         initial();
-        timer.start();
         isStart = true;
+        timer.start();
     }
 
     public void restart() {
         initial();
-        timer.restart();
         isStart = true;
+        timer.restart();
     }
 
     public void stop() {
-        timer.stop();
         isStart = false;
+        timer.stop();
     }
 
     public JComponent getTargetComponent() {
