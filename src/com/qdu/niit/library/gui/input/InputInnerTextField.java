@@ -13,7 +13,7 @@ import java.awt.event.FocusEvent;
  */
 @SuppressWarnings("unused")
 public class InputInnerTextField extends JTextField {
-    private final JTextField textField = this;
+    private final InputInnerTextField textField = this;
     private int arcWidth = 5;
     private int arcHeight = 5;
     private Color borderColor = Color.BLACK;
@@ -21,25 +21,15 @@ public class InputInnerTextField extends JTextField {
     private Color textColor = Color.BLACK;
     private String innerText;
 
+    public void gainFocusMovement(InputInnerTextField textField) {}
+
+    public void lostFocusMovement(InputInnerTextField textField) {}
+
     public InputInnerTextField(String innerText) {
         this.setOpaque(false);
         this.innerText = innerText;
         this.setText(innerText);
-        this.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(innerText)) {
-                    textField.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setText(innerText);
-                }
-            }
-        });
+        addListener();
     }
 
     public InputInnerTextField(String innerText, Color borderColor, Color backgroundColor, Color innerTextColor, Color textColor, int arcWidth, int arcHeight) {
@@ -51,12 +41,16 @@ public class InputInnerTextField extends JTextField {
         this.textColor = textColor;
         this.innerText = innerText;
         this.setText(innerText);
+        addListener();
+    }
+    public void addListener(){
         this.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (textField.getText().equals(innerText)) {
                     textField.setText("");
                 }
+                gainFocusMovement(textField);
             }
 
             @Override
@@ -64,10 +58,10 @@ public class InputInnerTextField extends JTextField {
                 if (textField.getText().isEmpty()) {
                     textField.setText(innerText);
                 }
+                lostFocusMovement(textField);
             }
         });
     }
-
     @Override
     protected void paintBorder(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

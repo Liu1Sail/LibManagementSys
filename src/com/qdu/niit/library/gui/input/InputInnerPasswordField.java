@@ -13,7 +13,7 @@ import java.awt.event.FocusEvent;
  */
 @SuppressWarnings("unused")
 public class InputInnerPasswordField extends JPasswordField {
-    private final JPasswordField passwordField = this;
+    private final InputInnerPasswordField passwordField = this;
     private int arcWidth = 5;
     private int arcHeight = 5;
     private Color borderColor = Color.BLACK;
@@ -21,6 +21,9 @@ public class InputInnerPasswordField extends JPasswordField {
     private Color textColor = Color.BLACK;
     private String innerText;
     private final char defaultChar = passwordField.getEchoChar();
+    public void gainFocusMovement(InputInnerPasswordField passwordField) {}
+
+    public void lostFocusMovement(InputInnerPasswordField passwordField) {}
 
     public InputInnerPasswordField(String innerText) {
         this.innerText = innerText;
@@ -58,6 +61,7 @@ public class InputInnerPasswordField extends JPasswordField {
                     passwordField.setEchoChar(defaultChar);
                     passwordField.setText("");
                 }
+                gainFocusMovement(passwordField);
             }
 
             @Override
@@ -66,6 +70,7 @@ public class InputInnerPasswordField extends JPasswordField {
                     passwordField.setEchoChar('\0');
                     passwordField.setText(innerText);
                 }
+                lostFocusMovement(passwordField);
             }
         });
     }

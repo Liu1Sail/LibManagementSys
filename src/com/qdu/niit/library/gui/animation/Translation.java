@@ -1,7 +1,6 @@
 package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author 李冠良
@@ -15,8 +14,8 @@ import java.awt.*;
 
 @SuppressWarnings({"unused"})
 public class Translation extends JPanel {
-    public static final int CONSTANT_SPEED=1;
-    private static int Translation_Style=CONSTANT_SPEED;
+    public static final int CONSTANT_SPEED = 1;
+    private static int Translation_Style = CONSTANT_SPEED;
     public static final int TO_LEFT = 1;
     public static final int TO_RIGHT = 2;
     public static final int TO_UPPER = 3;
@@ -28,26 +27,37 @@ public class Translation extends JPanel {
     private int maxMoveDistance;
     private int width;
     private int height;
+    private int x;
+    private int y;
     private Timer timer;
     private int moveDistance = 0;
     private boolean isStart = false;
-    public void rootPanelInitial(){
+
+    public void rootPanelInitial() {
         this.setLayout(null);
         //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
         //初步判断可能与组件的坐标是从0开始，左闭右开的，但通过增大子组件坐标无法解决问题。
         //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
         this.setOpaque(false);
-        //测试代码区
-        this.setOpaque(true);
-        this.setBackground(Color.blue);
-        //
     }
+
     private void initial() {
+        switch (direction) {
+            case TO_LEFT -> timer = new Timer(0, e -> translationToLeft());
+            case TO_RIGHT -> timer = new Timer(0, e -> translationToRight());
+            case TO_UPPER -> timer = new Timer(0, e -> translationToUpper());
+            case TO_BELOW -> timer = new Timer(0, e -> translationToBelow());
+        }
+        timer.setDelay(intervalTime);
         width = this.getWidth();
         height = this.getHeight();
-        targetComponent.setBounds(0,0,width,height);
+        x = this.getX();
+        y = this.getY();
+        targetComponent.setBounds(0, 0, width, height);
         this.add(targetComponent);
+        moveDistance=0;
     }
+
     /**
      * @param targetComponent  要被平移的组件
      * @param intervalTime     平移间隔时间
@@ -59,67 +69,79 @@ public class Translation extends JPanel {
         this.targetComponent = targetComponent;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
-        this.maxMoveDistance=maxMoveDistance;
+        this.maxMoveDistance = maxMoveDistance;
         this.direction = direction;
         rootPanelInitial();
-        switch (direction) {
-            case TO_LEFT -> timer = new Timer(0, e -> translationToLeft());
-            case TO_RIGHT -> timer = new Timer(0, e -> translationToRight());
-            case TO_UPPER -> timer = new Timer(0, e -> translationToUpper());
-            case TO_BELOW -> timer = new Timer(0, e -> translationToBelow());
-        }
-        timer.setDelay(intervalTime);
     }
+
     public Translation(JComponent targetComponent, int intervalTime, int intervalDistance, int maxMoveDistance) {
         this.targetComponent = targetComponent;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
-        this.maxMoveDistance=maxMoveDistance;
+        this.maxMoveDistance = maxMoveDistance;
         rootPanelInitial();
-        timer = new Timer(0, e -> translationToLeft());
-        timer.setDelay(intervalTime);
     }
+
     private void translationToLeft() {
-        if(moveDistance<=maxMoveDistance){
+        if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            targetComponent.setLocation(-moveDistance, 0);
+            this.setLocation(x - moveDistance, y);
+            this.repaint();
+        } else {
+            this.stop();
             this.repaint();
         }
     }
+
     private void translationToRight() {
-        if(moveDistance<=maxMoveDistance){
+        if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            targetComponent.setLocation(moveDistance, 0);
+            this.setLocation(x + moveDistance, y);
+            this.repaint();
+        } else {
+            this.stop();
             this.repaint();
         }
     }
+
     private void translationToUpper() {
-        if(moveDistance<=maxMoveDistance){
+        if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            targetComponent.setLocation( 0, -moveDistance);
+            this.setLocation(x, y - moveDistance);
+            this.repaint();
+        } else {
+            this.stop();
             this.repaint();
         }
     }
+
     private void translationToBelow() {
-        if(moveDistance<=maxMoveDistance){
+        if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            targetComponent.setLocation( 0, moveDistance);
+            this.setLocation(x, y + moveDistance);
+            this.repaint();
+        } else {
+            this.stop();
             this.repaint();
         }
     }
+
     /**
      * 重写setBounds方法，用于在Translation组件的位置设定后，立刻设定待移动组件的位置和大小<br>
      * 避免在构造函数中初始化待移动组件导致获取到的Translation的长和宽为0。
-     * @param x the new <i>x</i>-coordinate of this component
-     * @param y the new <i>y</i>-coordinate of this component
-     * @param width the new {@code width} of this component
+     *
+     * @param x      the new <i>x</i>-coordinate of this component
+     * @param y      the new <i>y</i>-coordinate of this component
+     * @param width  the new {@code width} of this component
      * @param height the new {@code height} of this
-     *          component
+     *               component
      */
     @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        initial();
+        if (!isStart) {
+            initial();
+        }
     }
 
     public void start() {
@@ -127,74 +149,103 @@ public class Translation extends JPanel {
         timer.start();
         isStart = true;
     }
+
     public void restart() {
         initial();
         timer.restart();
         isStart = true;
     }
+
     public void stop() {
         timer.stop();
         isStart = false;
     }
+
     public JComponent getTargetComponent() {
         return targetComponent;
     }
+
     public void setTargetComponent(JComponent targetComponent) {
         this.targetComponent = targetComponent;
     }
+
     public int getIntervalTime() {
         return intervalTime;
     }
+
     public void setIntervalTime(int intervalTime) {
         this.intervalTime = intervalTime;
     }
+
     public int getIntervalDistance() {
         return intervalDistance;
     }
+
     public void setIntervalDistance(int intervalDistance) {
         this.intervalDistance = intervalDistance;
     }
+
     public int getDirection() {
         return direction;
     }
+
     public void setDirection(int direction) {
         if (!isStart) {
             this.direction = direction;
             initial();
-            switch (direction) {
-                case TO_LEFT -> timer = new Timer(intervalTime, e -> translationToLeft());
-                case TO_RIGHT -> timer = new Timer(intervalTime, e -> translationToRight());
-                case TO_UPPER -> timer = new Timer(intervalTime, e -> translationToUpper());
-                case TO_BELOW -> timer = new Timer(intervalTime, e -> translationToBelow());
-            }
         }
     }
+
     public int getMaxMoveDistance() {
         return maxMoveDistance;
     }
+
     public void setMaxMoveDistance(int maxMoveDistance) {
         this.maxMoveDistance = maxMoveDistance;
     }
+
     public boolean isStart() {
         return isStart;
     }
+
     public Timer getTimer() {
         return timer;
     }
+
     /**
      * 可以利用传入新的timer重写动画行为
      *
-     * @param timer 新的Timer对象
+     * @param timer 新的Timer对象，暂时不可用
      */
     public void setTimer(Timer timer) {
         if (!isStart) {
             this.timer = timer;
         }
     }
+
     public static int getTranslation_Style() {
         return Translation_Style;
     }
+
     public static void setTranslation_Style(int translation_Style) {
         Translation_Style = translation_Style;
+    }
+
+    @Override
+    public String toString() {
+        return "Translation{" +
+                "direction=" + direction +
+                ", targetComponent=" + targetComponent +
+                ", intervalTime=" + intervalTime +
+                ", intervalDistance=" + intervalDistance +
+                ", maxMoveDistance=" + maxMoveDistance +
+                ", width=" + width +
+                ", height=" + height +
+                ", x=" + x +
+                ", y=" + y +
+                ", timer=" + timer +
+                ", moveDistance=" + moveDistance +
+                ", isStart=" + isStart +
+                '}';
     }
 }

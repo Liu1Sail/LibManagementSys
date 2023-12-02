@@ -20,19 +20,18 @@ public class TextEmergeLabel extends JLabel {
     private int startOpacity = 0;
     private int endOpacity = 255;
     private int nowOpacity = 0;
-    private Color color = Color.BLACK;
+    private Color textColor = Color.BLACK;
     private int r;
     private int g;
     private int b;
 
     private void initial() {
-        this.setForeground(color);
+        this.setForeground(textColor);
         nowOpacity = startOpacity;
         intervalTime = 10;
         timer.setDelay(intervalTime);
         intervalOpacity = (endOpacity-startOpacity)/(durationTime*(1000.0/intervalTime));
-        System.out.println(intervalOpacity);
-        //计时器触发貌似有延迟或者设置字体颜色有延迟
+        //计时器触发貌似有延迟或者设置前景色setForeground()有延迟
         //如果用触发间隔时间改变浮现速度，会导致实际速度有一个最高速度（1s左右完全显示）
     }
 
@@ -43,16 +42,13 @@ public class TextEmergeLabel extends JLabel {
         timer = new Timer(0, e -> performance());
     }
 
-    public TextEmergeLabel(String text, double durationTime, int startOpacity, int endOpacity, Color color) {
-        this.text = text;
-        this.setText(text);
-        r = color.getRed();
-        g = color.getGreen();
-        b = color.getBlue();
-        this.color = new Color(r, g, b, startOpacity);
+    public TextEmergeLabel(String text, double durationTime, int startOpacity, int endOpacity, Color textColor) {
         this.durationTime = durationTime;
         this.startOpacity = startOpacity;
         this.endOpacity = endOpacity;
+        this.text = text;
+        this.setText(text);
+        this.setTextColor(textColor);
         timer = new Timer(0, e -> performance());
     }
 
@@ -62,11 +58,12 @@ public class TextEmergeLabel extends JLabel {
             nowOpacity=255;
             this.stop();
         }
-        this.setForeground(new Color(r,b,g,nowOpacity));
-        if(nowOpacity>=255){
-            nowOpacity=255;
+        if(nowOpacity<=0){
+            nowOpacity=0;
             this.stop();
         }
+        this.setForeground(new Color(r,b,g,nowOpacity));
+        this.repaint();
     }
 
     public void start() {
@@ -100,9 +97,9 @@ public class TextEmergeLabel extends JLabel {
         return durationTime;
     }
 
-    public void setDurationTime(int durationTime) {
+    public void setDurationTime(double durationTime) {
         this.durationTime = durationTime;
-        intervalTime = (int) (durationTime * 1.0 / 255);
+        intervalTime = (int) (durationTime / 255);
     }
 
     public int getStartOpacity() {
@@ -121,14 +118,37 @@ public class TextEmergeLabel extends JLabel {
         this.endOpacity = endOpacity;
     }
 
-    public Color getColor() {
-        return color;
+    public Color getTextColor() {
+        return textColor;
     }
 
-    public void setColor(Color color) {
-        r = color.getRed();
-        g = color.getGreen();
-        b = color.getBlue();
-        this.color = new Color(r, g, b, startOpacity);
+    public void setTextColor(Color textColor) {
+        this.r = textColor.getRed();
+        this.g = textColor.getGreen();
+        this.b = textColor.getBlue();
+        this.textColor = new Color(r, g, b, startOpacity);
+        this.setForeground(this.textColor);
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    @Override
+    public String toString() {
+        return "TextEmergeLabel{" +
+                "text='" + text + '\'' +
+                ", timer=" + timer +
+                ", durationTime=" + durationTime +
+                ", intervalTime=" + intervalTime +
+                ", intervalOpacity=" + intervalOpacity +
+                ", startOpacity=" + startOpacity +
+                ", endOpacity=" + endOpacity +
+                ", nowOpacity=" + nowOpacity +
+                ", textColor=" + textColor +
+                ", r=" + r +
+                ", g=" + g +
+                ", b=" + b +
+                '}';
     }
 }
