@@ -89,7 +89,7 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     @Override
     public Borrowing getOneByBid(int bid)throws SQLException {
         Object[] receive = getOne(SELECT_BorrowingByBid_SQL,bid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
@@ -100,7 +100,7 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     @Override
     public Borrowing getOneByUidAndBid(int uid,int bid)throws SQLException {
         Object[] receive = getOne(SELECT_BorrowingByUidAndBid_SQL,uid,bid);
-        if(receive.length == 0)
+        if(receive == null)
         {
             return null;
         }
