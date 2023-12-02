@@ -12,8 +12,8 @@ import java.awt.event.FocusEvent;
  * @date 2023/12/01
  */
 @SuppressWarnings("unused")
-public class InputInnerPasswordPanel extends JPasswordField {
-    private final JPasswordField textField = this;
+public class InputInnerTextField extends JTextField {
+    private final JTextField textField = this;
     private int arcWidth = 5;
     private int arcHeight = 5;
     private Color borderColor = Color.BLACK;
@@ -21,21 +21,47 @@ public class InputInnerPasswordPanel extends JPasswordField {
     private Color textColor = Color.BLACK;
     private String innerText;
 
-    public InputInnerPasswordPanel(String innerText) {
+    public InputInnerTextField(String innerText) {
         this.setOpaque(false);
         this.innerText = innerText;
         this.setText(innerText);
         this.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (new String(textField.getPassword()).equals(innerText)) {
+                if (textField.getText().equals(innerText)) {
                     textField.setText("");
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                if (new String(textField.getPassword()).isEmpty()) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(innerText);
+                }
+            }
+        });
+    }
+
+    public InputInnerTextField(String innerText, Color borderColor, Color backgroundColor, Color innerTextColor, Color textColor, int arcWidth, int arcHeight) {
+        this.arcWidth = arcWidth;
+        this.arcHeight = arcHeight;
+        this.borderColor = borderColor;
+        this.setBackground(backgroundColor);
+        this.innerTextColor = innerTextColor;
+        this.textColor = textColor;
+        this.innerText = innerText;
+        this.setText(innerText);
+        this.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(innerText)) {
+                    textField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
                     textField.setText(innerText);
                 }
             }
@@ -47,7 +73,7 @@ public class InputInnerPasswordPanel extends JPasswordField {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(borderColor);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.drawRoundRect(1, 0, this.getWidth() - 1, this.getHeight() - 1, arcWidth, arcHeight);
+        g2d.drawRoundRect(1, 1, this.getWidth() - 2, this.getHeight() - 2, arcWidth, arcHeight);
     }
 
     public Color getBorderColor() {

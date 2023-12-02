@@ -586,6 +586,7 @@ public class LoginInterface extends JFrame {
         leftPanel.setPreferredSize(new Dimension(500, 600));
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLayout(null);
+        leftPanel.setFocusable(true);
         try {
             var leftImageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/LeftImage.jpg")));
             var leftImagePanel = new ImagePanel(leftImageIcon, 0, 0, 600, 500);

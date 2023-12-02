@@ -12,34 +12,34 @@ import java.awt.event.FocusEvent;
  * @date 2023/12/01
  */
 @SuppressWarnings("unused")
-public class InputInnerTextPanel extends JTextField {
-    private final JTextField textField = this;
+public class InputInnerPasswordField extends JPasswordField {
+    private final JPasswordField passwordField = this;
     private int arcWidth = 5;
     private int arcHeight = 5;
     private Color borderColor = Color.BLACK;
     private Color innerTextColor = Color.BLACK;
     private Color textColor = Color.BLACK;
     private String innerText;
+    private final char defaultChar = passwordField.getEchoChar();
 
-    public InputInnerTextPanel(String innerText) {
-        this.setOpaque(false);
+    public InputInnerPasswordField(String innerText) {
         this.innerText = innerText;
+        this.setEchoChar('\0');
         this.setText(innerText);
-        this.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(innerText)) {
-                    textField.setText("");
-                }
-            }
+        addListener();
+    }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setText(innerText);
-                }
-            }
-        });
+    public InputInnerPasswordField(String innerText, Color borderColor, Color backgroundColor, Color innerTextColor, Color textColor, int arcWidth, int arcHeight) {
+        this.arcWidth = arcWidth;
+        this.arcHeight = arcHeight;
+        this.borderColor = borderColor;
+        this.setBackground(backgroundColor);
+        this.innerTextColor = innerTextColor;
+        this.textColor = textColor;
+        this.innerText = innerText;
+        this.setEchoChar('\0');
+        this.setText(innerText);
+        addListener();
     }
 
     @Override
@@ -47,7 +47,27 @@ public class InputInnerTextPanel extends JTextField {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(borderColor);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.drawRoundRect(1, 0, this.getWidth() - 1, this.getHeight() - 1, arcWidth, arcHeight);
+        g2d.drawRoundRect(1, 1, this.getWidth() - 2, this.getHeight() - 2, arcWidth, arcHeight);
+    }
+
+    private void addListener() {
+        this.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (new String(passwordField.getPassword()).equals(innerText)) {
+                    passwordField.setEchoChar(defaultChar);
+                    passwordField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (new String(passwordField.getPassword()).isEmpty()) {
+                    passwordField.setEchoChar('\0');
+                    passwordField.setText(innerText);
+                }
+            }
+        });
     }
 
     public Color getBorderColor() {

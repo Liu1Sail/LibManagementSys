@@ -1,13 +1,9 @@
 package com.qdu.niit.gui;
 
-import com.qdu.niit.library.gui.animation.RollDisplay;
-import com.qdu.niit.library.gui.animation.TextEmergeLabel;
-import com.qdu.niit.library.gui.animation.Translation;
-import com.qdu.niit.library.gui.input.InputInnerTextPanel;
+import com.qdu.niit.library.gui.input.InputInnerTextField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 
 
 public class TmpTest extends JFrame {
@@ -20,11 +16,11 @@ public class TmpTest extends JFrame {
         panel.setBounds(0,0,800,500);
         panel.setLayout(null);
         frame.add(panel);
-        var text=new InputInnerTextPanel("测试");
+        var text=new InputInnerTextField("测试");
         text.setFont(new Font("宋体",Font.PLAIN,40));
         text.setBounds(200,200,200,200);
         panel.add(text);
-        var text1=new InputInnerTextPanel("测试");
+        var text1=new InputInnerTextField("测试");
         text1.setFont(new Font("宋体",Font.PLAIN,40));
         text1.setBounds(400,400,200,200);
         panel.add(text1);
