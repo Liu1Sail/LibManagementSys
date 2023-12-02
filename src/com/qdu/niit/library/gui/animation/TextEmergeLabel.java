@@ -27,6 +27,7 @@ public class TextEmergeLabel extends JLabel {
 
     private void initial() {
         this.setForeground(textColor);
+        this.text=this.getText();
         nowOpacity = startOpacity;
         intervalTime = 10;
         timer.setDelay(intervalTime);

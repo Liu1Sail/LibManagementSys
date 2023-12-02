@@ -77,8 +77,8 @@ public class RegisterInterface extends JFrame {
 
             @Override
             public void gainFocusMovement(InputInnerTextField textField) {
-                if (textField.getText().isEmpty() && !isInitial) {
-                    for (int i = 3; i <= 4; i++) {
+                if (!isInitial) {
+                    for (int i = 3; i <= 6; i++) {
                         Translation tmpSave = componentMap.get(i);
                         if (tmpSave.isStart()) {
                             tmpSave.stop();
@@ -100,7 +100,7 @@ public class RegisterInterface extends JFrame {
             public void lostFocusMovement(InputInnerTextField textField) {
                 if (textField.getText().equals("用户名")) {
                     isInitial = false;
-                    for (int i = 3; i <= 4; i++) {
+                    for (int i = 3; i <= 6; i++) {
                         Translation tmpSave = componentMap.get(i);
                         if (tmpSave.isStart()) {
                             tmpSave.stop();
@@ -112,9 +112,42 @@ public class RegisterInterface extends JFrame {
                     if (tip.getTimer().isRunning()) {
                         tip.stop();
                     }
+                    tip.setText("用户名不能为空");
                     tip.setStartOpacity(0);
                     tip.setEndOpacity(255);
                     tip.start();
+                } else {
+                    inputTextHandle.setName(textField.getText());
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
+                    if (!inputTextHandle.isNameNotShorter()) {
+                        isInitial = false;
+                        for (int i = 3; i <= 6; i++) {
+                            Translation tmpSave = componentMap.get(i);
+                            if (tmpSave.isStart()) {
+                                tmpSave.stop();
+                            }
+                            tmpSave.setDirection(Translation.TO_BELOW);
+                            tmpSave.start();
+                        }
+                        tip.setText("用户名过短");
+                        tip.setStartOpacity(0);
+                        tip.setEndOpacity(255);
+                        tip.start();
+                    } else if (!inputTextHandle.isNameNotLonger()) {
+                        isInitial = false;
+                        for (int i = 3; i <= 6; i++) {
+                            Translation tmpSave = componentMap.get(i);
+                            if (tmpSave.isStart()) {
+                                tmpSave.stop();
+                            }
+                            tmpSave.setDirection(Translation.TO_BELOW);
+                            tmpSave.start();
+                        }
+                        tip.setText("用户名过长");
+                        tip.setStartOpacity(0);
+                        tip.setEndOpacity(255);
+                        tip.start();
+                    }
                 }
             }
         };
@@ -122,13 +155,13 @@ public class RegisterInterface extends JFrame {
         var nameTip = new TextEmergeLabel("用户名不能为空", 0.05, 0, 255, Color.RED);
         var nameTipPanel = new Translation(nameTip, 1, 3, 10, Translation.TO_BELOW);
 
-        var passwordInput = new InputInnerPasswordField("密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+        var passInput = new InputInnerPasswordField("密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
             @Override
-            public void gainFocusMovement(InputInnerPasswordField passwordField) {
-                if (new String(passwordField.getPassword()).isEmpty() && !isInitial) {
-                    for (int i = 5; i <= 3; i++) {
+            public void gainFocusMovement(InputInnerPasswordField textField) {
+                if (!isInitial) {
+                    for (int i = 5; i <= 6; i++) {
                         Translation tmpSave = componentMap.get(i);
                         if (tmpSave.isStart()) {
                             tmpSave.stop();
@@ -147,10 +180,10 @@ public class RegisterInterface extends JFrame {
             }
 
             @Override
-            public void lostFocusMovement(InputInnerPasswordField passwordField) {
-                if (new String(passwordField.getPassword()).equals("密码")) {
+            public void lostFocusMovement(InputInnerPasswordField textField) {
+                if (new String(textField.getPassword()).equals("密码")) {
                     isInitial = false;
-                    for (int i = 5; i <= 3; i++) {
+                    for (int i = 5; i <= 6; i++) {
                         Translation tmpSave = componentMap.get(i);
                         if (tmpSave.isStart()) {
                             tmpSave.stop();
@@ -159,38 +192,189 @@ public class RegisterInterface extends JFrame {
                         tmpSave.start();
                     }
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
-
                     if (tip.getTimer().isRunning()) {
                         tip.stop();
                     }
+                    tip.setText("密码不能为空");
                     tip.setStartOpacity(0);
                     tip.setEndOpacity(255);
                     tip.start();
+                } else {
+                    inputTextHandle.setPassword(new String(textField.getPassword()));
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+                    if (!inputTextHandle.isSamePassWord()) {
+                        isInitial = false;
+                        for (int i = 5; i <= 6; i++) {
+                            Translation tmpSave = componentMap.get(i);
+                            if (tmpSave.isStart()) {
+                                tmpSave.stop();
+                            }
+                            tmpSave.setDirection(Translation.TO_BELOW);
+                            tmpSave.start();
+                        }
+                        tip.setText("密码过长或过短");
+                        tip.setStartOpacity(0);
+                        tip.setEndOpacity(255);
+                        tip.start();
+                    } else if (!inputTextHandle.isHaveSpecialCharacterPassword()) {
+                        isInitial = false;
+                        for (int i = 3; i <= 6; i++) {
+                            Translation tmpSave = componentMap.get(i);
+                            if (tmpSave.isStart()) {
+                                tmpSave.stop();
+                            }
+                            tmpSave.setDirection(Translation.TO_BELOW);
+                            tmpSave.start();
+                        }
+                        tip.setText("密码缺少特殊字符");
+                        tip.setStartOpacity(0);
+                        tip.setEndOpacity(255);
+                        tip.start();
+                    } else if (!inputTextHandle.isHaveUpperCharacterPassword()) {
+                        isInitial = false;
+                        for (int i = 3; i <= 6; i++) {
+                            Translation tmpSave = componentMap.get(i);
+                            if (tmpSave.isStart()) {
+                                tmpSave.stop();
+                            }
+                            tmpSave.setDirection(Translation.TO_BELOW);
+                            tmpSave.start();
+                        }
+                        tip.setText("密码缺少大写字母");
+                        tip.setStartOpacity(0);
+                        tip.setEndOpacity(255);
+                        tip.start();
+                    }
                 }
             }
         };
-        var passwordPanel = new Translation(passwordInput, 1, 3, 10, Translation.TO_BELOW);
-        var passNotEmptyTip = new TextEmergeLabel("密码不能为空", 0.05, 0, 255, Color.RED);
-        var passNotEmptyTipPanel = new Translation(passNotEmptyTip, 1, 3, 10, Translation.TO_BELOW);
+        var passPanel = new Translation(passInput, 1, 3, 10, Translation.TO_BELOW);
+        var passTip = new TextEmergeLabel("密码不能为空", 0.05, 0, 255, Color.RED);
+        var passTipPanel = new Translation(passTip, 1, 3, 10, Translation.TO_BELOW);
+
+        var passRepeatInput = new InputInnerPasswordField("重复密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+//            private boolean isInitial = true;
+//
+//            @Override
+//            public void gainFocusMovement(InputInnerPasswordField textField) {
+//                if (!isInitial) {
+//                    for (int i = 5; i <= 4; i++) {
+//                        Translation tmpSave = componentMap.get(i);
+//                        if (tmpSave.isStart()) {
+//                            tmpSave.stop();
+//                        }
+//                        tmpSave.setDirection(Translation.TO_UPPER);
+//                        tmpSave.start();
+//                    }
+//                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+//                    if (tip.getTimer().isRunning()) {
+//                        tip.stop();
+//                    }
+//                    tip.setStartOpacity(255);
+//                    tip.setEndOpacity(0);
+//                    tip.start();
+//                }
+//            }
+//
+//            @Override
+//            public void lostFocusMovement(InputInnerPasswordField textField) {
+//                if (new String(textField.getPassword()).equals("密码")) {
+//                    isInitial = false;
+//                    for (int i = 5; i <= 4; i++) {
+//                        Translation tmpSave = componentMap.get(i);
+//                        if (tmpSave.isStart()) {
+//                            tmpSave.stop();
+//                        }
+//                        tmpSave.setDirection(Translation.TO_BELOW);
+//                        tmpSave.start();
+//                    }
+//                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+//                    if (tip.getTimer().isRunning()) {
+//                        tip.stop();
+//                    }
+//                    tip.setText("密码不能为空");
+//                    tip.setStartOpacity(0);
+//                    tip.setEndOpacity(255);
+//                    tip.start();
+//                } else {
+//                    inputTextHandle.setPassword(new String(textField.getPassword()));
+//                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+//                    if (!inputTextHandle.isSamePassWord()) {
+//                        isInitial = false;
+//                        for (int i = 5; i <= 4; i++) {
+//                            Translation tmpSave = componentMap.get(i);
+//                            if (tmpSave.isStart()) {
+//                                tmpSave.stop();
+//                            }
+//                            tmpSave.setDirection(Translation.TO_BELOW);
+//                            tmpSave.start();
+//                        }
+//                        tip.setText("密码过长或过短");
+//                        tip.setStartOpacity(0);
+//                        tip.setEndOpacity(255);
+//                        tip.start();
+//                    } else if (!inputTextHandle.isHaveSpecialCharacterPassword()) {
+//                        isInitial = false;
+//                        for (int i = 3; i <= 4; i++) {
+//                            Translation tmpSave = componentMap.get(i);
+//                            if (tmpSave.isStart()) {
+//                                tmpSave.stop();
+//                            }
+//                            tmpSave.setDirection(Translation.TO_BELOW);
+//                            tmpSave.start();
+//                        }
+//                        tip.setText("密码缺少特殊字符");
+//                        tip.setStartOpacity(0);
+//                        tip.setEndOpacity(255);
+//                        tip.start();
+//                    } else if (!inputTextHandle.isHaveUpperCharacterPassword()) {
+//                        isInitial = false;
+//                        for (int i = 3; i <= 4; i++) {
+//                            Translation tmpSave = componentMap.get(i);
+//                            if (tmpSave.isStart()) {
+//                                tmpSave.stop();
+//                            }
+//                            tmpSave.setDirection(Translation.TO_BELOW);
+//                            tmpSave.start();
+//                        }
+//                        tip.setText("密码缺少大写字母");
+//                        tip.setStartOpacity(0);
+//                        tip.setEndOpacity(255);
+//                        tip.start();
+//                    }
+//                }
+//            }
+        };
+        var passRepeatPanel = new Translation(passRepeatInput, 1, 3, 10, Translation.TO_BELOW);
+        var passRepeatTip = new TextEmergeLabel("密码不能为空", 0.05, 0, 255, Color.RED);
+        var passRepeatTipPanel = new Translation(passRepeatTip, 1, 3, 10, Translation.TO_BELOW);
+
 
         namePanel.setBounds(70, 70, 250, 35);
         nameInput.setFont(inputInnerTextDefaultFont);
         nameTipPanel.setBounds(70, 100, 250, 35);
-        passwordPanel.setBounds(70, 120, 250, 35);
-        passwordInput.setFont(inputInnerTextDefaultFont);
-        passNotEmptyTipPanel.setBounds(70, 150, 250, 35);
+        passPanel.setBounds(70, 120, 250, 35);
+        passInput.setFont(inputInnerTextDefaultFont);
+        passTipPanel.setBounds(70, 150, 250, 35);
+        passRepeatPanel.setBounds(70, 170, 250, 35);
+        passRepeatInput.setFont(inputInnerTextDefaultFont);
+        passRepeatTipPanel.setBounds(70, 200, 250, 35);
 
         componentMap.put(1, namePanel);
         componentMap.put(2, nameTipPanel);
-        componentMap.put(3, passwordPanel);
-        componentMap.put(4, passNotEmptyTipPanel);
+        componentMap.put(3, passPanel);
+        componentMap.put(4, passTipPanel);
+        componentMap.put(5, passRepeatPanel);
+        componentMap.put(6, passRepeatTipPanel);
 
 
         bodyPanel.add(titleText);
         bodyPanel.add(namePanel);
         bodyPanel.add(nameTipPanel);
-        bodyPanel.add(passwordPanel);
-        bodyPanel.add(passNotEmptyTipPanel);
+        bodyPanel.add(passPanel);
+        bodyPanel.add(passTipPanel);
+        bodyPanel.add(passRepeatPanel);
+        bodyPanel.add(passRepeatTipPanel);
 
 
         return bodyPanel;
@@ -235,6 +419,7 @@ public class RegisterInterface extends JFrame {
         });
         return buttonClose;
     }
+
     @SuppressWarnings("unused")
     private class InputTextHandle {
         private String name;
@@ -272,7 +457,7 @@ public class RegisterInterface extends JFrame {
             if (!isNameNotLonger()) return WRONG_NAME_LONG;
             if (!isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
             if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
-            if (!isRightLengthPassword()) return WRONG_PASSWORD_LENGTH;
+            if (!isTrueLengthPassword()) return WRONG_PASSWORD_LENGTH;
             if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;
             if (!isHaveSpecialCharacterPassword()) return WRONG_PASSWORD_SPECIAL;
             if (!isRightGender()) return WRONG_GENDER;
@@ -297,7 +482,7 @@ public class RegisterInterface extends JFrame {
             return password.equals(passwordAgain);
         }
 
-        public boolean isRightLengthPassword() {
+        public boolean isTrueLengthPassword() {
             return Pattern.matches("\\S{8,20}", password);
         }
 
