@@ -127,7 +127,7 @@ public class RegisterInterface extends JFrame {
 
             @Override
             public void gainFocusMovement(InputInnerPasswordField passwordField) {
-                if (passwordField.getText().isEmpty() && !isInitial) {
+                if (new String(passwordField.getPassword()).isEmpty() && !isInitial) {
                     for (int i = 5; i <= 3; i++) {
                         Translation tmpSave = componentMap.get(i);
                         if (tmpSave.isStart()) {
@@ -148,7 +148,7 @@ public class RegisterInterface extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerPasswordField passwordField) {
-                if (passwordField.getText().equals("密码")) {
+                if (new String(passwordField.getPassword()).equals("密码")) {
                     isInitial = false;
                     for (int i = 5; i <= 3; i++) {
                         Translation tmpSave = componentMap.get(i);
@@ -235,7 +235,7 @@ public class RegisterInterface extends JFrame {
         });
         return buttonClose;
     }
-
+    @SuppressWarnings("unused")
     private class InputTextHandle {
         private String name;
         private String password;
@@ -282,53 +282,43 @@ public class RegisterInterface extends JFrame {
         }
 
         public boolean isNameNotShorter() {
-            if (name.length() <= 2) return false;
-            return true;
+            return name.length() > 2;
         }
 
         public boolean isNameNotLonger() {
-            if (name.length() > 20) return false;
-            return true;
+            return name.length() <= 20;
         }
 
         public boolean isEmptyPassword() {
-            if (!password.isEmpty()) return false;
-            return true;
+            return password.isEmpty();
         }
 
         public boolean isSamePassWord() {
-            if (!password.equals(passwordAgain)) return false;
-            return true;
+            return password.equals(passwordAgain);
         }
 
         public boolean isRightLengthPassword() {
-            if (!Pattern.matches("\\S{8,20}", password)) return false;
-            return true;
+            return Pattern.matches("\\S{8,20}", password);
         }
 
         public boolean isHaveUpperCharacterPassword() {
-            if (!Pattern.matches("\\S*[A-Z]+\\S*", password)) return false;
-            return true;
+            return Pattern.matches("\\S*[A-Z]+\\S*", password);
         }
 
         public boolean isHaveSpecialCharacterPassword() {
-            if (!Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password)) return false;
-            return true;
+            return Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password);
         }
 
         public boolean isRightGender() {
-            if (gender != 1 && gender != 2) return false;
-            return true;
+            return gender == 1 || gender == 2;
         }
 
         public boolean isRightPhoneNumber() {
-            if (!Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber)) return false;
-            return true;
+            return Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber);
         }
 
         public boolean isRightEmail() {
-            if (!Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress)) return false;
-            return true;
+            return Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress);
         }
 
         public String getName() {
