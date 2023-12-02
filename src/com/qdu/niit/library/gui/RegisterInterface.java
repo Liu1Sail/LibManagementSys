@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class RegisterInterface extends JFrame {
     private final JFrame frame = this;
     private Point offsetMouseToFrame = new Point();
-    private InputTextHandle inputTextHandle;
+    private InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
     private final HashMap<Integer, Translation> componentMap = new HashMap<>();
 
@@ -119,8 +119,8 @@ public class RegisterInterface extends JFrame {
             }
         };
         var namePanel = new Translation(nameInput, 1, 3, 10, Translation.TO_BELOW);
-        var nameNotEmptyTip = new TextEmergeLabel("用户名不能为空", 0.05, 0, 255, Color.RED);
-        var nameNotEmptyTipPanel = new Translation(nameNotEmptyTip, 1, 3, 10, Translation.TO_BELOW);
+        var nameTip = new TextEmergeLabel("用户名不能为空", 0.05, 0, 255, Color.RED);
+        var nameTipPanel = new Translation(nameTip, 1, 3, 10, Translation.TO_BELOW);
 
         var passwordInput = new InputInnerPasswordField("密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
@@ -175,20 +175,20 @@ public class RegisterInterface extends JFrame {
 
         namePanel.setBounds(70, 70, 250, 35);
         nameInput.setFont(inputInnerTextDefaultFont);
-        nameNotEmptyTipPanel.setBounds(70, 100, 250, 35);
+        nameTipPanel.setBounds(70, 100, 250, 35);
         passwordPanel.setBounds(70, 120, 250, 35);
         passwordInput.setFont(inputInnerTextDefaultFont);
         passNotEmptyTipPanel.setBounds(70, 150, 250, 35);
 
         componentMap.put(1, namePanel);
-        componentMap.put(2, nameNotEmptyTipPanel);
+        componentMap.put(2, nameTipPanel);
         componentMap.put(3, passwordPanel);
         componentMap.put(4, passNotEmptyTipPanel);
 
 
         bodyPanel.add(titleText);
         bodyPanel.add(namePanel);
-        bodyPanel.add(nameNotEmptyTipPanel);
+        bodyPanel.add(nameTipPanel);
         bodyPanel.add(passwordPanel);
         bodyPanel.add(passNotEmptyTipPanel);
 
@@ -245,12 +245,18 @@ public class RegisterInterface extends JFrame {
         private String emailAddress;
         private final int RIGHT = 0;
         private final int WRONG_NAME_SHORT = 1;
-        private final int WRONG_EMPTY_PASSWORD=2;
-        private final int WRONG_PASSWORD_NOT_SAME = 3;
-        private final int WRONG_PASSWORD = 4;
-        private final int WRONG_GENDER = 5;
-        private final int WRONG_PHONE = 6;
-        private final int WRONG_EMAIL = 7;
+        private final int WRONG_NAME_LONG = 2;
+        private final int WRONG_EMPTY_PASSWORD = 3;
+        private final int WRONG_PASSWORD_NOT_SAME = 4;
+        private final int WRONG_PASSWORD_LENGTH = 5;
+        private final int WRONG_PASSWORD_UPPER = 6;
+        private final int WRONG_PASSWORD_SPECIAL = 7;
+        private final int WRONG_GENDER = 8;
+        private final int WRONG_PHONE = 9;
+        private final int WRONG_EMAIL = 10;
+
+        public InputTextHandle() {
+        }
 
         public InputTextHandle(String name, String password, String passwordAgain, int gender, String phoneNumber, String emailAddress) {
             this.name = name;
@@ -262,25 +268,66 @@ public class RegisterInterface extends JFrame {
         }
 
         public int checkInputText() {
-            if (!isNameEnoughLength()) return WRONG_NAME_SHORT;
+            if (!isNameNotShorter()) return WRONG_NAME_SHORT;
+            if (!isNameNotLonger()) return WRONG_NAME_LONG;
             if (!isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
-            if (!password.equals(passwordAgain)) return WRONG_PASSWORD_NOT_SAME;
-            if (!Pattern.matches("\\S{8,20}", password)) return WRONG_PASSWORD;
-            if (!Pattern.matches("\\S*[A-Z]+\\S*", password)) return WRONG_PASSWORD;
-            if (!Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password))
-                return WRONG_PASSWORD;
-            if (gender != 1 && gender != 2) return WRONG_GENDER;
-            if (!Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber))
-                return WRONG_PHONE;
-            if (!Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress)) return WRONG_EMAIL;
+            if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
+            if (!isRightLengthPassword()) return WRONG_PASSWORD_LENGTH;
+            if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;
+            if (!isHaveSpecialCharacterPassword()) return WRONG_PASSWORD_SPECIAL;
+            if (!isRightGender()) return WRONG_GENDER;
+            if (!isRightPhoneNumber()) return WRONG_PHONE;
+            if (!isRightEmail()) return WRONG_EMAIL;
             return RIGHT;
         }
-        public boolean isNameEnoughLength(){
-            if (!Pattern.matches("\\S{3,}", name)) return false;
+
+        public boolean isNameNotShorter() {
+            if (name.length() <= 2) return false;
             return true;
         }
-        public boolean isEmptyPassword(){
+
+        public boolean isNameNotLonger() {
+            if (name.length() > 20) return false;
+            return true;
+        }
+
+        public boolean isEmptyPassword() {
             if (!password.isEmpty()) return false;
+            return true;
+        }
+
+        public boolean isSamePassWord() {
+            if (!password.equals(passwordAgain)) return false;
+            return true;
+        }
+
+        public boolean isRightLengthPassword() {
+            if (!Pattern.matches("\\S{8,20}", password)) return false;
+            return true;
+        }
+
+        public boolean isHaveUpperCharacterPassword() {
+            if (!Pattern.matches("\\S*[A-Z]+\\S*", password)) return false;
+            return true;
+        }
+
+        public boolean isHaveSpecialCharacterPassword() {
+            if (!Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password)) return false;
+            return true;
+        }
+
+        public boolean isRightGender() {
+            if (gender != 1 && gender != 2) return false;
+            return true;
+        }
+
+        public boolean isRightPhoneNumber() {
+            if (!Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber)) return false;
+            return true;
+        }
+
+        public boolean isRightEmail() {
+            if (!Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress)) return false;
             return true;
         }
 
