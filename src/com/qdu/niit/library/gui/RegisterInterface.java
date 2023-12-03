@@ -32,7 +32,7 @@ public class RegisterInterface extends JFrame {
     public RegisterInterface() {
         frame.setLayout(null);
         frame.getContentPane().setBackground(new Color(212, 239, 223));
-        frame.setSize(400, 600);
+        frame.setSize(400, 800);
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
         frame.setTitle("注册");
@@ -69,6 +69,8 @@ public class RegisterInterface extends JFrame {
         var inputBorderColor = new Color(84, 157, 248);
         var inputInnerTextColor = new Color(153, 153, 153);
         var inputBackgroundColor = new Color(229, 244, 251);
+        var buttonBackColor=new Color(0,133,255);
+        var buttonPressedBackColor=new Color(0, 124, 237);
         var inputInnerTextDefaultFont = new Font("宋体", Font.PLAIN, 14);
         var titleText = new JLabel("欢迎注册图书馆账号");
         titleText.setFont(new Font("宋体", Font.PLAIN, 35));
@@ -537,7 +539,15 @@ public class RegisterInterface extends JFrame {
         emailPanel.setBounds(70,340,250,35);
         emailInput.setFont(inputInnerTextDefaultFont);
         emailTipPanel.setBounds(70,370,250,35);
-
+        defineButtonPanel.setBounds(100,420,200,50);
+        defineButton.setForeground(Color.WHITE);
+        defineButton.setFont(new Font("宋体",Font.BOLD,20));
+        defineButton.setText("立即注册");
+        defineButton.setHorizontalAlignment(SwingConstants.CENTER);
+        defineButton.setVerticalAlignment(SwingConstants.CENTER);
+        defineButton.setBackground(buttonBackColor);
+        defineButton.setBorder(null);
+        defineButton.setFocusPainted(false);
 
         componentMap.put(1, namePanel);
         componentMap.put(2, nameTipPanel);
@@ -551,6 +561,7 @@ public class RegisterInterface extends JFrame {
         componentMap.put(10,phoneTipPanel);
         componentMap.put(11,emailPanel);
         componentMap.put(12,emailTipPanel);
+        componentMap.put(13,defineButtonPanel);
 
         bodyPanel.add(titleText);
         bodyPanel.add(namePanel);
@@ -565,6 +576,7 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(phoneTipPanel);
         bodyPanel.add(emailPanel);
         bodyPanel.add(emailTipPanel);
+        bodyPanel.add(defineButtonPanel);
 
         return bodyPanel;
     }
