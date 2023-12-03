@@ -1,7 +1,7 @@
 package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
-import java.util.Queue;
+import java.util.ArrayDeque;
 
 /**
  * @author 李冠良
@@ -15,6 +15,7 @@ import java.util.Queue;
 
 @SuppressWarnings({"unused"})
 public class Translation extends JPanel {
+    private final ArrayDeque<ProcessSave> taskQueue = new ArrayDeque<>();
     public static final int CONSTANT_SPEED = 1;
     private static int Translation_Style = CONSTANT_SPEED;
     public static final int TO_LEFT = 1;
@@ -56,7 +57,7 @@ public class Translation extends JPanel {
         y = this.getY();
         targetComponent.setBounds(0, 0, width, height);
         this.add(targetComponent);
-        moveDistance=0;
+        moveDistance = 0;
     }
 
     /**
@@ -91,6 +92,11 @@ public class Translation extends JPanel {
         } else {
             this.stop();
             this.repaint();
+            if (taskQueue.size() > 0) {
+                setDirection(taskQueue.pop().direction);
+                initial();
+                this.start();
+            }
         }
     }
 
@@ -102,6 +108,11 @@ public class Translation extends JPanel {
         } else {
             this.stop();
             this.repaint();
+            if (taskQueue.size() > 0) {
+                setDirection(taskQueue.pop().direction);
+                initial();
+                this.start();
+            }
         }
     }
 
@@ -113,6 +124,11 @@ public class Translation extends JPanel {
         } else {
             this.stop();
             this.repaint();
+            if (taskQueue.size() > 0) {
+                setDirection(taskQueue.pop().direction);
+                initial();
+                this.start();
+            }
         }
     }
 
@@ -124,6 +140,11 @@ public class Translation extends JPanel {
         } else {
             this.stop();
             this.repaint();
+            if (taskQueue.size() > 0) {
+                setDirection(taskQueue.pop().direction);
+                initial();
+                this.start();
+            }
         }
     }
 
@@ -149,6 +170,16 @@ public class Translation extends JPanel {
         initial();
         isStart = true;
         timer.start();
+    }
+
+    public void waitOrStart(int direction) {
+        if (isStart) {
+            taskQueue.add(new ProcessSave(direction));
+        }
+        else{
+            this.setDirection(direction);
+            start();
+        }
     }
 
     public void restart() {
@@ -248,5 +279,13 @@ public class Translation extends JPanel {
                 ", moveDistance=" + moveDistance +
                 ", isStart=" + isStart +
                 '}';
+    }
+
+    private static class ProcessSave {
+        private int direction;
+
+        public ProcessSave(int direction) {
+            this.direction = direction;
+        }
     }
 }
