@@ -347,8 +347,11 @@ public class RegisterInterface extends JFrame {
         var passRepeatPanel = new Translation(passRepeatInput, 1, 3, 10, Translation.TO_BELOW);
         var passRepeatTip = new TextEmergeLabel("密码不能为空", 0.05, 0, 255, Color.RED);
         var passRepeatTipPanel = new Translation(passRepeatTip, 1, 3, 10, Translation.TO_BELOW);
+
         var genderLabel = new JLabel();
-        var genderPanel = new JPanel();
+        var genderLabelPanel=new Translation(genderLabel,1, 3, 10, Translation.TO_BELOW);
+        var genderButtonPanel = new JPanel();
+        var genderPanel=new Translation(genderButtonPanel,1, 3, 10, Translation.TO_BELOW);
         var genderGroup = new ButtonGroup();
         var maleButton = new JRadioButton("男", true);
         var femaleButton = new JRadioButton("女", false);
@@ -419,7 +422,8 @@ public class RegisterInterface extends JFrame {
         var phonePanel = new Translation(phoneInput, 1, 3, 10, Translation.TO_BELOW);
         var phoneTip = new TextEmergeLabel("手机不能为空", 0.05, 0, 255, Color.RED);
         var phoneTipPanel = new Translation(phoneTip, 1, 3, 10, Translation.TO_BELOW);
-        var emailInput = new InputInnerTextField("手机号", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+
+        var emailInput = new InputInnerTextField("邮箱", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
             @Override
@@ -487,6 +491,9 @@ public class RegisterInterface extends JFrame {
         var emailTip = new TextEmergeLabel("邮箱不能为空", 0.05, 0, 255, Color.RED);
         var emailTipPanel = new Translation(emailTip, 1, 3, 10, Translation.TO_BELOW);
 
+        var defineButton=new JButton();
+        var defineButtonPanel=new Translation(defineButton, 1, 3, 10, Translation.TO_BELOW);
+
         namePanel.setBounds(70, 70, 250, 35);
         nameInput.setFont(inputInnerTextDefaultFont);
         nameTipPanel.setBounds(70, 100, 250, 35);
@@ -496,12 +503,12 @@ public class RegisterInterface extends JFrame {
         passRepeatPanel.setBounds(70, 190, 250, 35);
         passRepeatInput.setFont(inputInnerTextDefaultFont);
         passRepeatTipPanel.setBounds(70, 220, 250, 35);
-        genderLabel.setBounds(70, 235, 80, 50);
+        genderLabelPanel.setBounds(70, 235, 80, 50);
         genderLabel.setFont(inputInnerTextDefaultFont);
         genderLabel.setText("性别：");
         genderLabel.setOpaque(false);
         genderPanel.setBounds(70, 243, 200, 30);
-        genderPanel.setOpaque(false);
+        genderButtonPanel.setOpaque(false);
         maleButton.setOpaque(false);
         maleButton.setFocusable(false);
         maleButton.setFont(inputInnerTextDefaultFont);
@@ -510,8 +517,8 @@ public class RegisterInterface extends JFrame {
         femaleButton.setFont(inputInnerTextDefaultFont);
         genderGroup.add(maleButton);
         genderGroup.add(femaleButton);
-        genderPanel.add(maleButton);
-        genderPanel.add(femaleButton);
+        genderButtonPanel.add(maleButton);
+        genderButtonPanel.add(femaleButton);
         maleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -531,14 +538,15 @@ public class RegisterInterface extends JFrame {
         emailInput.setFont(inputInnerTextDefaultFont);
         emailTipPanel.setBounds(70,370,250,35);
 
+
         componentMap.put(1, namePanel);
         componentMap.put(2, nameTipPanel);
         componentMap.put(3, passPanel);
         componentMap.put(4, passTipPanel);
         componentMap.put(5, passRepeatPanel);
         componentMap.put(6, passRepeatTipPanel);
-//        componentMap.put(7,genderLabel);
-//        componentMap.put(8,genderPanel);
+        componentMap.put(7,genderLabelPanel);
+        componentMap.put(8,genderPanel);
         componentMap.put(9,phonePanel);
         componentMap.put(10,phoneTipPanel);
         componentMap.put(11,emailPanel);
@@ -551,7 +559,7 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(passTipPanel);
         bodyPanel.add(passRepeatPanel);
         bodyPanel.add(passRepeatTipPanel);
-        bodyPanel.add(genderLabel);
+        bodyPanel.add(genderLabelPanel);
         bodyPanel.add(genderPanel);
         bodyPanel.add(phonePanel);
         bodyPanel.add(phoneTipPanel);
