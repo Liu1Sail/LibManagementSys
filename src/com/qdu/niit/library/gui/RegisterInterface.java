@@ -480,7 +480,7 @@ public class RegisterInterface extends JFrame {
     }
 
     @SuppressWarnings("unused")
-    private class InputTextHandle {
+    private static class InputTextHandle {
         private String name;
         private String password;
         private String passwordAgain;
