@@ -17,5 +17,5 @@ public interface ReadingRoomSQLDao
     ReadingRoom getOneByUid(int uid)throws SQLException;
     ReadingRoom getOneByBid(int bid)throws SQLException;
     ReadingRoom[]getAllByEndTime(LocalDateTime end_time)throws SQLException;
-    ReadingRoom[]getAllBySmallEndTime(LocalDateTime end_time)throws SQLException;
+    ReadingRoom[]getAllBySmallEndTime()throws SQLException;
 }

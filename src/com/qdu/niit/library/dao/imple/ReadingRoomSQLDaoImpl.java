@@ -16,8 +16,8 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     private static final String SELECT_ReadingRoom_SQL = "SELECT * FROM Reading_Room";
     private static final String SELECT_ReadingRoomByUid_SQL = "SELECT * FROM Reading_Room Where uid = ?";
     private static final String SELECT_ReadingRoomByBid_SQL = "SELECT * FROM Reading_Room Where bid = ?";
-    private static final String SELECT_ReadingRoomByEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(?)<TO_DAYS(NOW());";
-    private static final String SELECT_ReadingRoomBySmallEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(?)>TO_DAYS(NOW());";
+    private static final String SELECT_ReadingRoomByEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(?)<TO_DAYS(end_time);";
+    private static final String SELECT_ReadingRoomBySmallEndTime_SQL = "SELECT * FROM Reading_Room Where TO_DAYS(end_time)>TO_DAYS(NOW());";
     private ReadingRoomSQLDaoImpl()throws SQLException
     {
         executeUpdate(CREATE_TABLE_ReadingRoom_SQL);
@@ -96,8 +96,8 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
     }
 
     @Override
-    public ReadingRoom[] getAllBySmallEndTime(LocalDateTime end_time) throws SQLException {
-        ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomBySmallEndTime_SQL,end_time);
+    public ReadingRoom[] getAllBySmallEndTime() throws SQLException {
+        ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomBySmallEndTime_SQL);
         ReadingRoom[] back = new ReadingRoom[receive.size()];
         if(receive.isEmpty())
         {

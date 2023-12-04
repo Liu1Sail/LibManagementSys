@@ -15,7 +15,7 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     private static final String SELECT_ReturningByUid_SQL = "SELECT * FROM Returning_Information Where uid = ?";
     private static final String SELECT_ReturningByBid_SQL = "SELECT * FROM Returning_Information Where bid = ?";
     private static final String SELECT_ReturningByUidAndBid_SQL = "SELECT * FROM Returning_Information Where uid = ? and bid = ?";
-    private static final String SELECT_ReturningByEndTime_SQL = "SELECT * FROM Returning_Information Where TO_DAYS(?)<TO_DAYS(NOW());";
+    private static final String SELECT_ReturningByEndTime_SQL = "SELECT * FROM Returning_Information Where TO_DAYS(?)<TO_DAYS(end_time);";
     private ReturningSQLDaoImpl() throws SQLException {
         executeUpdate(CREATE_TABLE_Returning_SQL);
     }
