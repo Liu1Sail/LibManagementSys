@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.input;
 
 import com.qdu.niit.library.gui.tool.CharacterProcess;
 
@@ -27,7 +27,7 @@ public class InputTextPanel extends JPanel {
         this.setSize(textWidth + 130, 50);
         this.setOpaque(false);
         this.setLayout(null);
-        this.textLabel.setText(text);
+        textLabel.setText(text);
         textLabel.setBounds(0, 0, textWidth, 50);
         textLabel.setFont(defaultFont);
         textLabel.setVerticalAlignment(SwingConstants.CENTER);

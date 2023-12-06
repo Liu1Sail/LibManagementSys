@@ -1,23 +1,23 @@
-package com.qdu.niit.gui;
+package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
 
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description Translation组件为JPanel的子类，将LinkedList中的组件，随时间在Translation组件内的区域内平移,
- * 并将已离开屏幕的组件移至队尾，以达到循环显示的效果。LinkedList中的组件将会填充Translation组件的范围。<br>
+ * @description RollDisplay组件为JPanel的子类，将LinkedList中的组件，随时间在RollDisplay组件内的区域内平移,
+ * 并将已离开屏幕的组件移至队尾，以达到循环显示的效果。LinkedList中的组件将会填充RollDisplay组件的范围。<br>
  * LinkedList的类型变量应为JComponent类型，元素为JComponent或其子类对象。<br>
  * 可以利用传入新的timer重写动画行为
  * @date 2023/11/15
  */
 
 @SuppressWarnings({"unused"})
-public class TranslationTest extends JPanel {
-    public static final int CONSTANT_SPEED=1;
-    public static final int LINEAR_SPEED=2;
-    private static int Translation_Style=CONSTANT_SPEED;
+public class RollDisplay extends JPanel {
+    public static final int CONSTANT_SPEED = 1;
+    private int rollDisplay_Style = CONSTANT_SPEED;
     public static final int DIRECTION_LEFT = 1;
     public static final int DIRECTION_RIGHT = 2;
     public static final int DIRECTION_UPPER = 3;
@@ -25,20 +25,22 @@ public class TranslationTest extends JPanel {
     private int direction = DIRECTION_LEFT;
     private LinkedList<JComponent> linkedList;
     private int intervalTime;
-    private double intervalDistance;
+    private int intervalDistance;
     private boolean isRecycle = true;
     private int width;
     private int height;
     private Timer timer;
     private int moveDistance = 0;
     private boolean isStart = false;
-    public void rootPanelInitial(){
+
+    public void rootPanelInitial() {
         this.setLayout(null);
         //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
         //初步判断可能与组件的坐标是从0开始，左闭右开的，但通过增大子组件坐标无法解决问题。
         //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
         this.setOpaque(false);
     }
+
     /**
      * @param linkedList       包含要被平移的组件的LinkedList链表
      * @param intervalTime     平移间隔时间
@@ -46,45 +48,55 @@ public class TranslationTest extends JPanel {
      * @param direction        平移的组件来自哪个方向
      * @param isRecycle        平移是否循环
      */
-    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
+    public RollDisplay(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         this.direction = direction;
         this.isRecycle = isRecycle;
         rootPanelInitial();
-        initialComponentPos();
         switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
+            case DIRECTION_LEFT -> timer = new Timer(0, e -> translationFromLeft());
+            case DIRECTION_RIGHT -> timer = new Timer(0, e -> translationFromRight());
+            case DIRECTION_UPPER -> timer = new Timer(0, e -> translationFromUpper());
+            case DIRECTION_BELOW -> timer = new Timer(0, e -> translationFromBelow());
         }
+        timer.setDelay(intervalTime);
     }
 
-    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
+    public RollDisplay(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         this.direction = direction;
         rootPanelInitial();
-        initialComponentPos();
         switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
+            case DIRECTION_LEFT -> timer = new Timer(0, e -> translationFromLeft());
+            case DIRECTION_RIGHT -> timer = new Timer(0, e -> translationFromRight());
+            case DIRECTION_UPPER -> timer = new Timer(0, e -> translationFromUpper());
+            case DIRECTION_BELOW -> timer = new Timer(0, e -> translationFromBelow());
         }
+        timer.setDelay(intervalTime);
     }
 
-    public TranslationTest(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
+    public RollDisplay(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
         this.linkedList = linkedList;
         this.intervalTime = intervalTime;
         this.intervalDistance = intervalDistance;
         rootPanelInitial();
         initialComponentPos();
-        timer = new Timer(intervalTime, e -> translationFromLeft());
+        timer = new Timer(0, e -> translationFromLeft());
+        timer.setDelay(intervalTime);
     }
 
     private void translationFromLeft() {
         int i = 0;
-        moveDistance += (int) intervalDistance;
+        moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(i * width - moveDistance, 0);
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(finalI * width - moveDistance, 0);
+            });
             i++;
         }
         this.repaint();
@@ -94,6 +106,64 @@ public class TranslationTest extends JPanel {
             linkedList.add(tmp);
         }
     }
+
+    private void translationFromRight() {
+        int i = 0;
+        moveDistance += intervalDistance;
+        for (JComponent a : linkedList) {
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(-finalI * width + moveDistance, 0);
+            });
+            i++;
+        }
+        this.repaint();
+        if (moveDistance >= width && isRecycle) {
+            moveDistance = 0;
+            JComponent tmp = linkedList.removeFirst();
+            linkedList.add(tmp);
+        }
+        this.repaint();
+    }
+
+    private void translationFromUpper() {
+        int i = 0;
+        moveDistance += intervalDistance;
+        for (JComponent a : linkedList) {
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(0, -finalI * height + moveDistance);
+            });
+            i++;
+        }
+        this.repaint();
+        if (moveDistance >= height && isRecycle) {
+            moveDistance = 0;
+            JComponent tmp = linkedList.removeFirst();
+            linkedList.add(tmp);
+        }
+        this.repaint();
+    }
+
+    private void translationFromBelow() {
+        int i = 0;
+        moveDistance += intervalDistance;
+        for (JComponent a : linkedList) {
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(0, finalI * height - moveDistance);
+            });
+            i++;
+        }
+        this.repaint();
+        if (moveDistance >= height && isRecycle) {
+            moveDistance = 0;
+            JComponent tmp = linkedList.removeFirst();
+            linkedList.add(tmp);
+        }
+        this.repaint();
+    }
+
     private void initialComponentPos() {
         width = this.getWidth();
         height = this.getHeight();
@@ -138,6 +208,22 @@ public class TranslationTest extends JPanel {
         }
     }
 
+    /**
+     * 重写setBounds方法，用于在RollDisplay组件的位置设定后，立刻设定待移动组件的位置和大小<br>
+     * 避免在构造函数中初始化待移动组件导致获取到的RollDisplay的长和宽为0。
+     *
+     * @param x      the new <i>x</i>-coordinate of this component
+     * @param y      the new <i>y</i>-coordinate of this component
+     * @param width  the new {@code width} of this component
+     * @param height the new {@code height} of this
+     *               component
+     */
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        initialComponentPos();
+    }
+
     public void start() {
         initialComponentPos();
         timer.start();
@@ -171,6 +257,9 @@ public class TranslationTest extends JPanel {
         this.intervalTime = intervalTime;
     }
 
+    public int getIntervalDistance() {
+        return intervalDistance;
+    }
 
     public void setIntervalDistance(int intervalDistance) {
         this.intervalDistance = intervalDistance;
@@ -186,6 +275,9 @@ public class TranslationTest extends JPanel {
             initialComponentPos();
             switch (direction) {
                 case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
+                case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
+                case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
+                case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
             }
         }
     }
@@ -212,10 +304,12 @@ public class TranslationTest extends JPanel {
             this.timer = timer;
         }
     }
-    public static int getTranslation_Style() {
-        return Translation_Style;
+
+    public int getRollDisplay_Style() {
+        return rollDisplay_Style;
     }
-    public static void setTranslation_Style(int translation_Style) {
-        Translation_Style = translation_Style;
+
+    public void setRollDisplay_Style(int rollDisplay_Style) {
+        this.rollDisplay_Style = rollDisplay_Style;
     }
 }

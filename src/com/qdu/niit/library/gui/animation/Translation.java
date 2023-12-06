@@ -1,7 +1,10 @@
 package com.qdu.niit.library.gui.animation;
 
+import jdk.jfr.Event;
+
 import javax.swing.*;
-import java.util.LinkedList;
+import java.awt.*;
+import java.util.ArrayDeque;
 
 /**
  * @author 李冠良
@@ -15,206 +18,215 @@ import java.util.LinkedList;
 
 @SuppressWarnings({"unused"})
 public class Translation extends JPanel {
-    public static final int CONSTANT_SPEED=1;
-    private static int Translation_Style=CONSTANT_SPEED;
-    public static final int DIRECTION_LEFT = 1;
-    public static final int DIRECTION_RIGHT = 2;
-    public static final int DIRECTION_UPPER = 3;
-    public static final int DIRECTION_BELOW = 4;
-    private int direction = DIRECTION_LEFT;
-    private LinkedList<JComponent> linkedList;
+    private final ArrayDeque<ProcessSave> taskQueue = new ArrayDeque<>();
+    public static final int CONSTANT_SPEED = 1;
+    private static int Translation_Style = CONSTANT_SPEED;
+    public static final int TO_LEFT = 1;
+    public static final int TO_RIGHT = 2;
+    public static final int TO_UPPER = 3;
+    public static final int TO_BELOW = 4;
+    private int direction = TO_LEFT;
+    private JComponent targetComponent;
     private int intervalTime;
     private int intervalDistance;
-    private boolean isRecycle = true;
+    private int maxMoveDistance;
     private int width;
     private int height;
+    private int x;
+    private int y;
     private Timer timer;
     private int moveDistance = 0;
     private boolean isStart = false;
-    public void rootPanelInitial(){
+
+    public void rootPanelInitial() {
         this.setLayout(null);
         //把根面板的背景设为不显示，否则在根面板存在背景色时，会在最右侧显示一条与背景色颜色相同的线，且无法通过调整移动组件的宽度解决
         //初步判断可能与组件的坐标是从0开始，左闭右开的，但通过增大子组件坐标无法解决问题。
         //怀疑与Swing面板的实现有关，暂且通过不显示背景解决。
         this.setOpaque(false);
     }
-    /**
-     * @param linkedList       包含要被平移的组件的LinkedList链表
-     * @param intervalTime     平移间隔时间
-     * @param intervalDistance 一次平移的距离
-     * @param direction        平移的组件来自哪个方向
-     * @param isRecycle        平移是否循环
-     */
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction, boolean isRecycle) {
-        this.linkedList = linkedList;
-        this.intervalTime = intervalTime;
-        this.intervalDistance = intervalDistance;
-        this.direction = direction;
-        this.isRecycle = isRecycle;
-        rootPanelInitial();
-        initialComponentPos();
+
+    private void initial() {
         switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
+            case TO_LEFT -> timer = new Timer(0, e -> translationToLeft());
+            case TO_RIGHT -> timer = new Timer(0, e -> translationToRight());
+            case TO_UPPER -> timer = new Timer(0, e -> translationToUpper());
+            case TO_BELOW -> timer = new Timer(0, e -> translationToBelow());
         }
-    }
-
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance, int direction) {
-        this.linkedList = linkedList;
-        this.intervalTime = intervalTime;
-        this.intervalDistance = intervalDistance;
-        this.direction = direction;
-        rootPanelInitial();
-        initialComponentPos();
-        switch (direction) {
-            case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-            case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-            case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-            case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
-        }
-    }
-
-    public Translation(LinkedList<JComponent> linkedList, int intervalTime, int intervalDistance) {
-        this.linkedList = linkedList;
-        this.intervalTime = intervalTime;
-        this.intervalDistance = intervalDistance;
-        rootPanelInitial();
-        initialComponentPos();
-        timer = new Timer(intervalTime, e -> translationFromLeft());
-    }
-
-    private void translationFromLeft() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(i * width - moveDistance, 0);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= width && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-    }
-
-    private void translationFromRight() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(-i * width + moveDistance, 0);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= width && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
-    private void translationFromUpper() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(0, -i * height+moveDistance);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= height && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
-    private void translationFromBelow() {
-        int i = 0;
-        moveDistance += intervalDistance;
-        for (JComponent a : linkedList) {
-            a.setLocation(0, i * height - moveDistance);
-            i++;
-        }
-        this.repaint();
-        if (moveDistance >= height && isRecycle) {
-            moveDistance = 0;
-            JComponent tmp = linkedList.removeFirst();
-            linkedList.add(tmp);
-        }
-        this.repaint();
-    }
-
-    private void initialComponentPos() {
+        timer.setDelay(intervalTime);
         width = this.getWidth();
         height = this.getHeight();
-        int i = 0;
-        switch (direction) {
-            case DIRECTION_LEFT -> {
-                for (JComponent a : linkedList) {
-                    a.setBounds(i * width, 0, width, height);
-                    this.add(a);
-                    i++;
-                }
+        x = this.getX();
+        y = this.getY();
+        targetComponent.setBounds(0, 0, width, height);
+        this.add(targetComponent);
+        moveDistance = 0;
+    }
+
+    /**
+     * @param targetComponent  要被平移的组件
+     * @param intervalTime     平移间隔时间
+     * @param intervalDistance 一次平移的距离
+     * @param maxMoveDistance  平移最大距离
+     * @param direction        平移的组件向哪个方向平移
+     */
+    public Translation(JComponent targetComponent, int intervalTime, int intervalDistance, int maxMoveDistance, int direction) {
+        this.targetComponent = targetComponent;
+        this.intervalTime = intervalTime;
+        this.intervalDistance = intervalDistance;
+        this.maxMoveDistance = maxMoveDistance;
+        this.direction = direction;
+        rootPanelInitial();
+    }
+
+    public Translation(JComponent targetComponent, int intervalTime, int intervalDistance, int maxMoveDistance) {
+        this.targetComponent = targetComponent;
+        this.intervalTime = intervalTime;
+        this.intervalDistance = intervalDistance;
+        this.maxMoveDistance = maxMoveDistance;
+        rootPanelInitial();
+    }
+
+    private void translationToLeft() {
+        if (moveDistance <= maxMoveDistance) {
+            moveDistance += intervalDistance;
+            EventQueue.invokeLater(()->{
+                this.setLocation(x - moveDistance, y);
+                this.repaint();
+            });
+        } else {
+            this.stop();
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
+                initial();
+                this.start();
             }
-            case DIRECTION_RIGHT -> {
-                for (JComponent a : linkedList) {
-                    a.setBounds(-i * width, 0, width, height);
-                    this.add(a);
-                    i++;
-                }
+        }
+    }
+
+    private void translationToRight() {
+        if (moveDistance <= maxMoveDistance) {
+            moveDistance += intervalDistance;
+            EventQueue.invokeLater(()->{
+                this.setLocation(x + moveDistance, y);
+                this.repaint();
+            });
+        } else {
+            this.stop();
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
+                initial();
+                this.start();
             }
-            case DIRECTION_UPPER -> {
-                for (JComponent a : linkedList) {
-                    a.setBounds(0, -i * height, width, height);
-                    this.add(a);
-                    i++;
-                }
+        }
+    }
+
+    private void translationToUpper() {
+        if (moveDistance <= maxMoveDistance) {
+            moveDistance += intervalDistance;
+            EventQueue.invokeLater(()->{
+                this.setLocation(x, y - moveDistance);
+                this.repaint();
+            });
+        } else {
+            this.stop();
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
+                initial();
+                this.start();
             }
-            case DIRECTION_BELOW -> {
-                for (JComponent a : linkedList) {
-                    a.setBounds(0, i * height, width, height);
-                    this.add(a);
-                    i++;
-                }
+        }
+    }
+
+    private void translationToBelow() {
+        if (moveDistance <= maxMoveDistance) {
+            moveDistance += intervalDistance;
+            EventQueue.invokeLater(()->{
+                this.setLocation(x, y + moveDistance);
+                this.repaint();
+            });
+        } else {
+            this.stop();
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
+                initial();
+                this.start();
             }
-            default -> {
-                direction = DIRECTION_LEFT;
-                for (JComponent a : linkedList) {
-                    a.setBounds(i * width, 0, width, height);
-                    this.add(a);
-                    i++;
-                }
-            }
+        }
+    }
+
+    /**
+     * 重写setBounds方法，用于在Translation组件的位置设定后，立刻设定待移动组件的位置和大小<br>
+     * 避免在构造函数中初始化待移动组件导致获取到的Translation的长和宽为0。
+     *
+     * @param x      the new <i>x</i>-coordinate of this component
+     * @param y      the new <i>y</i>-coordinate of this component
+     * @param width  the new {@code width} of this component
+     * @param height the new {@code height} of this
+     *               component
+     */
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        if (!isStart) {
+            initial();
         }
     }
 
     public void start() {
-        initialComponentPos();
-        timer.start();
+        initial();
         isStart = true;
+        timer.start();
+    }
+
+    public void waitOrStart(int direction,int intervalDistance) {
+        if (isStart) {
+            taskQueue.add(new ProcessSave(direction,intervalDistance));
+        }
+        else{
+            this.setDirection(direction);
+            this.setIntervalDistance(intervalDistance);
+            start();
+        }
     }
 
     public void restart() {
-        initialComponentPos();
-        timer.restart();
+        initial();
         isStart = true;
+        timer.restart();
     }
 
     public void stop() {
-        timer.stop();
         isStart = false;
+        timer.stop();
     }
 
-    public LinkedList<JComponent> getLinkedList() {
-        return linkedList;
+    public JComponent getTargetComponent() {
+        return targetComponent;
     }
 
-    public void setLinkedList(LinkedList<JComponent> linkedList) {
-        this.linkedList = linkedList;
+    public void setTargetComponent(JComponent targetComponent) {
+        this.targetComponent = targetComponent;
     }
 
     public int getIntervalTime() {
@@ -240,22 +252,20 @@ public class Translation extends JPanel {
     public void setDirection(int direction) {
         if (!isStart) {
             this.direction = direction;
-            initialComponentPos();
-            switch (direction) {
-                case DIRECTION_LEFT -> timer = new Timer(intervalTime, e -> translationFromLeft());
-                case DIRECTION_RIGHT -> timer = new Timer(intervalTime, e -> translationFromRight());
-                case DIRECTION_UPPER -> timer = new Timer(intervalTime, e -> translationFromUpper());
-                case DIRECTION_BELOW -> timer = new Timer(intervalTime, e -> translationFromBelow());
-            }
+            initial();
         }
     }
 
-    public boolean isRecycle() {
-        return isRecycle;
+    public int getMaxMoveDistance() {
+        return maxMoveDistance;
     }
 
-    public void setRecycle(boolean recycle) {
-        isRecycle = recycle;
+    public void setMaxMoveDistance(int maxMoveDistance) {
+        this.maxMoveDistance = maxMoveDistance;
+    }
+
+    public boolean isStart() {
+        return isStart;
     }
 
     public Timer getTimer() {
@@ -265,17 +275,47 @@ public class Translation extends JPanel {
     /**
      * 可以利用传入新的timer重写动画行为
      *
-     * @param timer 新的Timer对象
+     * @param timer 新的Timer对象，暂时不可用
      */
     public void setTimer(Timer timer) {
         if (!isStart) {
             this.timer = timer;
         }
     }
+
     public static int getTranslation_Style() {
         return Translation_Style;
     }
+
     public static void setTranslation_Style(int translation_Style) {
         Translation_Style = translation_Style;
+    }
+
+    @Override
+    public String toString() {
+        return "Translation{" +
+                "direction=" + direction +
+                ", targetComponent=" + targetComponent +
+                ", intervalTime=" + intervalTime +
+                ", intervalDistance=" + intervalDistance +
+                ", maxMoveDistance=" + maxMoveDistance +
+                ", width=" + width +
+                ", height=" + height +
+                ", x=" + x +
+                ", y=" + y +
+                ", timer=" + timer +
+                ", moveDistance=" + moveDistance +
+                ", isStart=" + isStart +
+                '}';
+    }
+
+    private static class ProcessSave {
+        private int direction;
+        private int intervalDistance;
+
+        public ProcessSave(int direction, int intervalDistance) {
+            this.direction = direction;
+            this.intervalDistance = intervalDistance;
+        }
     }
 }
