@@ -1,6 +1,9 @@
 package com.qdu.niit.library.gui.animation;
 
+import jdk.jfr.Event;
+
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayDeque;
 
 /**
@@ -87,13 +90,19 @@ public class Translation extends JPanel {
     private void translationToLeft() {
         if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            this.setLocation(x - moveDistance, y);
-            this.repaint();
+            EventQueue.invokeLater(()->{
+                this.setLocation(x - moveDistance, y);
+                this.repaint();
+            });
         } else {
             this.stop();
-            this.repaint();
-            if (taskQueue.size() > 0) {
-                setDirection(taskQueue.pop().direction);
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
                 initial();
                 this.start();
             }
@@ -103,13 +112,19 @@ public class Translation extends JPanel {
     private void translationToRight() {
         if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            this.setLocation(x + moveDistance, y);
-            this.repaint();
+            EventQueue.invokeLater(()->{
+                this.setLocation(x + moveDistance, y);
+                this.repaint();
+            });
         } else {
             this.stop();
-            this.repaint();
-            if (taskQueue.size() > 0) {
-                setDirection(taskQueue.pop().direction);
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
                 initial();
                 this.start();
             }
@@ -119,13 +134,19 @@ public class Translation extends JPanel {
     private void translationToUpper() {
         if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            this.setLocation(x, y - moveDistance);
-            this.repaint();
+            EventQueue.invokeLater(()->{
+                this.setLocation(x, y - moveDistance);
+                this.repaint();
+            });
         } else {
             this.stop();
-            this.repaint();
-            if (taskQueue.size() > 0) {
-                setDirection(taskQueue.pop().direction);
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
                 initial();
                 this.start();
             }
@@ -135,13 +156,19 @@ public class Translation extends JPanel {
     private void translationToBelow() {
         if (moveDistance <= maxMoveDistance) {
             moveDistance += intervalDistance;
-            this.setLocation(x, y + moveDistance);
-            this.repaint();
+            EventQueue.invokeLater(()->{
+                this.setLocation(x, y + moveDistance);
+                this.repaint();
+            });
         } else {
             this.stop();
-            this.repaint();
-            if (taskQueue.size() > 0) {
-                setDirection(taskQueue.pop().direction);
+            EventQueue.invokeLater(()->{
+                this.repaint();
+            });
+            if (!taskQueue.isEmpty()) {
+                var tmp=taskQueue.pop();
+                setDirection(tmp.direction);
+                setIntervalDistance(tmp.intervalDistance);
                 initial();
                 this.start();
             }
@@ -172,12 +199,13 @@ public class Translation extends JPanel {
         timer.start();
     }
 
-    public void waitOrStart(int direction) {
+    public void waitOrStart(int direction,int intervalDistance) {
         if (isStart) {
-            taskQueue.add(new ProcessSave(direction));
+            taskQueue.add(new ProcessSave(direction,intervalDistance));
         }
         else{
             this.setDirection(direction);
+            this.setIntervalDistance(intervalDistance);
             start();
         }
     }
@@ -283,9 +311,11 @@ public class Translation extends JPanel {
 
     private static class ProcessSave {
         private int direction;
+        private int intervalDistance;
 
-        public ProcessSave(int direction) {
+        public ProcessSave(int direction, int intervalDistance) {
             this.direction = direction;
+            this.intervalDistance = intervalDistance;
         }
     }
 }

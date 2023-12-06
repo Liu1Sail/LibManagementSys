@@ -63,7 +63,9 @@ public class TextEmergeLabel extends JLabel {
             nowOpacity=0;
             this.stop();
         }
-        this.setForeground(new Color(r,b,g,nowOpacity));
+        EventQueue.invokeLater(()->{
+            this.setForeground(new Color(r,b,g,nowOpacity));
+        });
         this.repaint();
     }
 

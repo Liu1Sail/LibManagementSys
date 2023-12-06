@@ -1,6 +1,7 @@
 package com.qdu.niit.library.gui.animation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.LinkedList;
 
 /**
@@ -92,7 +93,10 @@ public class RollDisplay extends JPanel {
         int i = 0;
         moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(i * width - moveDistance, 0);
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(finalI * width - moveDistance, 0);
+            });
             i++;
         }
         this.repaint();
@@ -107,7 +111,10 @@ public class RollDisplay extends JPanel {
         int i = 0;
         moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(-i * width + moveDistance, 0);
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(-finalI * width + moveDistance, 0);
+            });
             i++;
         }
         this.repaint();
@@ -123,7 +130,10 @@ public class RollDisplay extends JPanel {
         int i = 0;
         moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(0, -i * height + moveDistance);
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(0, -finalI * height + moveDistance);
+            });
             i++;
         }
         this.repaint();
@@ -139,7 +149,10 @@ public class RollDisplay extends JPanel {
         int i = 0;
         moveDistance += intervalDistance;
         for (JComponent a : linkedList) {
-            a.setLocation(0, i * height - moveDistance);
+            int finalI = i;
+            EventQueue.invokeLater(() -> {
+                a.setLocation(0, finalI * height - moveDistance);
+            });
             i++;
         }
         this.repaint();
