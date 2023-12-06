@@ -97,7 +97,7 @@ public class ReadingRoomSQLDaoImpl extends BaseSQLDaoImpl implements ReadingRoom
 
     @Override
     public ReadingRoom[] getAllBySmallEndTime(LocalDateTime end_time) throws SQLException {
-        ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomBySmallEndTime_SQL);
+        ArrayList<Object[]> receive = getMany(SELECT_ReadingRoomBySmallEndTime_SQL,end_time);
         ReadingRoom[] back = new ReadingRoom[receive.size()];
         if(receive.isEmpty())
         {
