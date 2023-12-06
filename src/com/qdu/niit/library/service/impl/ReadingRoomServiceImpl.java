@@ -41,9 +41,9 @@ public class ReadingRoomServiceImpl implements ReadingRoomService {
     }
 
     @Override
-    public ReadingRoom[] findAllBySmallEndTime() throws SQLException {
+    public ReadingRoom[] findAllBySmallEndTime(LocalDateTime end_time) throws SQLException {
         ReadingRoomSQLDaoImpl use = ReadingRoomSQLDaoImpl.getInstance();
-        return use.getAllBySmallEndTime(LocalDateTime.now());
+        return use.getAllBySmallEndTime(end_time);
     }
 
     @Override

@@ -18,7 +18,8 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     private static final String SELECT_BorrowingByUid_SQL = "SELECT * FROM Borrowing_Information Where uid = ?";
     private static final String SELECT_BorrowingByBid_SQL = "SELECT * FROM Borrowing_Information Where bid = ?";
     private static final String SELECT_BorrowingByUidAndBid_SQL = "SELECT * FROM Borrowing_Information Where uid = ? and bid = ?";
-    private static final String SELECT_BorrowingByEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)<TO_DAYS(NOW());";
+    private static final String SELECT_BorrowingByEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)<TO_DAYS(end_time);";
+    private static final String SELECT_BorrowingSmallEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)>TO_DAYS(end_time);";
     /**
      * 生成表防止表不存在
      */
@@ -111,6 +112,21 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     @Override
     public Borrowing[] getAllByEndTime(LocalDateTime end_time)throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_BorrowingByEndTime_SQL,end_time);
+        Borrowing[]back = new Borrowing[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
+        for(int i = 0;i<receive.size();i++)
+        {
+            back[i] = new Borrowing((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2],(LocalDateTime) receive.get(i)[3]);
+        }
+        return back;
+    }
+
+    @Override
+    public Borrowing[] getAllSmallEndTime(LocalDateTime end_time) throws SQLException {
+        ArrayList<Object[]>receive = getMany(SELECT_BorrowingSmallEndTime_SQL,end_time);
         Borrowing[]back = new Borrowing[receive.size()];
         if(receive.isEmpty())
         {

@@ -1,3 +1,5 @@
+import com.qdu.niit.library.service.BorrowingService;
+import com.qdu.niit.library.service.impl.BorrowingServiceImpl;
 import com.qdu.niit.library.utils.SqlConfig;
 
 import javax.swing.*;
@@ -9,7 +11,7 @@ public class TestJframe {
         temper.setUser("root");
         temper.setPassword("root");
         temper.setUrl("jdbc:mysql://localhost:3306/mybd");
-        jpanelTest.setUid(1911);
+        jpanelTest.setUid(4001);
         JPanel receive = jpanelTest.getinstance();
         JFrame test = new JFrame();
         test.setLayout(null);

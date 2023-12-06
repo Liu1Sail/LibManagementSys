@@ -3,8 +3,6 @@ import com.qdu.niit.library.service.ReadingRoomService;
 import com.qdu.niit.library.service.impl.ReadingRoomServiceImpl;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +11,8 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
  class RoundButton extends JButton {
@@ -77,13 +77,6 @@ import java.util.Locale;
     }
 }
 public class jpanelTest {
-    public void deleteGetNeed()
-    {
-        if(getNeed != null)
-        {
-            getNeed.dispose();
-        }
-    }
     private static int uid;
     private LocalDateTime end;
     public static void setUid(int in)
@@ -96,14 +89,13 @@ public class jpanelTest {
     //0表示蓝色，即已经被选择，1表示绿色，表示可以选择
     //-1表示灰色，即不能被选择
     private static JPanel only;
-    private static JComboBox<Integer>chooseUse;
-    private static JButton back;
+
     private jpanelTest() throws SQLException {
         only = new JPanel();
         run();
         create();
     }
-    private static JTextField textField;
+
     public static JPanel getinstance() throws SQLException {
         if(only == null)
         {
@@ -111,39 +103,52 @@ public class jpanelTest {
         }
         return only;
     }
-    private static JFrame getNeed;
+    private static JTextField textField;
+    private static JComboBox<Integer>chooseUse;
+    private static JTextField tableUse;
+    private static JButton back;//用于归还作为
     private void run()
     {
-        getNeed = new JFrame();
-        getNeed.setLayout(null);
-        getNeed.setResizable(false);
-        getNeed.setBounds(400,400,300,300);
         chooseUse = new JComboBox<>();
-        chooseUse.setBounds(0,0,100,100);
         for(int i = 1;i<8;i++)
         {
             chooseUse.addItem(i);
         }
         textField = new JTextField("请选择小时");
-        textField.setBounds(100,0,100,100);
-        back = new JButton("确定");
-        back.setBounds(200,0,100,100);
+        tableUse = new JTextField("阅览室借阅系统");
+        back = new JButton("座位归还");
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getNeed.setVisible(false);
+                try {
+                    if(!use.ifHaveByUid(uid))
+                    {
+                        JOptionPane.showMessageDialog(only,"你没有预定一个座位");
+                    }
+                    else
+                    {
+                        int bid = use.findOneByUid(uid).getBid();
+                        save[bid].setColorFlag(1);
+                        save[bid].repaint();
+                        JOptionPane.showMessageDialog(only,"座位归还成功，可以再次预约");
+                    }
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
-        getNeed.add(chooseUse);
-        getNeed.add(textField);
-        getNeed.add(back);
     }
+    private static ReadingRoomService use = new ReadingRoomServiceImpl();
     //用来初始化界面
     private void create() throws SQLException {
         //
         only.setSize(800,640);
-        only.setLayout(new GridLayout(hang,lie));
+        only.setLayout(new GridLayout(hang+1,lie));
         only.setBackground(Color.gray);
+        only.add(chooseUse);
+        only.add(textField);
+        only.add(tableUse);
+        only.add(back);
         for(int i = 0;i<hang;i++)
         {
             for(int j = 0;j<lie;j++)
@@ -157,8 +162,7 @@ public class jpanelTest {
                 only.add(save[i*10+j]);
             }
         }
-        ReadingRoomService use = new ReadingRoomServiceImpl();
-        ReadingRoom[]receive = use.findAll();
+        ReadingRoom[]receive = use.findAllBySmallEndTime(LocalDateTime.now());
         if(receive == null)
         {
             return;
@@ -185,12 +189,14 @@ public class jpanelTest {
                             JOptionPane.showMessageDialog(only,"你已经预定一个座位了");
                         }
                         else {
-                            getNeed.setVisible(true);
                             int hours = (int) chooseUse.getSelectedItem();
-                            ReadingRoom push = new ReadingRoom(uid,in.getBid(), LocalDateTime.now(),LocalDateTime.now().minusHours(hours));
+                            ReadingRoom push = new ReadingRoom(uid,in.getBid(), LocalDateTime.now(),LocalDateTime.now().plusHours(hours));
                             use.insert(push);
                             save[in.getBid()].setColorFlag(0);
                             save[in.getBid()].repaint();
+                            LocalDateTime first = LocalDateTime.now();
+                            LocalDateTime second = LocalDateTime.now().plusHours(hours);
+                            JOptionPane.showMessageDialog(only,"座位预定成功,预定时间为"+first+"————到————"+second);
                         }
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
