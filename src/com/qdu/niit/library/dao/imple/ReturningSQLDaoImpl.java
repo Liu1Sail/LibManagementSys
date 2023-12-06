@@ -16,7 +16,7 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     private static final String SELECT_ReturningByBid_SQL = "SELECT * FROM Returning_Information Where bid = ?";
     private static final String SELECT_ReturningByUidAndBid_SQL = "SELECT * FROM Returning_Information Where uid = ? and bid = ?";
     private static final String SELECT_ReturningByEndTime_SQL = "SELECT * FROM Returning_Information Where TO_DAYS(?)<TO_DAYS(end_time);";
-    private ReturningSQLDaoImpl() throws SQLException {
+    public ReturningSQLDaoImpl() throws SQLException {
         executeUpdate(CREATE_TABLE_Returning_SQL);
     }
     private static ReturningSQLDaoImpl instance;
@@ -36,6 +36,10 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     @Override
     public Returning[] getAll() throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_Returning_SQL);
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         Returning[]back = new Returning[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
@@ -48,6 +52,10 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     public Returning[] getAllByUid(int uid) throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_ReturningByUid_SQL,uid);
         Returning[]back = new Returning[receive.size()];
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         for(int i = 0;i<receive.size();i++)
         {
             back[i] = new Returning((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2]);
@@ -58,6 +66,10 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     @Override
     public Returning[] getAllByBid(int bid) throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_ReturningByBid_SQL,bid);
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         Returning[]back = new Returning[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {
@@ -67,19 +79,27 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     }
 
     @Override
-    public Returning getOneByUidAndBid(int uid, int bid) throws SQLException {
-       Object[]receive = getOne(SELECT_ReturningByUidAndBid_SQL,uid,bid);
-        if(receive == null)
+    public Returning[] getAllByUidAndBid(int uid, int bid) throws SQLException {
+        ArrayList<Object[]>receive = getMany(SELECT_ReturningByUidAndBid_SQL,uid,bid);
+        if(receive.isEmpty())
         {
             return null;
         }
-       Returning back = new Returning((int)receive[0],(int)receive[1],(LocalDateTime) receive[2]);
-       return back;
+        Returning[]back = new Returning[receive.size()];
+        for(int i = 0;i<receive.size();i++)
+        {
+            back[i] = new Returning((int)receive.get(i)[0],(int)receive.get(i)[1],(LocalDateTime) receive.get(i)[2]);
+        }
+        return back;
     }
 
     @Override
     public Returning[] getAllByBackTime(LocalDateTime back_time) throws SQLException {
         ArrayList<Object[]>receive = getMany(SELECT_ReturningByEndTime_SQL,back_time);
+        if(receive.isEmpty())
+        {
+            return null;
+        }
         Returning[]back = new Returning[receive.size()];
         for(int i = 0;i<receive.size();i++)
         {

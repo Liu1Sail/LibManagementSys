@@ -86,4 +86,10 @@ public class BorrowingServiceImpl implements BorrowingService {
         use.deleteByBid(bid);
         return true;
     }
+
+    @Override
+    public Borrowing[] findAllSmallEndTime(LocalDateTime end_time) throws SQLException {
+        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+        return use.getAllByEndTime(end_time);
+    }
 }

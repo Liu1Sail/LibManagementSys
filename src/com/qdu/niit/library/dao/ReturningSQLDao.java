@@ -15,7 +15,7 @@ public interface ReturningSQLDao {
 
     Returning[] getAllByBid(int bid)throws SQLException;
 
-    Returning getOneByUidAndBid(int uid,int bid)throws SQLException;
+    Returning[] getAllByUidAndBid(int uid,int bid)throws SQLException;
 
     Returning[] getAllByBackTime(LocalDateTime back_time)throws SQLException;
 }

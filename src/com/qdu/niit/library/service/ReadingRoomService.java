@@ -11,7 +11,7 @@ public interface ReadingRoomService {
     boolean ifHaveByBid(int bid)throws SQLException;
     ReadingRoom[] findAll()throws SQLException;
     ReadingRoom[] findAllByEndTime(LocalDateTime back_time)throws SQLException;
-    ReadingRoom[] findAllBySmallEndTime()throws SQLException;
+    ReadingRoom[] findAllBySmallEndTime(LocalDateTime end_time)throws SQLException;
     ReadingRoom findOneByUid(int uid)throws SQLException;
     ReadingRoom findOneByBid(int bid)throws SQLException;
     boolean  insert(ReadingRoom in)throws SQLException;

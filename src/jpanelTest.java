@@ -162,7 +162,7 @@ public class jpanelTest {
                 only.add(save[i*10+j]);
             }
         }
-        ReadingRoom[]receive = use.findAllBySmallEndTime();
+        ReadingRoom[]receive = use.findAllBySmallEndTime(LocalDateTime.now());
         if(receive == null)
         {
             return;

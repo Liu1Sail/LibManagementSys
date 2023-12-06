@@ -1,3 +1,5 @@
+import com.qdu.niit.library.service.BorrowingService;
+import com.qdu.niit.library.service.impl.BorrowingServiceImpl;
 import com.qdu.niit.library.utils.SqlConfig;
 
 import javax.swing.*;
