@@ -11,7 +11,7 @@ public class TestJframe {
         temper.setUser("root");
         temper.setPassword("root");
         temper.setUrl("jdbc:mysql://localhost:3306/mybd");
-        jpanelTest.setUid(4001);
+        jpanelTest.setUid(23);
         JPanel receive = jpanelTest.getinstance();
         JFrame test = new JFrame();
         test.setLayout(null);
