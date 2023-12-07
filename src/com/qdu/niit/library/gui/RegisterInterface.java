@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 public class RegisterInterface extends JFrame {
     private final JFrame frame = this;
-    private Point offsetMouseToFrame = new Point();
-    private InputTextHandle inputTextHandle = new InputTextHandle();
+    private final Point offsetMouseToFrame = new Point();
+    private final InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
     private final HashMap<Integer, Translation> componentMap = new HashMap<>();
 
@@ -34,6 +34,7 @@ public class RegisterInterface extends JFrame {
         frame.setSize(400, 700);
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         frame.setTitle("注册");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
         //鼠标拖动窗口
@@ -498,16 +499,16 @@ public class RegisterInterface extends JFrame {
         private String phoneNumber;
         private String emailAddress;
         private final int RIGHT = 0;
-        private final int WRONG_NAME_SHORT = 1;
-        private final int WRONG_NAME_LONG = 2;
-        private final int WRONG_EMPTY_PASSWORD = 3;
-        private final int WRONG_PASSWORD_NOT_SAME = 4;
-        private final int WRONG_PASSWORD_LENGTH = 5;
-        private final int WRONG_PASSWORD_UPPER = 6;
-        private final int WRONG_PASSWORD_SPECIAL = 7;
-        private final int WRONG_GENDER = 8;
-        private final int WRONG_PHONE = 9;
-        private final int WRONG_EMAIL = 10;
+        private final static int WRONG_NAME_SHORT = 1;
+        private final static int WRONG_NAME_LONG = 2;
+        private final static int WRONG_EMPTY_PASSWORD = 3;
+        private final static int WRONG_PASSWORD_NOT_SAME = 4;
+        private final static int WRONG_PASSWORD_LENGTH = 5;
+        private final static int WRONG_PASSWORD_UPPER = 6;
+        private final static int WRONG_PASSWORD_SPECIAL = 7;
+        private final static int WRONG_GENDER = 8;
+        private final static int WRONG_PHONE = 9;
+        private final static int WRONG_EMAIL = 10;
 
         public InputTextHandle() {
         }

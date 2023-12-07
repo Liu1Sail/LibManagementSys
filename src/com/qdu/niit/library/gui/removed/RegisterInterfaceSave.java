@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui.cancel;
+package com.qdu.niit.library.gui.removed;
 
 import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;

@@ -1,7 +1,5 @@
 package com.qdu.niit.library.gui.animation;
 
-import jdk.jfr.Event;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;

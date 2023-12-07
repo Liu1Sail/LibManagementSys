@@ -36,6 +36,7 @@ public class UserInterface extends ResizeFrame {
         this.setLayout(new BorderLayout());
         this.setSize(initialWidth, initialHeight);
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("图书馆系统");
         this.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         this.addMouseMotionListener(new MouseAdapter() {
@@ -241,13 +242,13 @@ public class UserInterface extends ResizeFrame {
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel(frame));frame.repaint();}
                             case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel());frame.repaint();}
                         }
                     }
                     case 3->{
                         switch (childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel(frame));frame.repaint();}
                         }
                     }
                 }

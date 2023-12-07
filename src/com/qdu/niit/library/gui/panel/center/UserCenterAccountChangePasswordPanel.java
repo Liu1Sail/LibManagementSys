@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @author 李冠良
@@ -16,10 +18,13 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("unused")
 public class UserCenterAccountChangePasswordPanel extends centerPanelModel {
 //    private final UserGui loggedUser;//存储当前用户
-    public UserCenterAccountChangePasswordPanel() {
+    private final JFrame frame;
+    public UserCenterAccountChangePasswordPanel(JFrame frame) {
+        this.frame=frame;
         var inputPanel=new JPanel();
         inputPanel.setBounds(40,40,720,550);
         inputPanel.setBackground(Color.WHITE);
+        inputPanel.setLayout(null);
         this.add(inputPanel);
         var originalPass=new InputPasswordPanel("原密码：");
         var newPass=new InputPasswordPanel("新密码：");
