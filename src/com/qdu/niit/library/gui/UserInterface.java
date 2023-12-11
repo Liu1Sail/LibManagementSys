@@ -2,11 +2,11 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.UserCenterAccountChangeInfoPanel;
-import com.qdu.niit.library.gui.panel.UserCenterAccountChangePasswordPanel;
-import com.qdu.niit.library.gui.panel.UserCenterBookBorrowPanel;
-import com.qdu.niit.library.gui.panel.UserCenterBookSearchPanel;
-import com.qdu.niit.library.gui.tool.User;
+import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangePasswordPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.tool.UserGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,16 +29,16 @@ public class UserInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-    private final User loggedUser;
+    private final UserGui loggedUser;
 
     public UserInterface(String id,String name,String password) {
-        loggedUser=new User(id,name,password);
-        frame.setLayout(new BorderLayout());
-        frame.setSize(initialWidth, initialHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setTitle("图书馆系统");
-        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
-        frame.addMouseMotionListener(new MouseAdapter() {
+        loggedUser=new UserGui(id,name,password);
+        this.setLayout(new BorderLayout());
+        this.setSize(initialWidth, initialHeight);
+        this.setLocationRelativeTo(null);
+        this.setTitle("图书馆系统");
+        this.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
+        this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 mouseX=e.getX();
@@ -65,6 +65,8 @@ public class UserInterface extends ResizeFrame {
         leftPanel.add(bookOption);
         var accountOption=getAccountOption(sideBarOptionFont);
         leftPanel.add(accountOption);
+        var readingRoomOption=getReadingRoomOption(sideBarOptionFont);
+        leftPanel.add(readingRoomOption);
         bottomPanel.add(leftPanel,BorderLayout.WEST);
 
         var topBottomPanel=new JPanel();//顶部根面板
@@ -88,14 +90,14 @@ public class UserInterface extends ResizeFrame {
         bottomPanel.add(centerBottomPanel,BorderLayout.CENTER);
         //测试代码区
         //
-        frame.addComponentListener(new ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 buttonClose.setBounds(bottomPanel.getWidth()-30,10,20,20);
             }
         });
-        frame.add(bottomPanel,BorderLayout.CENTER);
-        frame.setVisible(true);
+        this.add(bottomPanel,BorderLayout.CENTER);
+        this.setVisible(true);
     }
 
     private JPanel getBookOption(Font sideBarOptionFont) {
@@ -169,6 +171,40 @@ public class UserInterface extends ResizeFrame {
 
         return accountOption;
     }
+    private JPanel getReadingRoomOption(Font sideBarOptionFont) {
+        var readingRoomOption=new JPanel();
+        readingRoomOption.setBounds(0,160,200,80);
+        readingRoomOption.setLayout(null);
+        readingRoomOption.setBackground(Color.WHITE);
+        var readingRoomOptionText=new JLabel();
+        readingRoomOptionText.setBounds(0,0,200,80);
+        readingRoomOptionText.setText("查询借阅室");
+        readingRoomOptionText.setFont(sideBarOptionFont);
+        readingRoomOptionText.setVerticalAlignment(SwingConstants.CENTER);
+        readingRoomOptionText.setHorizontalAlignment(SwingConstants.CENTER);
+        readingRoomOption.add(readingRoomOptionText);
+        var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"借阅室座位",1,1,2);
+        readingRoomOption.add(readingRoomChildOption);
+        readingRoomOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                readingRoomOption.setBounds(0,160,200,160);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    readingRoomOption.setBounds(0,160,200,80);
+                }
+            }
+
+        });
+
+        return readingRoomOption;
+    }
     private JLabel getChildOption(Font sideBarOptionFont, int positionY, String text,int OptionAmount,int number,int groupNumber) {
         var childOption=new JLabel(text){
             private int panelNumber;
@@ -207,6 +243,11 @@ public class UserInterface extends ResizeFrame {
                         switch(childOption.panelNumber){
                             case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
                             case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel());frame.repaint();}
+                        }
+                    }
+                    case 3->{
+                        switch (childOption.panelNumber){
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel());frame.repaint();}
                         }
                     }
                 }

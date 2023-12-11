@@ -2,7 +2,7 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.*;
+import com.qdu.niit.library.gui.panel.center.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,14 +25,13 @@ public class AdministratorInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-
     public AdministratorInterface() {
-        frame.setLayout(new BorderLayout());
-        frame.setSize(initialWidth, initialHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setTitle("管理系统");
-        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
-        frame.addMouseMotionListener(new MouseAdapter() {
+        this.setLayout(new BorderLayout());
+        this.setSize(initialWidth, initialHeight);
+        this.setLocationRelativeTo(null);
+        this.setTitle("管理系统");
+        this.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
+        this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 mouseX=e.getX();
@@ -82,19 +81,19 @@ public class AdministratorInterface extends ResizeFrame {
         bottomPanel.add(centerBottomPanel,BorderLayout.CENTER);
         //测试代码区
         //
-        frame.addComponentListener(new ComponentAdapter() {
+        this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 buttonClose.setBounds(bottomPanel.getWidth()-30,10,20,20);
             }
         });
-        frame.add(bottomPanel,BorderLayout.CENTER);
-        frame.setVisible(true);
+        this.add(bottomPanel,BorderLayout.CENTER);
+        this.setVisible(true);
     }
 
     private JPanel getBookOption(Font sideBarOptionFont) {
         var bookOption=new JPanel();
-        bookOption.setBounds(0,0,400,80);
+        bookOption.setBounds(0,0,200,80);
         bookOption.setLayout(null);
         bookOption.setBackground(Color.WHITE);
         var bookOptionText=new JLabel();
@@ -135,7 +134,7 @@ public class AdministratorInterface extends ResizeFrame {
     }
     private JPanel getAccountOption(Font sideBarOptionFont) {
         var accountOption=new JPanel();
-        accountOption.setBounds(0,80,400,80);
+        accountOption.setBounds(0,80,200,80);
         accountOption.setLayout(null);
         accountOption.setBackground(Color.WHITE);
         var accountOptionText=new JLabel();

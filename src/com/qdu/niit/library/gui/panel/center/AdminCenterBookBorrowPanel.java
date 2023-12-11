@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,11 +14,10 @@ import java.awt.*;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class UserCenterBookBorrowPanel extends centerPanelModel {
-    private final UserCenterBookBorrowPanel frame = this;
+public class AdminCenterBookBorrowPanel extends centerPanelModel {
     private final InputTextPanel name;
     private final InputTextPanel bookId;
-    public UserCenterBookBorrowPanel() {
+    public AdminCenterBookBorrowPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);

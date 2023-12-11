@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -12,7 +15,6 @@ import java.awt.*;
  */
 
 public class AdminCenterBookDeletePanel extends centerPanelModel {
-    private final AdminCenterBookDeletePanel frame = this;
     private final InputTextPanel bookId;
 
     public AdminCenterBookDeletePanel() {

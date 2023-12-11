@@ -24,4 +24,5 @@ public interface BorrowingSQLDao
     Borrowing getOneByBid(int bid)throws SQLException;
     Borrowing getOneByUidAndBid(int uid,int bid)throws SQLException;
     Borrowing[] getAllByEndTime(LocalDateTime end_time)throws SQLException;
+    Borrowing[] getAllSmallEndTime(LocalDateTime end_time)throws SQLException;
 }
