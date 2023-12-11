@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * 数据访问对象接口，提供基本的数据库操作方法。
  */
-interface BaseSQLDao {
+public interface BaseSQLDao {
 
     /**
      * 执行 SQL 更新语句，返回受影响的行数。
