@@ -1,10 +1,20 @@
 package com.qdu.niit.library.entity;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class UserInfo {
     public int getID(){
         return m_UID;
+    }
+    public String getName() {
+        return m_UName;
+    }
+
+    public Date getBirthday(){return m_UBirthday;}
+    public void setBirthday(Date date){m_UBirthday = date;}
+    public Gender getGender() {
+        return m_UGender;
     }
     public void setPhone(String phone){
         m_UPhone = phone;
@@ -14,17 +24,13 @@ public class UserInfo {
         return m_UPhone;
     }
 
-    public String getName() {
-        return m_UName;
-    }
+
 
     public void setName(String m_UName) {
         this.m_UName = m_UName;
     }
 
-    public Gender getGender() {
-        return m_UGender;
-    }
+
 
     public void setGender(String gender) {
         for(Gender g : Gender.values()){
@@ -54,16 +60,25 @@ public class UserInfo {
         private final String m_Str;
         Gender(String str){m_Str = str;}
     }
-    public UserInfo(int id , String phone , String name , Gender gender , String email){
-        m_UID = id ;
-        m_UPhone = phone ;
-        m_UName = name;
+    public UserInfo(int id , String name, Date birthday , Gender gender , String phone, String email){
+        m_UID = id ;m_UName = name;
+        m_UBirthday = birthday;
         m_UGender = gender;
-        m_UEmail = email;
+        m_UEmail = email; m_UPhone = phone ;
     }
+
+    @Override
+    public String toString() {
+        return m_UID+" "+m_UName+" "+m_UBirthday + " "+m_UEmail+" "+m_UPhone + " "+m_UGender;
+    }
+
+    /*-----------------------------------------------------------------------------------*/
     private final int m_UID;
-    private String m_UPhone;
+
     private String m_UName;
+
+    private Date m_UBirthday;
     private Gender m_UGender;
+    private String m_UPhone;
     private String m_UEmail;
 }

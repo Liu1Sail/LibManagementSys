@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TransactionalSQLDaoImpl implements TransactionalSQLDao {
+public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements TransactionalSQLDao  {
     @Override
     public void beginTransaction() throws SQLException {
         connection = SqlConfig.getInstance().getConnection();

@@ -7,4 +7,6 @@ public interface BaseSQLDao {
     public ArrayList<Object[]> executeUpdateAndGetGeneratedKeys(String SQL, Object... args)  throws SQLException;
     public Object[] getOne(final String SQL , Object... args) throws SQLException;
     public ArrayList<Object[]> getMany(final String SQL , Object... args) throws SQLException;
+
+    public <T> T Cast(Object obj);
 }
