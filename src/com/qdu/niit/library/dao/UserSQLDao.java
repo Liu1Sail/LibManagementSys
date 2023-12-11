@@ -1,6 +1,7 @@
 package com.qdu.niit.library.dao;
 
 import com.qdu.niit.library.entity.User;
+import com.qdu.niit.library.entity.UserInfo;
 
 import java.sql.SQLException;
 
@@ -10,6 +11,7 @@ public interface UserSQLDao extends BaseSQLDao{
     public User[] getAll()throws SQLException;
     public void updateAll(User user)throws SQLException;
     public void updatePasswordById(int id,String password)throws SQLException;
+    public int insert(User user, UserInfo info)throws SQLException;
     public int insert(User user)throws SQLException;
     public void deleteById(int id)throws SQLException;
 }
