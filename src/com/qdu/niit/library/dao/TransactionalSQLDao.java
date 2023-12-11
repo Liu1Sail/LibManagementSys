@@ -2,7 +2,7 @@ package com.qdu.niit.library.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-public interface TransactionalSQLDao{
+public interface TransactionalSQLDao extends BaseSQLDao{
     void beginTransaction() throws SQLException;
 
     void commit() throws SQLException;

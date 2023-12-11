@@ -1,5 +1,6 @@
 package com.qdu.niit.library.dao.imple;
 
+import com.qdu.niit.library.dao.BaseSQLDao;
 import com.qdu.niit.library.dao.UserSQLDao;
 import com.qdu.niit.library.entity.User;
 import java.sql.SQLException;
@@ -9,14 +10,34 @@ import java.util.List;
 /**
  * 管理用户，创建，删除，登录
  */
-public class UserSQLDaoImpl extends BaseSQLDaoImpl implements UserSQLDao
+public class UserSQLDaoImpl extends TransactionalSQLDaoImpl implements UserSQLDao
 {
 
     @Override
-    public User getOneById(int uid) throws SQLException {
-        Object[] meta = getOne(SELECT_USERS_SQL , uid);
-        if(meta.length<2)return null;
-        return new User(uid,(String)meta[0] , (String) meta[1]);
+    public User getOneByIdAndPassword(int uid,String password) throws SQLException {
+        Object[] meta = getOne(SELECT_USERS_BY_ID_AND_PASSWORD_SQL , uid , password);
+        if(meta.length<1)return null;
+        return new User(uid, Cast(meta[0])  ,password);
+    }
+
+    @Override
+    public User getOneByNameAndPassword(String name, String password) throws SQLException {
+        Object[] meta = getOne(SELECT_USER_BY_NAME_AND_PASSWORD_SQL , name , password);
+        if(meta.length<1)return null;
+        return new User(this.<Integer>Cast(meta[0]), name  ,password);
+    }
+
+    @Override
+    public User[] getAll()throws SQLException {
+        List<Object[]> list = getMany(SELECT_USERS_ALL_ID_AND_NAME_SQL);
+        User[] result = new User[list.size()];
+        for(int i = 0; i < list.size() ;++i)
+        {
+            Object[] arr = list.get(i);
+            if(arr==null||arr.length<2)return null;
+            result[i] = new User((int)arr[0] , (String)arr[1],null);
+        }
+        return result;
     }
 
     @Override
@@ -73,18 +94,27 @@ public class UserSQLDaoImpl extends BaseSQLDaoImpl implements UserSQLDao
 
     private static UserSQLDaoImpl instance;
     private static final String CREATE_TABLE_USERS_SQL =
-            "CREATE TABLE IF NOT EXISTS Users(" +
+            "CREATE TABLE IF NOT EXISTS USERS(" +
                     "uId INT AUTO_INCREMENT PRIMARY KEY," +
                     "uName varchar(30) NOT NULL UNIQUE," +
                     "uPwd varchar(30) NOT NULL" +
                     ")";
+
+    /*增*/
     private static final String INSERT_USERS_SQL =
             "INSERT INTO USERS (uName, uPwd) VALUES (?, ?)";
+    /*删*/
     private static final String DELETE_USERS_SQL =
             "DELETE FROM USERS WHERE uId = ?";
-    private static final String SELECT_USERS_SQL =
-            "SELECT uName, uPwd FROM USERS WHERE uId = ?";
+    /*查*/
+    private static final String SELECT_USERS_BY_ID_AND_PASSWORD_SQL =
+            "SELECT uName FROM USERS WHERE uId = ?AND uPwd = ?";
 
+    private static final String SELECT_USER_BY_NAME_AND_PASSWORD_SQL=
+            "SELECT uId FROM USERS WHERE uName = ?AND uPwd = ?";
+    private static final String SELECT_USERS_ALL_ID_AND_NAME_SQL="SELECT uId,uName FROM USERS";
+
+    /*改*/
     private static final String UPDATE_USERS_SQL ="""
                     UPDATE USERS SET uName = ?,uPwd = ? WHERE uId = ?""";
     private static final String UPDATE_USERS_PASSWORD_SQL ="""

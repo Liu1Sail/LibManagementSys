@@ -60,6 +60,16 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T Cast(Object obj)
+    {
+        if(null==obj)
+            return null;
+        return (T)obj;
+    }
+
+
+
 
     /**
      * @param resultSet 当前行有元组的resultSet
