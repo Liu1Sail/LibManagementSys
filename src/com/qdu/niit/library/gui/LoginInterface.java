@@ -76,6 +76,14 @@ public class LoginInterface extends JFrame {
         userLoginPanel.setBounds(60, 50, 80, 100);
         userLoginPanel.setOpaque(false);
         userLoginPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        var titleLabel=new JLabel("用户登录");
+        titleLabel.setBounds(70,0,150,50);
+        titleLabel.setFont(new Font("宋体",Font.PLAIN,25));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setVerticalAlignment(SwingConstants.CENTER);
+        rightBodyPanel.add(titleLabel);
+
         var userLoginRound = new JPanel() {
             private final Color unPressedColor = new Color(245, 245, 245);
             private final Color pressedColor = new Color(17, 145, 255);
@@ -142,12 +150,12 @@ public class LoginInterface extends JFrame {
         userInputTextField.setBorder(null);
         userInputTextField.setFont(textFont);
         userInputTextField.setForeground(textColor);
-        userInputTextField.setText("账号");
+        userInputTextField.setText("用户账号");
         userInputTextField.setOpaque(false);
         userInputTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (userInputTextField.getText().equals("账号")) {
+                if (userInputTextField.getText().equals("用户账号")) {
                     userInputTextField.setText("");
                 }
             }
@@ -155,7 +163,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (userInputTextField.getText().isEmpty()) {
-                    userInputTextField.setText("账号");
+                    userInputTextField.setText("用户账号");
                 }
             }
         });
@@ -243,6 +251,7 @@ public class LoginInterface extends JFrame {
                     rightBodyPanel.remove(adminLoginInputPanel);
                     rightBodyPanel.add(userLoginInputPanel);
                     userAndAdminSwitch = false;
+                    titleLabel.setText("用户登录");
                     rightBodyPanel.repaint();
                 }
             }
@@ -267,6 +276,7 @@ public class LoginInterface extends JFrame {
                     rightBodyPanel.remove(userLoginInputPanel);
                     rightBodyPanel.add(adminLoginInputPanel);
                     userAndAdminSwitch = true;
+                    titleLabel.setText("管理员登录");
                     rightBodyPanel.repaint();
                 }
             }
@@ -367,12 +377,12 @@ public class LoginInterface extends JFrame {
         adminInputTextField.setBorder(null);
         adminInputTextField.setFont(textFont);
         adminInputTextField.setForeground(textColor);
-        adminInputTextField.setText("账号");
+        adminInputTextField.setText("管理员账号");
         adminInputTextField.setOpaque(false);
         adminInputTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (adminInputTextField.getText().equals("账号")) {
+                if (adminInputTextField.getText().equals("管理员账号")) {
                     adminInputTextField.setText("");
                 }
             }
@@ -380,7 +390,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (adminInputTextField.getText().isEmpty()) {
-                    adminInputTextField.setText("账号");
+                    adminInputTextField.setText("管理员账号");
                 }
             }
         });
@@ -586,6 +596,7 @@ public class LoginInterface extends JFrame {
         leftPanel.setPreferredSize(new Dimension(500, 600));
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setLayout(null);
+        leftPanel.setFocusable(true);
         try {
             var leftImageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/LeftImage.jpg")));
             var leftImagePanel = new ImagePanel(leftImageIcon, 0, 0, 600, 500);

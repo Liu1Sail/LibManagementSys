@@ -1,4 +1,8 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputPasswordPanel;
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,21 +11,20 @@ import java.awt.*;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 修改个人信息面板，仅用于用户界面中心面板
+ * @description 账户添加面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
-    private final UserCenterAccountChangeInfoPanel frame = this;
+public class AdminCenterAccountAddPanel extends centerPanelModel {
     private final InputTextPanel id;
     private final InputTextPanel name;
-    private final InputTextPanel password;
+    private final InputPasswordPanel password;
     private final InputTextPanel age;
     private final InputTextPanel gender;
     private final InputTextPanel phone;
     private final InputTextPanel email;
 
-    public UserCenterAccountChangeInfoPanel() {
+    public AdminCenterAccountAddPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
@@ -30,7 +33,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         var titleLabel = new JLabel("添加账户");
         id = new InputTextPanel("账号：");
         name = new InputTextPanel("用户名：");
-        password = new InputTextPanel("密码：");
+        password = new InputPasswordPanel("密码：");
         age = new InputTextPanel("年龄：");
         gender = new InputTextPanel("性别：");
         phone = new InputTextPanel("手机号：");

@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,21 +14,21 @@ import java.awt.*;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterBookBorrowPanel extends centerPanelModel {
-    private final AdminCenterBookBorrowPanel frame = this;
+public class UserCenterBookBorrowPanel extends centerPanelModel {
+//    之后修改成直接显示个人借阅记录
     private final InputTextPanel name;
     private final InputTextPanel bookId;
-    public AdminCenterBookBorrowPanel() {
+    public UserCenterBookBorrowPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("图书借阅信息");
+        var titleLabel = new JLabel("个人借阅信息");
         name = new InputTextPanel("书名：");
         bookId=new InputTextPanel("编号：");
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认搜索图书");
+        var defineButton=new JButton("确认");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         name.setLocation(15, 35);

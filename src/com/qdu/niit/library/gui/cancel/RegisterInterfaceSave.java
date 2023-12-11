@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui;
+package com.qdu.niit.library.gui.cancel;
 
 import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;
@@ -20,14 +20,14 @@ import java.util.regex.Pattern;
  * @date 2023/11/14
  */
 
-public class RegisterInterface extends JFrame {
+public class RegisterInterfaceSave extends JFrame {
     private final JFrame frame = this;
     private Point offsetMouseToFrame = new Point();
     private InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
     private final HashMap<Integer, Translation> componentMap = new HashMap<>();
 
-    public RegisterInterface() {
+    public RegisterInterfaceSave() {
         frame.setLayout(null);
 //        frame.getContentPane().setBackground(new Color(212, 239, 223));
         frame.getContentPane().setBackground(new Color(188, 226, 243));
@@ -100,7 +100,7 @@ public class RegisterInterface extends JFrame {
                 if (!isInitial) {
                     for (int i = 3; i <= 13; i++) {
                         var tmp = componentMap.get(i);
-                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                        tmp.waitOrStart(Translation.TO_UPPER,6);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
@@ -108,7 +108,7 @@ public class RegisterInterface extends JFrame {
                 tip.setText("用户名限制3-20个字符");
                 for (int i = 3; i <= 13; i++) {
                     var tmp = componentMap.get(i);
-                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                    tmp.waitOrStart(Translation.TO_BELOW,6);
                 }
                 tip.setVisible(true);
             }
@@ -152,7 +152,7 @@ public class RegisterInterface extends JFrame {
                 if (!isInitial) {
                     for (int i = 5; i <= 13; i++) {
                         var tmp = componentMap.get(i);
-                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                        tmp.waitOrStart(Translation.TO_UPPER,6);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
@@ -160,7 +160,7 @@ public class RegisterInterface extends JFrame {
                 tip.setText("密码限制8-20个字符，至少包含一个大写字母和一个特殊字符");
                 for (int i = 5; i <= 13; i++) {
                     var tmp = componentMap.get(i);
-                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                    tmp.waitOrStart(Translation.TO_BELOW,6);
                 }
                 tip.setVisible(true);
             }
@@ -208,13 +208,13 @@ public class RegisterInterface extends JFrame {
                 if (!isInitial) {
                     for (int i = 7; i <= 13; i++) {
                         var tmp = componentMap.get(i);
-                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                        tmp.waitOrStart(Translation.TO_UPPER,6);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
                 for (int i = 7; i <= 13; i++) {
                     var tmp = componentMap.get(i);
-                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                    tmp.waitOrStart(Translation.TO_BELOW,6);
                 }
                 tip.setForeground(inputInnerTextColor);
                 tip.setText("请在再次输入密码");
@@ -263,12 +263,12 @@ public class RegisterInterface extends JFrame {
                 if (!isInitial) {
                     for (int i = 11; i <= 13; i++) {
                         var tmp = componentMap.get(i);
-                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                        tmp.waitOrStart(Translation.TO_UPPER,6);
                     }
                 }
                 for (int i = 11; i <= 13; i++) {
                     var tmp = componentMap.get(i);
-                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                    tmp.waitOrStart(Translation.TO_BELOW,6);
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
                 tip.setForeground(Color.RED);
@@ -311,13 +311,13 @@ public class RegisterInterface extends JFrame {
                 if (!isInitial) {
                     for (int i = 13; i <= 13; i++) {
                         var tmp = componentMap.get(i);
-                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                        tmp.waitOrStart(Translation.TO_UPPER,6);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
                 for (int i = 13; i <= 13; i++) {
                     var tmp = componentMap.get(i);
-                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                    tmp.waitOrStart(Translation.TO_BELOW,6);
                 }
                 tip.setForeground(Color.RED);
                 tip.setText("邮箱的格式为*@*.*");

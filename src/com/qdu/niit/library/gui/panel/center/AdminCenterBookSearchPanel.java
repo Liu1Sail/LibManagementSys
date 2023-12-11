@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +17,6 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("unused")
 public class AdminCenterBookSearchPanel extends centerPanelModel {
-    private final AdminCenterBookSearchPanel frame = this;
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;
@@ -37,7 +39,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         inputBottomPanel.add(bookIdInput);
 
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加图书");
+        var defineButton=new JButton("搜索");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         resetButton.setBounds(410,145,130,35);

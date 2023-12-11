@@ -1,6 +1,5 @@
 package com.qdu.niit.gui;
 
-import com.qdu.niit.library.gui.cancel.RegisterInterfaceSave;
 import com.qdu.niit.library.gui.animation.Translation;
 
 import javax.swing.*;
@@ -9,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class TmpTest extends JFrame {
-    public TmpTest() {
+public class TmpTest1 extends JFrame {
+    public TmpTest1() {
         JFrame frame = new JFrame();
         frame.setBounds(200, 100, 800, 500);
         frame.setLayout(null);
@@ -51,7 +50,7 @@ public class TmpTest extends JFrame {
     }
 
     public static void main(String[] args) {
-        new RegisterInterfaceSave();
+        TmpTest1 frame = new TmpTest1();
     }
 }
 

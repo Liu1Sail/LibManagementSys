@@ -1,4 +1,7 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.panel.center;
+
+import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,12 +10,11 @@ import java.awt.*;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书修改面板，仅用于管理员界面中心面板。
+ * @description 图书添加面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class AdminCenterBookModifyPanel extends centerPanelModel {
-    private final AdminCenterBookModifyPanel frame = this;
+public class AdminCenterBookAddPanel extends centerPanelModel {
     private final InputTextPanel name;
     private final InputTextPanel isbn;
     private final InputTextPanel author;
@@ -20,13 +22,13 @@ public class AdminCenterBookModifyPanel extends centerPanelModel {
     private final InputTextPanel pubTime;
     private final InputTextPanel genre;
 
-    public AdminCenterBookModifyPanel() {
+    public AdminCenterBookAddPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
-        var titleLabel = new JLabel("修改图书信息");
+        var titleLabel = new JLabel("新增图书信息");
         name = new InputTextPanel("书名：");
         isbn = new InputTextPanel("ISBN：");
         author = new InputTextPanel("作者：");
@@ -34,7 +36,7 @@ public class AdminCenterBookModifyPanel extends centerPanelModel {
         pubTime = new InputTextPanel("出版时间：");
         genre = new InputTextPanel("类型：");
         var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认修改图书");
+        var defineButton=new JButton("确认添加图书");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         name.setLocation(15, 35);

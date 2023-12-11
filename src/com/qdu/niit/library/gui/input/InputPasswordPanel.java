@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui.panel;
+package com.qdu.niit.library.gui.input;
 
 import com.qdu.niit.library.gui.tool.CharacterProcess;
 
