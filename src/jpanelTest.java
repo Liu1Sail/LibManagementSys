@@ -8,10 +8,6 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Vector;
 
 class RoundButton extends JButton {
      private int hours;
@@ -82,19 +78,32 @@ public class jpanelTest {
         uid = in;
     }
     private static final int hang = 5;
-    private static final int lie = 10;
+    private static final int lie = 9;
     private RoundButton[] save = new RoundButton[hang*lie];
     //0表示蓝色，即已经被选择，1表示绿色，表示可以选择
     //-1表示灰色，即不能被选择
     private static JPanel only;
-
-    private jpanelTest() throws SQLException {
+    private static JTextField wrongBack;
+    private jpanelTest()  {
         only = new JPanel();
-        run();
-        create();
+        try {
+            run();
+            create();
+        }
+        catch (Exception e)
+        {
+        only.setSize(800,640);
+        only.setLayout(null);
+        Font a = new Font("宋体",Font.BOLD,100);
+        wrongBack = new JTextField("--出现错误--");
+        wrongBack.setFont(a);
+        wrongBack.setBounds(0,0,800,640);
+        wrongBack.setEditable(false);
+        only.add(wrongBack);
+        }
     }
 
-    public static JPanel getinstance() throws SQLException {
+    public static JPanel getinstance(){
         if(only == null)
         {
             new jpanelTest();
@@ -155,7 +164,7 @@ public class jpanelTest {
     }
     private void run()
     {
-        pushIn = new JButton("选择开始时间");
+        pushIn = new JButton("开始时间");
         pushIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -167,7 +176,7 @@ public class jpanelTest {
         pushUse.setBounds(500,500,300,300);
         pushYear = new JComboBox<Integer>();
         pushmonth = new JComboBox<Integer>();
-        backIn = new JButton("返回主界面");
+        backIn = new JButton("返回");
         surePush = new JButton("确定");
         surePush.addActionListener(new ActionListener() {
             @Override
@@ -200,14 +209,18 @@ public class jpanelTest {
         tianChongPushday();
         pushday.setSelectedIndex(0);
         pushUse.add(pushYear);
+        yearText.setEditable(false);
         pushUse.add(yearText);
         pushUse.add(pushmonth);
         pushUse.add(monthText);
+        monthText.setEditable(false);
         pushUse.add(pushday);
         pushUse.add(dayText);
+        dayText.setEditable(false);
         pushUse.add(backIn);
         pushUse.add(surePush);
         tableUse = new JTextField("阅览室借阅系统");
+        tableUse.setEditable(false);
         back = new JButton("座位归还");
         back.addActionListener(new ActionListener() {
             @Override
@@ -226,7 +239,6 @@ public class jpanelTest {
                         JOptionPane.showMessageDialog(only,bid+"号座位归还成功，可以再次预约");
                     }
                 } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -240,6 +252,7 @@ public class jpanelTest {
         only.setBackground(Color.gray);
         only.add(tableUse);
         only.add(chooseHour);
+        chooseText.setEditable(false);
         only.add(chooseText);
         only.add(pushIn);
         only.add(back);
@@ -247,6 +260,10 @@ public class jpanelTest {
         {
             for(int j = 0;j<lie;j++)
             {
+                if(i == 4&&j ==5)
+                {
+                    break;
+                }
                 save[i*10+j] = new RoundButton(String.valueOf(i*10+j));
                 save[i*10+j].setBackground(Color.green);
                 save[i*10+j].setSize(10,10);
@@ -268,7 +285,7 @@ public class jpanelTest {
         }
     }
 
-    private void addListen(RoundButton in)throws SQLException
+    private void addListen(RoundButton in)
     {
         in.addMouseListener(new MouseListener() {
             @Override
@@ -297,7 +314,7 @@ public class jpanelTest {
                             JOptionPane.showMessageDialog(only,"座位预定成功,预定时间为"+first+"————到————"+second);
                         }
                     } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
+
                     }
                 }
             }
