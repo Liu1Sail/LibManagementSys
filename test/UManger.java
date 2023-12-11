@@ -19,8 +19,8 @@ public class UManger {
                 e.printStackTrace();
             }
 
-            User user = manager.getOneByNameAndPassword("liuLi", "123");
-            System.out.println(user+"\n"+infoManager.getOneById(user.getUID()));
+            User user = manager.getUserByNameAndPassword("liuLi", "123");
+            System.out.println(user+"\n"+infoManager.getUserInfoById(user.getUID()));
         }
         catch (SQLException e){
             e.printStackTrace();

@@ -60,7 +60,7 @@ public class UserInfo {
         private final String m_Str;
         Gender(String str){m_Str = str;}
     }
-    public UserInfo(int id , String name, Date birthday , Gender gender , String phone, String email){
+    public UserInfo(Integer id , String name, Date birthday , Gender gender , String phone, String email){
         m_UID = id ;m_UName = name;
         m_UBirthday = birthday;
         m_UGender = gender;
