@@ -13,20 +13,29 @@ import java.util.List;
  */
 public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implements UserSQLDao , UserInfoSQLDao
 {
+    //===========================||   User    ||==============================//
     @Override
-    public User getOneByIdAndPassword(int uid,String password) throws SQLException {
-        Object[] meta = getOne(SELECT_USERS_BY_ID_AND_PASSWORD_SQL , uid , password);
+    public User getUserByIdAndPassword(int uid, String password) throws SQLException {
+        Object[] meta = getOne(
+                SELECT_USERS_BY_ID_AND_PASSWORD_SQL ,
+                uid ,
+                password
+        );
         if(meta.length<1)return null;
         return new User(uid, Cast(meta[0])  ,password);
     }
     @Override
-    public User getOneByNameAndPassword(String name, String password) throws SQLException {
-        Object[] meta = getOne(SELECT_USER_BY_NAME_AND_PASSWORD_SQL , name , password);
+    public User getUserByNameAndPassword(String name, String password) throws SQLException {
+        Object[] meta = getOne(
+                SELECT_USER_BY_NAME_AND_PASSWORD_SQL ,
+                name ,
+                password
+        );
         if(meta.length<1)return null;
-        return new User(this.<Integer>Cast(meta[0]), name  ,password);
+        return new User(Cast(meta[0]), name  ,password);
     }
     @Override
-    public User[] getAll()throws SQLException {
+    public User[] getAllUsers()throws SQLException {
         List<Object[]> list = getMany(SELECT_USERS_ALL_ID_AND_NAME_SQL);
         User[] result = new User[list.size()];
         for(int i = 0; i < list.size() ;++i) {
@@ -37,12 +46,16 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
         return result;
     }
     @Override
-    public void updateAll(User user) throws SQLException {
+    public void updateUserAll(User user) throws SQLException {
         if(null == user)return;
-        executeUpdate(UPDATE_USERS_SQL , user.getUName() , user.getUPassword() , user.getUID());
+        executeUpdate(UPDATE_USERS_SQL ,
+                user.getUName() ,
+                user.getUPassword() ,
+                user.getUID()
+        );
     }
     @Override
-    public void updatePasswordById(int id,String password) throws SQLException {
+    public void updateUserPasswordById(int id, String password) throws SQLException {
         executeUpdate(UPDATE_USERS_PASSWORD_SQL , password, id);
     }
     @Override
@@ -63,12 +76,10 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                         info.getPhone(),
                         info.getEmail());
             }commit();
-        }catch (SQLException e){
-            rollback();
-        }
+        }catch (SQLException e){rollback();}
         return -1;
     }
-
+    @Override
     public int insert(User user) throws SQLException {
         try {
             beginTransaction();
@@ -81,9 +92,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 executeTransactionUpdate(INSERT_USERINFO_SQL ,
                        id, null, null, null, null, null);
             }commit();
-        }catch (SQLException e){
-            rollback();
-        }
+        }catch (SQLException e){rollback();}
         return -1;
     }
     @Override
@@ -98,16 +107,24 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
             instance = new UserRepositoryManagerDaoImpl();
         return instance;
     }
-
-
-
-
-
-
-
-
     @Override
-    public void updateAll(UserInfo info) throws SQLException {
+    public boolean doesUserExistsByUserName(String userName)throws  SQLException
+    {
+        return this.<Integer>Cast(
+                getOne(SELECT_USERS_COUNT_BY_USERNAME , userName)
+        ) > 0;
+    }
+    @Override
+    public boolean doesUserExistsById(int id)throws SQLException
+    {
+        return this.<Integer>Cast(
+                getOne(SELECT_USERS_COUNT_BY_ID , id)
+        ) > 0;
+    }
+
+    //=========================||   UserInfo    ||===========================//
+    @Override
+    public void updateUserInfoAll(UserInfo info) throws SQLException {
         executeUpdate(UPDATE_USERINFO_SQL ,
                 info.getName() ,
                 JavaGenderToSqlGender(info.getGender()),
@@ -116,23 +133,25 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 info.getID() );
     }
     @Override
-    public UserInfo getOneById(int id)throws SQLException {
-        Object[] obj = getOne(SELECT_USERINFO_SQL , id);
-        if(null == obj)return null;
-        return new UserInfo(
-                Cast(obj[0]),
-                Cast(obj[1]) ,
-                SqlDateToJavaDate(Cast(obj[2])) ,
-                SqlGenderToJavaGender(Cast(obj[3])) ,
-                Cast(obj[4]) ,
-                Cast(obj[5])
+    public UserInfo getUserInfoById(int id)throws SQLException {
+        return assembleUserInfo(
+                getOne(SELECT_USERINFO_SQL , id)
         );
     }
-    //-------------------------------------------------------------------------------//
+
+    public UserInfo getUserInfoByUserName(String userName) throws SQLException {
+       return assembleUserInfo(
+               getOne(SELECT_USERINFO_BY_USER_NAME_SQL , userName)
+       );
+    }
+    /*====================================================================*/
+    /*======================||     PRIVATE        ||==========================*/
+    /*====================================================================*/
     private UserRepositoryManagerDaoImpl() throws SQLException {/*初始化User表 防止表被删除*/
         executeUpdate(CREATE_TABLE_USERS_SQL);
         executeUpdate(CREATE_TABLE_USERINFO_SQL);
     }
+    /*======================||        USER        ||===========================*/
     private static UserRepositoryManagerDaoImpl instance;
     private static final String CREATE_TABLE_USERS_SQL =
             "CREATE TABLE IF NOT EXISTS USERS(" +
@@ -155,8 +174,23 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     private static final String UPDATE_USERS_PASSWORD_SQL ="""
                     UPDATE USERS SET uPwd = ? WHERE uId = ?""";
 
+    private static final String SELECT_USERS_COUNT_BY_ID="SELECT COUNT(uId) WHERE uId = ?";
 
-    /*======================USERINFO=================================*/
+    private static final String SELECT_USERS_COUNT_BY_USERNAME="SELECT COUNT(uName) WHERE uName = ?";
+
+    /*======================||    USERINFO    ||===========================*/
+    private UserInfo assembleUserInfo(Object[] resultSet)
+    {
+        if(resultSet ==null || resultSet.length < 6)return null;
+        return new UserInfo(
+                Cast(resultSet[0]),
+                Cast(resultSet[1]) ,
+                SqlDateToJavaDate(Cast(resultSet[2])) ,
+                SqlGenderToJavaGender(Cast(resultSet[3])) ,
+                Cast(resultSet[4]) ,
+                Cast(resultSet[5])
+        );
+    }
     private UserInfo.Gender SqlGenderToJavaGender(String gender)
     {
         if(gender == null)return null;
@@ -200,5 +234,6 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
             """;
     private static final String INSERT_USERINFO_SQL= "INSERT INTO USERINFO (uId,uName,uBirthday,uGender, uPhone , uEmail) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?,uBirthday = ?,uGender = ?,uPhone = ?,uEmail = ?where uId = ?;";
-    private static final String SELECT_USERINFO_SQL = "SELECT*FROM USERINFO WHERE uId = ?;";
+    private static final String SELECT_USERINFO_SQL = "SELECT * FROM USERINFO WHERE uId = ?;";
+    private static final String SELECT_USERINFO_BY_USER_NAME_SQL= "SELECT USERINFO.* FROM USERINFO , USER WHERE USER.uId = ? AND USER.uId = USERINFO.uId";
 }
