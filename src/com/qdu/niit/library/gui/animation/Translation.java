@@ -94,9 +94,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -116,9 +114,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -138,9 +134,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -160,9 +154,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);

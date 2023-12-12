@@ -248,7 +248,7 @@ public class UserInterface extends ResizeFrame {
                     }
                     case 3->{
                         switch (childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel(frame));frame.repaint();}
+//                            case 1->{centerBottomPanel.add(com.qdu.niit.library.gui.temp.jpanelTest.getinstance());frame.repaint();}
                         }
                     }
                 }
