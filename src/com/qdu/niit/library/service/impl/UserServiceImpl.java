@@ -148,5 +148,5 @@ public class UserServiceImpl implements UserService {
     private User localUser;
     private UserInfo localUserInfo;
 
-    private UserServiceImpl instance;
+    private static UserServiceImpl instance;
 }
