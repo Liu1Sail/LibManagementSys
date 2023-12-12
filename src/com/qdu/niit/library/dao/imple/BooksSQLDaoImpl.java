@@ -6,6 +6,7 @@ import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookCopy;
 
 import javax.crypto.interfaces.PBEKey;
+import java.math.BigInteger;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -96,7 +97,8 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
         );
         assert theKeys != null;
         Object[] obj = theKeys.get(0);
-        return (Integer) obj[0];
+        BigInteger bigInteger = (BigInteger) obj[0];
+        return bigInteger.intValue();
     }
 
 
@@ -162,14 +164,14 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
 
     @Override
     public void DECQuantityOfNotVisible(Integer book_id) throws SQLException {
-        executeUpdate(getDecQuantityOfHiddenStatement());
+        executeUpdate(getDecQuantityOfHiddenStatement(),book_id);
     }
 
     @Override
     public boolean isEmpty(Integer book_id) throws SQLException {
         Object[] result = null;
         result = getOne(getGetBookQuantityStatement(),book_id);
-        return (Integer) result[0] != 0 || (Integer) result[1] != 0;
+        return !((Integer) result[0] != 0 || (Integer) result[1] != 0);
     }
 
     private static final String DELETE_BY_BOOK_ID = """

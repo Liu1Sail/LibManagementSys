@@ -1,6 +1,6 @@
 package com.qdu.niit.library.dao;
 
-import com.qdu.niit.library.Exception.objectHaveNoAttribute;
+import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.entity.BookInfo;
 
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public interface BookRepositorySQLDao {
-    void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, InstantiationException, objectHaveNoAttribute;
+    void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, InstantiationException, ObjectHaveNoAttribute;
 
     void delete(ArrayList<Integer> copy_ids) throws SQLException;
 

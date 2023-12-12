@@ -4,6 +4,7 @@ import com.qdu.niit.library.AbstractDao.BOOK_MANAGER;
 import com.qdu.niit.library.dao.BookCopiesSQLDao;
 import com.qdu.niit.library.entity.BookCopy;
 
+import java.math.BigInteger;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
                 copy_id INT AUTO_INCREMENT PRIMARY KEY,
                 book_id INT,
                 acquisition_date DATE,
-                on_shelf_status BOOLEAN DEFAULT 'TRUE',
-                book_location VARCHAR(50),
-                is_visible BOOLEAN DEFAULT 'TRUE',
+                on_shelf_status BOOLEAN DEFAULT TRUE,
+                book_location VARCHAR(50) UNIQUE,
+                is_visible BOOLEAN DEFAULT TRUE,
                 FOREIGN KEY (book_id) REFERENCES Books(book_id)
             );""";
 
@@ -77,10 +78,8 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     }
 
     @Override
-    public Integer delete(Integer copy_id) throws SQLException {
-        Object[] result = null;
-        result = getOne(getDeleteByCopyIdStatement(),copy_id);
-        return (Integer) result[0];
+    public void delete(Integer copy_id) throws SQLException {
+        executeUpdate(getDeleteByCopyIdStatement(),copy_id);
     }
 
     @Override
@@ -101,7 +100,8 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
         );
         assert theKeys != null;
         Object[] obj = theKeys.get(0);
-        return (Integer) obj[0];
+        BigInteger bigInteger = (BigInteger) obj[0];
+        return bigInteger.intValue();
     }
 
 

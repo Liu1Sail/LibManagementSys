@@ -1,6 +1,6 @@
 package com.qdu.niit.library.entity;
 
-import com.qdu.niit.library.Exception.objectHaveNoAttribute;
+import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
 
 import java.util.Date;
 
@@ -210,80 +210,80 @@ public class BookInfo {
         this.genre = genre;
     }
 
-    public Integer getBook_quantity_visible() throws objectHaveNoAttribute {
+    public Integer getBook_quantity_visible() throws ObjectHaveNoAttribute {
         if(book_id != -1){
             return book_quantity_visible;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
-    public void setBook_quantity_visible(Integer book_quantity_visible) throws objectHaveNoAttribute {
+    public void setBook_quantity_visible(Integer book_quantity_visible) throws ObjectHaveNoAttribute {
         if(book_id != -1){
             this.book_quantity_visible = book_quantity_visible;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
 
     }
 
-    public Integer getBook_quantity_hidden() throws objectHaveNoAttribute {
+    public Integer getBook_quantity_hidden() throws ObjectHaveNoAttribute {
         if(book_id != -1){
             return book_quantity_hidden;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
-    public void setBook_quantity_hidden(Integer book_quantity_hidden) throws objectHaveNoAttribute {
+    public void setBook_quantity_hidden(Integer book_quantity_hidden) throws ObjectHaveNoAttribute {
         if(book_id != -1){
             this.book_quantity_hidden = book_quantity_hidden;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
 
     }
 
-    public Date getAcquisition_date() throws objectHaveNoAttribute {
+    public Date getAcquisition_date() throws ObjectHaveNoAttribute {
         if (copy_id != -1) {
             return acquisition_date;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
 
-    public void setAcquisition_date(Date acquisition_date) throws objectHaveNoAttribute {
+    public void setAcquisition_date(Date acquisition_date) throws ObjectHaveNoAttribute {
         if (copy_id != -1) {
             this.acquisition_date = acquisition_date;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
 
     }
 
-    public Boolean getOn_shelf_status() throws objectHaveNoAttribute {
+    public Boolean getOn_shelf_status() throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             return on_shelf_status;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
 
     }
 
-    public void setOn_shelf_status(Boolean on_shelf_status) throws objectHaveNoAttribute {
+    public void setOn_shelf_status(Boolean on_shelf_status) throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             this.on_shelf_status = on_shelf_status;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
@@ -295,40 +295,40 @@ public class BookInfo {
         this.book_location = book_location;
     }
 
-    public Boolean getIs_visible() throws objectHaveNoAttribute {
+    public Boolean getIs_visible() throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             return is_visible;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
-    public void setIs_visible(Boolean is_visible) throws objectHaveNoAttribute {
+    public void setIs_visible(Boolean is_visible) throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             this.is_visible = is_visible;
 
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
-    public String getRoom() throws objectHaveNoAttribute {
+    public String getRoom() throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             return room;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
     }
 
-    public void setRoom(String room) throws objectHaveNoAttribute {
+    public void setRoom(String room) throws ObjectHaveNoAttribute {
         if(copy_id != -1){
             this.room = room;
         }
         else {
-            throw new objectHaveNoAttribute();
+            throw new ObjectHaveNoAttribute();
         }
 
     }

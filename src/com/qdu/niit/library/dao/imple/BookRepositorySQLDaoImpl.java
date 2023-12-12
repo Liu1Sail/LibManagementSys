@@ -1,6 +1,6 @@
 package com.qdu.niit.library.dao.imple;
 
-import com.qdu.niit.library.Exception.objectHaveNoAttribute;
+import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.dao.BookRepositorySQLDao;
 import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookCopy;
@@ -43,7 +43,7 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
         locationsManager = new LibraryCollectionRoomSQLDaoImpl();
     }
     @Override
-    public void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, InstantiationException, objectHaveNoAttribute {
+    public void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, InstantiationException, ObjectHaveNoAttribute {
         Integer book_id;
         Integer copy_id;
 
@@ -63,13 +63,16 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
             copy_id = bookCopiesManager.insertToBookCopies(bookCopy);
             bookCopy.setCopy_id(copy_id);
 
+            bookInfo.setBook_id(book_id);
+            bookInfo.setCopy_id(copy_id);
             if(bookInfo.getIs_visible()){   //更改图书的数量
                 booksManager.INCQuantityOfVisible(book_id);
             }
             else{
                 booksManager.INCQuantityOfNotVisible(book_id);
             }
-
+            //别而忘了赋值！！！
+            libraryCollectionRoom.setCopy_id(copy_id);
             locationsManager.insert(libraryCollectionRoom);
         }
     }
@@ -77,10 +80,14 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
     public void delete(ArrayList<Integer> copy_ids) throws SQLException {
 
         for(Integer copy_id : copy_ids){
+            //最开始先查要删除的书籍
+            ArrayList<BookInfo> book = getBookByCopyID(copy_id);
             //先判断是否存在
             locationsManager.delete(copy_id);
             boolean isVisible = bookCopiesManager.getIsVisibleByCopyID(copy_id);
-            Integer book_id = bookCopiesManager.delete(copy_id);  //删除copies表并获得删除的book_id
+            //book是查询结果
+            Integer book_id = book.get(0).getBook_id();
+            bookCopiesManager.delete(copy_id);  //删除copies表并获得删除的book_id
             if(isVisible){
                 booksManager.DECQuantityOfVisible(book_id);
             }
@@ -149,7 +156,7 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
             	c.on_shelf_status,
                 c.is_visible
             FROM Books b INNER JOIN BookCopies c ON b.book_id = c.book_id INNER JOIN LibraryCollectionRoom l ON c.copy_id = l.copy_id
-            WHERE c.book = ?;
+            WHERE c.book_id = ?;
             """;
 
     public static String getGetBookByBookIdStatement() {

@@ -29,8 +29,8 @@ public interface BookCopiesSQLDao {
 
     /**
      * 返回book_id
+     *
      * @param copy_id
-     * @return
      */
-    Integer delete(Integer copy_id) throws SQLException;
+    void delete(Integer copy_id) throws SQLException;
 }
