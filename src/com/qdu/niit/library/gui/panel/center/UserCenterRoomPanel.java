@@ -1,8 +1,11 @@
 package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.ReadingRoom;
+import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.service.ReadingRoomService;
+import com.qdu.niit.library.service.UserService;
 import com.qdu.niit.library.service.impl.ReadingRoomServiceImpl;
+import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +73,6 @@ class RoundButton extends JButton {
 
     @Override
     protected void paintBorder(Graphics g) {
-
         g.setColor(getForeground());
         g.drawOval(0, 0, 20, 20);
     }
@@ -85,8 +87,10 @@ public class UserCenterRoomPanel {
     private static int uid;
     private LocalDateTime end;
 
-    public static void setUid(int in) {
-        uid = in;
+    public static void setUid() {
+        UserService a = UserServiceImpl.getInstance();
+        User receive = a.getLocalUser();
+        uid = receive.getUID();
     }
 
     private static final int hang = 5;
@@ -99,6 +103,7 @@ public class UserCenterRoomPanel {
 
     private UserCenterRoomPanel() {
         only = new JPanel();
+        setUid();
         try {
             run();
             create();
