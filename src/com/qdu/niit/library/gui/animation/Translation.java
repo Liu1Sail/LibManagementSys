@@ -1,7 +1,5 @@
 package com.qdu.niit.library.gui.animation;
 
-import jdk.jfr.Event;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;
@@ -96,9 +94,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -118,9 +114,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -140,9 +134,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);
@@ -162,9 +154,7 @@ public class Translation extends JPanel {
             });
         } else {
             this.stop();
-            EventQueue.invokeLater(()->{
-                this.repaint();
-            });
+            EventQueue.invokeLater(this::repaint);
             if (!taskQueue.isEmpty()) {
                 var tmp=taskQueue.pop();
                 setDirection(tmp.direction);

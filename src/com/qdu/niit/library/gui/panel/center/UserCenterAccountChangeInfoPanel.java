@@ -1,11 +1,19 @@
 package com.qdu.niit.library.gui.panel.center;
 
+import com.qdu.niit.library.gui.animation.TextEmergeLabel;
+import com.qdu.niit.library.gui.animation.Translation;
+import com.qdu.niit.library.gui.input.InputInnerPasswordField;
+import com.qdu.niit.library.gui.input.InputInnerTextField;
 import com.qdu.niit.library.gui.input.InputTextPanel;
 import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author 李冠良
@@ -15,70 +23,562 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
-    private final InputTextPanel id;
-    private final InputTextPanel name;
-    private final InputTextPanel password;
-    private final InputTextPanel age;
-    private final InputTextPanel gender;
-    private final InputTextPanel phone;
-    private final InputTextPanel email;
+//    private final InputTextPanel id;
+//    private final InputTextPanel name;
+//    private final InputTextPanel password;
+//    private final InputTextPanel age;
+//    private final InputTextPanel gender;
+//    private final InputTextPanel phone;
+//    private final InputTextPanel email;
+    private final JFrame frame;
+    private int genderNumber = 1;
 
-    public UserCenterAccountChangeInfoPanel() {
+    public UserCenterAccountChangeInfoPanel(JFrame frame) {
+        this.frame=frame;
         var inputBottomPanel = new JPanel();
-        inputBottomPanel.setBounds(40, 40, 720, 210);
+        inputBottomPanel.setBounds(40, 40, 720, 500);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
-        this.add(inputBottomPanel);
         var titleLabel = new JLabel("修改个人信息");
-        id = new InputTextPanel("账号：");
-        name = new InputTextPanel("用户名：");
-        password = new InputTextPanel("密码：");
-        age = new InputTextPanel("年龄：");
-        gender = new InputTextPanel("性别：");
-        phone = new InputTextPanel("手机号：");
-        email = new InputTextPanel("邮箱：");
-        var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认修改");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-        id.setLocation(15, 35);
-        name.setLocation(220, 35);
-        password.setLocation(440, 35);
-        age.setLocation(15, 90);
-        gender.setLocation(235, 90);
-        phone.setLocation(440, 90);
-        email.setLocation(15,145);
-        resetButton.setBounds(410,145,130,35);
-        resetButton.addActionListener(e -> resetInputContent());
-        defineButton.setBounds(570,145,130,35);
-        defineButton.addActionListener(e -> {
-            //获取信息
-            resetInputContent();
-            //SwingWorker调用中间层
-            //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
-        });
         inputBottomPanel.add(titleLabel);
-        inputBottomPanel.add(id);
-        inputBottomPanel.add(name);
-        inputBottomPanel.add(password);
-        inputBottomPanel.add(age);
-        inputBottomPanel.add(gender);
-        inputBottomPanel.add(phone);
-        inputBottomPanel.add(email);
-        inputBottomPanel.add(resetButton);
-        inputBottomPanel.add(defineButton);
-        String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"账号","用户名","密码","年龄","性别","手机号","邮箱"};
-        var resultBottomPanel=new ResultDisplayArea(rowData,columnName);
-        DefaultTableModel resultTableModel=resultBottomPanel.getTextTableModel();
-        this.add(resultBottomPanel);
+        var scrollPane=new JScrollPane(inputBottomPanel);
+        scrollPane.setBounds(0,0,800,600);
+        this.add(scrollPane);
     }
     public void resetInputContent(){
-        id.setInputText("");
-        name.setInputText("");
-        password.setInputText("");
-        age.setInputText("");
-        gender.setInputText("");
-        phone.setInputText("");
+//        id.setInputText("");
+//        name.setInputText("");
+//        password.setInputText("");
+//        age.setInputText("");
+//        gender.setInputText("");
+//        phone.setInputText("");
+    }
+    private JPanel getBodyPanel() {
+        HashMap<Integer, Translation> componentMap = new HashMap<>();
+        InputTextHandle inputTextHandle = new InputTextHandle();
+        var bodyPanel = new JPanel();
+        bodyPanel.setBounds(0, 40, 400, 560);
+        bodyPanel.setOpaque(false);
+        bodyPanel.setLayout(null);
+        bodyPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                bodyPanel.requestFocusInWindow();
+            }
+        });
+
+        var errorPopMessage=new JDialog(frame,true);
+        errorPopMessage.setLocationRelativeTo(null);
+        errorPopMessage.setSize(200,100);
+        errorPopMessage.setTitle("错误提示");
+        errorPopMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        errorPopMessage.setLayout(new BorderLayout());
+        var errorPopMessageLabel=new JLabel("输入信息存在错误,请修改信息");
+        errorPopMessage.add(errorPopMessageLabel,BorderLayout.CENTER);
+
+        var inputBorderColor = new Color(84, 157, 248);
+        var inputInnerTextColor = new Color(153, 153, 153);
+        var inputBackgroundColor = new Color(229, 244, 251);
+        var buttonBackColor = new Color(0, 133, 255);
+        var buttonPressedBackColor = new Color(0, 124, 237);
+        var rightInputColor = new Color(4, 115, 18);
+        var inputInnerTextDefaultFont = new Font("宋体", Font.PLAIN, 14);
+        var titleText = new JLabel("欢迎注册图书馆账号");
+        titleText.setFont(new Font("宋体", Font.PLAIN, 35));
+        titleText.setBounds(30, 0, 350, 50);
+        titleText.setFocusable(true);
+        var nameInput = new InputInnerTextField("用户名", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+
+            @Override
+            public void gainFocusMovement(InputInnerTextField textField) {
+                if (!isInitial) {
+                    for (int i = 3; i <= 13; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
+                tip.setForeground(inputInnerTextColor);
+                tip.setText("用户名限制3-20个字符");
+                for (int i = 3; i <= 13; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                tip.setVisible(true);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerTextField textField) {
+                if (textField.getText().equals("用户名")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
+                    tip.setForeground(Color.RED);
+                    tip.setText("用户名不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setName(textField.getText());
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
+                    if (!inputTextHandle.isNameNotShorter()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("用户名过短");
+                        tip.setVisible(true);
+                    } else if (!inputTextHandle.isNameNotLonger()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("用户名过长");
+                        tip.setVisible(true);
+                    } else {
+                        tip.setForeground(rightInputColor);
+                        tip.setText("用户名正确！");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var namePanel = new Translation(nameInput, 1, 6, 10, Translation.TO_BELOW);
+        var nameTip = new TextEmergeLabel("用户名不能为空", 0.01, 255, 255, Color.RED);
+        var nameTipPanel = new Translation(nameTip, 1, 6, 10, Translation.TO_BELOW);
+        var passInput = new InputInnerPasswordField("密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+
+            @Override
+            public void gainFocusMovement(InputInnerPasswordField textField) {
+                if (!isInitial) {
+                    for (int i = 5; i <= 13; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+                tip.setForeground(inputInnerTextColor);
+                tip.setText("密码限制8-20个字符，至少包含一个大写字母和一个特殊字符");
+                for (int i = 5; i <= 13; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                tip.setVisible(true);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerPasswordField textField) {
+                if (new String(textField.getPassword()).equals("密码")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+                    tip.setForeground(Color.RED);
+                    tip.setText("密码不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setPassword(new String(textField.getPassword()));
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
+                    if (!inputTextHandle.isTrueLengthPassword()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("密码过长或过短");
+                        tip.setVisible(true);
+                    } else if (!inputTextHandle.isHaveSpecialCharacterPassword()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("密码缺少特殊字符");
+                        tip.setVisible(true);
+                    } else if (!inputTextHandle.isHaveUpperCharacterPassword()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("密码缺少大写字母");
+                        tip.setVisible(true);
+                    } else {
+                        tip.setForeground(rightInputColor);
+                        tip.setText("密码正确！");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var passPanel = new Translation(passInput, 1, 6, 10, Translation.TO_BELOW);
+        var passTip = new TextEmergeLabel("密码不能为空", 0.01, 255, 255, Color.RED);
+        var passTipPanel = new Translation(passTip, 1, 6, 10, Translation.TO_BELOW);
+        var passRepeatInput = new InputInnerPasswordField("重复密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+
+            @Override
+            public void gainFocusMovement(InputInnerPasswordField textField) {
+                if (!isInitial) {
+                    for (int i = 7; i <= 13; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
+                for (int i = 7; i <= 13; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                tip.setForeground(inputInnerTextColor);
+                tip.setText("请在再次输入密码");
+                tip.setVisible(true);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerPasswordField textField) {
+                if (new String(textField.getPassword()).equals("密码")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
+                    tip.setText("密码不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setPasswordAgain(new String(textField.getPassword()));
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
+                    if (!inputTextHandle.isSamePassWord()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("两次输入的密码不一致");
+                        tip.setVisible(true);
+                    } else {
+                        tip.setForeground(rightInputColor);
+                        tip.setText("密码正确");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var passRepeatPanel = new Translation(passRepeatInput, 1, 6, 10, Translation.TO_BELOW);
+        var passRepeatTip = new TextEmergeLabel("密码不能为空", 0.01, 255, 255, Color.RED);
+        var passRepeatTipPanel = new Translation(passRepeatTip, 1, 6, 10, Translation.TO_BELOW);
+
+        var genderLabel = new JLabel();
+        var genderLabelPanel = new Translation(genderLabel, 1, 6, 10, Translation.TO_BELOW);
+        var genderButtonPanel = new JPanel();
+        var genderPanel = new Translation(genderButtonPanel, 1, 6, 10, Translation.TO_BELOW);
+        var genderGroup = new ButtonGroup();
+        var maleButton = new JRadioButton("男", true);
+        var femaleButton = new JRadioButton("女", false);
+        var phoneInput = new InputInnerTextField("手机号", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+
+            @Override
+            public void gainFocusMovement(InputInnerTextField textField) {
+                if (!isInitial) {
+                    for (int i = 11; i <= 13; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                for (int i = 11; i <= 13; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
+                tip.setForeground(Color.RED);
+                tip.setText("请输入正确的手机号");
+                tip.setVisible(false);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerTextField textField) {
+                if (textField.getText().equals("手机号")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
+                    tip.setText("手机号不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setPhoneNumber(textField.getText());
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
+                    if (!inputTextHandle.isRightPhoneNumber()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("手机号错误");
+                        tip.setVisible(true);
+                    } else {
+                        tip.setForeground(rightInputColor);
+                        tip.setText("手机号正确");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var phonePanel = new Translation(phoneInput, 1, 6, 10, Translation.TO_BELOW);
+        var phoneTip = new TextEmergeLabel("手机不能为空", 0.01, 255, 255, Color.RED);
+        var phoneTipPanel = new Translation(phoneTip, 1, 6, 10, Translation.TO_BELOW);
+
+        var emailInput = new InputInnerTextField("邮箱", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+
+            @Override
+            public void gainFocusMovement(InputInnerTextField textField) {
+                if (!isInitial) {
+                    for (int i = 13; i <= 13; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
+                for (int i = 13; i <= 13; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                tip.setForeground(Color.RED);
+                tip.setText("邮箱的格式为*@*.*");
+                tip.setVisible(false);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerTextField textField) {
+                if (textField.getText().equals("邮箱")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
+                    tip.setText("邮箱不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setEmailAddress(textField.getText());
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
+                    if (!inputTextHandle.isRightEmail()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("邮箱错误");
+                        tip.setVisible(true);
+                    }
+                    else{
+                        tip.setForeground(rightInputColor);
+                        tip.setText("邮箱正确");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var emailPanel = new Translation(emailInput, 1, 6, 10, Translation.TO_BELOW);
+        var emailTip = new TextEmergeLabel("邮箱不能为空", 0.01, 255, 255, Color.RED);
+        var emailTipPanel = new Translation(emailTip, 1, 6, 10, Translation.TO_BELOW);
+
+        var defineButton = new JButton();
+        var defineButtonPanel = new Translation(defineButton, 1, 6, 10, Translation.TO_BELOW);
+
+        namePanel.setBounds(70, 70, 250, 35);
+        nameInput.setFont(inputInnerTextDefaultFont);
+        nameTipPanel.setBounds(70, 100, 250, 35);
+        nameTip.setVisible(false);
+        passPanel.setBounds(70, 120, 250, 35);
+        passInput.setFont(inputInnerTextDefaultFont);
+        passTipPanel.setBounds(70, 150, 360, 35);
+        passTip.setVisible(false);
+        passRepeatPanel.setBounds(70, 170, 250, 35);
+        passRepeatInput.setFont(inputInnerTextDefaultFont);
+        passRepeatTipPanel.setBounds(70, 200, 250, 35);
+        passRepeatTip.setVisible(false);
+        genderLabelPanel.setBounds(70, 210, 80, 50);
+        genderLabel.setFont(inputInnerTextDefaultFont);
+        genderLabel.setText("性别：");
+        genderLabel.setOpaque(false);
+        genderPanel.setBounds(70, 215, 200, 30);
+        genderButtonPanel.setOpaque(false);
+        maleButton.setOpaque(false);
+        maleButton.setFocusable(false);
+        maleButton.setFont(inputInnerTextDefaultFont);
+        femaleButton.setOpaque(false);
+        femaleButton.setFocusable(false);
+        femaleButton.setFont(inputInnerTextDefaultFont);
+        genderGroup.add(maleButton);
+        genderGroup.add(femaleButton);
+        genderButtonPanel.add(maleButton);
+        genderButtonPanel.add(femaleButton);
+        maleButton.addActionListener(e -> genderNumber = 1);
+        femaleButton.addActionListener(e -> genderNumber = 2);
+        phonePanel.setBounds(70, 250, 250, 35);
+        phoneInput.setFont(inputInnerTextDefaultFont);
+        phoneTipPanel.setBounds(70, 280, 250, 35);
+        phoneTip.setVisible(false);
+        emailPanel.setBounds(70, 300, 250, 35);
+        emailInput.setFont(inputInnerTextDefaultFont);
+        emailTipPanel.setBounds(70, 330, 250, 35);
+        emailTip.setVisible(false);
+        defineButtonPanel.setBounds(100, 360, 200, 50);
+        defineButton.setForeground(Color.WHITE);
+        defineButton.setFont(new Font("宋体", Font.BOLD, 20));
+        defineButton.setText("立即注册");
+        defineButton.setHorizontalAlignment(SwingConstants.CENTER);
+        defineButton.setVerticalAlignment(SwingConstants.CENTER);
+        defineButton.setBackground(buttonBackColor);
+        defineButton.setBorder(null);
+        defineButton.setFocusPainted(false);
+        defineButton.addActionListener(e -> {
+            inputTextHandle.setName(nameInput.getText());
+            inputTextHandle.setPassword(new String(passInput.getPassword()));
+            inputTextHandle.setPasswordAgain(new String(passRepeatInput.getPassword()));
+            inputTextHandle.setGender(genderNumber);
+            inputTextHandle.setPhoneNumber(phoneInput.getText());
+            inputTextHandle.setEmailAddress(emailInput.getText());
+            if(inputTextHandle.checkInputText()==inputTextHandle.RIGHT){
+                //向数据库发送数据
+            }
+            else{
+                errorPopMessage.setVisible(true);
+            }
+        });
+
+        componentMap.put(1, namePanel);
+        componentMap.put(2, nameTipPanel);
+        componentMap.put(3, passPanel);
+        componentMap.put(4, passTipPanel);
+        componentMap.put(5, passRepeatPanel);
+        componentMap.put(6, passRepeatTipPanel);
+        componentMap.put(7, genderLabelPanel);
+        componentMap.put(8, genderPanel);
+        componentMap.put(9, phonePanel);
+        componentMap.put(10, phoneTipPanel);
+        componentMap.put(11, emailPanel);
+        componentMap.put(12, emailTipPanel);
+        componentMap.put(13, defineButtonPanel);
+
+        bodyPanel.add(titleText);
+        bodyPanel.add(namePanel);
+        bodyPanel.add(nameTipPanel);
+        bodyPanel.add(passPanel);
+        bodyPanel.add(passTipPanel);
+        bodyPanel.add(passRepeatPanel);
+        bodyPanel.add(passRepeatTipPanel);
+        bodyPanel.add(genderLabelPanel);
+        bodyPanel.add(genderPanel);
+        bodyPanel.add(phonePanel);
+        bodyPanel.add(phoneTipPanel);
+        bodyPanel.add(emailPanel);
+        bodyPanel.add(emailTipPanel);
+        bodyPanel.add(defineButtonPanel);
+
+        return bodyPanel;
+    }
+    private static class InputTextHandle {
+        private String name;
+        private String password;
+        private String passwordAgain;
+        private int gender;
+        private String phoneNumber;
+        private String emailAddress;
+        private final int RIGHT = 0;
+        private final static int WRONG_NAME_SHORT = 1;
+        private final static int WRONG_NAME_LONG = 2;
+        private final static int WRONG_EMPTY_PASSWORD = 3;
+        private final static int WRONG_PASSWORD_NOT_SAME = 4;
+        private final static int WRONG_PASSWORD_LENGTH = 5;
+        private final static int WRONG_PASSWORD_UPPER = 6;
+        private final static int WRONG_PASSWORD_SPECIAL = 7;
+        private final static int WRONG_GENDER = 8;
+        private final static int WRONG_PHONE = 9;
+        private final static int WRONG_EMAIL = 10;
+
+        public InputTextHandle() {
+        }
+
+        public InputTextHandle(String name, String password, String passwordAgain, int gender, String phoneNumber, String emailAddress) {
+            this.name = name;
+            this.password = password;
+            this.passwordAgain = passwordAgain;
+            this.gender = gender;
+            this.phoneNumber = phoneNumber;
+            this.emailAddress = emailAddress;
+        }
+
+        public int checkInputText() {
+            if (!isNameNotShorter()) return WRONG_NAME_SHORT;
+            if (!isNameNotLonger()) return WRONG_NAME_LONG;
+            if (!isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
+            if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
+            if (!isTrueLengthPassword()) return WRONG_PASSWORD_LENGTH;
+            if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;
+            if (!isHaveSpecialCharacterPassword()) return WRONG_PASSWORD_SPECIAL;
+            if (!isRightGender()) return WRONG_GENDER;
+            if (!isRightPhoneNumber()) return WRONG_PHONE;
+            if (!isRightEmail()) return WRONG_EMAIL;
+            return RIGHT;
+        }
+
+        public boolean isNameNotShorter() {
+            return name.length() > 2;
+        }
+
+        public boolean isNameNotLonger() {
+            return name.length() <= 20;
+        }
+
+        public boolean isEmptyPassword() {
+            return password.isEmpty();
+        }
+
+        public boolean isSamePassWord() {
+            if(password==null){
+                return false;
+            }
+            return password.equals(passwordAgain);
+        }
+
+        public boolean isTrueLengthPassword() {
+            return Pattern.matches("\\S{8,20}", password);
+        }
+
+        public boolean isHaveUpperCharacterPassword() {
+            return Pattern.matches("\\S*[A-Z]+\\S*", password);
+        }
+
+        public boolean isHaveSpecialCharacterPassword() {
+            return Pattern.matches("\\S*[~`\\-_=+{\\[}\\]\\\\|;:'\",<.>/?!@#$%^&*()]\\S*", password);
+        }
+
+        public boolean isRightGender() {
+            return gender == 1 || gender == 2;
+        }
+
+        public boolean isRightPhoneNumber() {
+            return Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber);
+        }
+
+        public boolean isRightEmail() {
+            return Pattern.matches("^[a-zA-z0-9_]+@[a-zA-z0-9_]+.[a-zA-z0-9]+$", emailAddress);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPasswordAgain() {
+            return passwordAgain;
+        }
+
+        public void setPasswordAgain(String passwordAgain) {
+            this.passwordAgain = passwordAgain;
+        }
+
+        public int getGender() {
+            return gender;
+        }
+
+        public void setGender(int gender) {
+            this.gender = gender;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getEmailAddress() {
+            return emailAddress;
+        }
+
+        public void setEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+        }
     }
 }

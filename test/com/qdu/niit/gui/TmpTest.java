@@ -1,6 +1,6 @@
 package com.qdu.niit.gui;
 
-import com.qdu.niit.library.gui.cancel.RegisterInterfaceSave;
+import com.qdu.niit.library.gui.removed.RegisterInterfaceSave;
 import com.qdu.niit.library.gui.animation.Translation;
 
 import javax.swing.*;

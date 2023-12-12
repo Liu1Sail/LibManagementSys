@@ -5,6 +5,7 @@ import com.qdu.niit.library.gui.animation.Translation;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.input.InputInnerPasswordField;
 import com.qdu.niit.library.gui.input.InputInnerTextField;
+import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,18 +23,18 @@ import java.util.regex.Pattern;
 
 public class RegisterInterface extends JFrame {
     private final JFrame frame = this;
-    private Point offsetMouseToFrame = new Point();
-    private InputTextHandle inputTextHandle = new InputTextHandle();
+    private final Point offsetMouseToFrame = new Point();
+    private final InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
-    private final HashMap<Integer, Translation> componentMap = new HashMap<>();
 
     public RegisterInterface() {
         frame.setLayout(null);
 //        frame.getContentPane().setBackground(new Color(212, 239, 223));
         frame.getContentPane().setBackground(new Color(188, 226, 243));
-        frame.setSize(400, 700);
+        frame.setSize(410, 700);
         frame.setLocationRelativeTo(null);
         frame.setUndecorated(true);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         frame.setTitle("注册");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
         //鼠标拖动窗口
@@ -61,6 +62,7 @@ public class RegisterInterface extends JFrame {
     }
 
     private JPanel getBodyPanel() {
+        HashMap<Integer, Translation> componentMap = new HashMap<>();
         var bodyPanel = new JPanel();
         bodyPanel.setBounds(0, 40, 400, 560);
         bodyPanel.setOpaque(false);
@@ -361,7 +363,7 @@ public class RegisterInterface extends JFrame {
         nameTip.setVisible(false);
         passPanel.setBounds(70, 120, 250, 35);
         passInput.setFont(inputInnerTextDefaultFont);
-        passTipPanel.setBounds(70, 150, 250, 35);
+        passTipPanel.setBounds(70, 150, 360, 35);
         passTip.setVisible(false);
         passRepeatPanel.setBounds(70, 170, 250, 35);
         passRepeatInput.setFont(inputInnerTextDefaultFont);
@@ -410,9 +412,10 @@ public class RegisterInterface extends JFrame {
             inputTextHandle.setPhoneNumber(phoneInput.getText());
             inputTextHandle.setEmailAddress(emailInput.getText());
             if(inputTextHandle.checkInputText()==inputTextHandle.RIGHT){
-                //向数据库发送数据
+
             }
             else{
+                System.out.println(inputTextHandle.checkInputText());
                 errorPopMessage.setVisible(true);
             }
         });
@@ -498,16 +501,16 @@ public class RegisterInterface extends JFrame {
         private String phoneNumber;
         private String emailAddress;
         private final int RIGHT = 0;
-        private final int WRONG_NAME_SHORT = 1;
-        private final int WRONG_NAME_LONG = 2;
-        private final int WRONG_EMPTY_PASSWORD = 3;
-        private final int WRONG_PASSWORD_NOT_SAME = 4;
-        private final int WRONG_PASSWORD_LENGTH = 5;
-        private final int WRONG_PASSWORD_UPPER = 6;
-        private final int WRONG_PASSWORD_SPECIAL = 7;
-        private final int WRONG_GENDER = 8;
-        private final int WRONG_PHONE = 9;
-        private final int WRONG_EMAIL = 10;
+        private final static int WRONG_NAME_SHORT = 1;
+        private final static int WRONG_NAME_LONG = 2;
+        private final static int WRONG_EMPTY_PASSWORD = 3;
+        private final static int WRONG_PASSWORD_NOT_SAME = 4;
+        private final static int WRONG_PASSWORD_LENGTH = 5;
+        private final static int WRONG_PASSWORD_UPPER = 6;
+        private final static int WRONG_PASSWORD_SPECIAL = 7;
+        private final static int WRONG_GENDER = 8;
+        private final static int WRONG_PHONE = 9;
+        private final static int WRONG_EMAIL = 10;
 
         public InputTextHandle() {
         }
@@ -524,7 +527,7 @@ public class RegisterInterface extends JFrame {
         public int checkInputText() {
             if (!isNameNotShorter()) return WRONG_NAME_SHORT;
             if (!isNameNotLonger()) return WRONG_NAME_LONG;
-            if (!isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
+            if (isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
             if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
             if (!isTrueLengthPassword()) return WRONG_PASSWORD_LENGTH;
             if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;

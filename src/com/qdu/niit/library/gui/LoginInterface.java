@@ -33,6 +33,7 @@ public class LoginInterface extends JFrame {
         frame.setBounds(initialX, initialY, 800, 600);
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setTitle("图书管理系统");
         frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         //鼠标拖动窗口
