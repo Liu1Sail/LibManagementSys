@@ -114,12 +114,12 @@ public class BookInfo {
      * @param on_shelf_status
      * @param is_visible
      */
-    public BookInfo( Integer book_id,Integer copy_id,String title,
-                     String isbn, String author,
-                     String publisher, Date receipt_date,String genre,
-                     Date acquisition_date,String room,
-                     String book_location,Boolean on_shelf_status,
-                     Boolean is_visible) {   //插入copy的生成
+    public BookInfo(Integer book_id, Integer copy_id, String title,
+                    String isbn, String author,
+                    String publisher, Date receipt_date, String genre,
+                    Date acquisition_date, String room,
+                    String book_location, Boolean on_shelf_status,
+                    Boolean is_visible) {   //插入copy的生成
         this.book_id = book_id;
         this.title = title;
         this.isbn = isbn;

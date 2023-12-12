@@ -2,6 +2,7 @@ package com.qdu.niit.library.dao.imple;
 
 import com.qdu.niit.library.AbstractDao.BOOK_MANAGER;
 import com.qdu.niit.library.dao.LibraryCollectionRoomSQLDao;
+import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.LibraryCollectionRoom;
 
 import java.lang.reflect.InvocationTargetException;
@@ -10,9 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements LibraryCollectionRoomSQLDao {
-    private LibraryCollectionRoomSQLDaoImpl(int everything){
-        super(1);
-    }
     public static final String tableName = "LibraryCollectionRoom";
     public static final int tableId = 3;
     protected String getCreateTableStatement(){
@@ -40,25 +38,15 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
     public String getInsertStatement(){
         return INSERT_STATEMENT;
     }
-    public static final String DELETE_BY_COPY_ID = """
-            DELETE FROM LibraryCollectionRoom WHERE copy_id = ? ;"""
+    public static final String DELETE_BY_COPY_ID_STATEMENT = """
+            DELETE FROM LibraryCollectionRoom
+            WHERE copy_id = ?;"""
             ;
     public static String getDeleteByCopyIdStatement(){
-        return DELETE_BY_COPY_ID;
+        return DELETE_BY_COPY_ID_STATEMENT;
     }
-    public static final String DELETE_BY_BOOK_ID = """
-            DELETE FROM LibraryCollectionRoom WHERE book_id = ? ;"""
-            ;
-    public static String getDeleteByBookIdStatement(){
-        return DELETE_BY_BOOK_ID;
-    }
-    public final String SELECT_BY_BOOK_ID = """
-            SELECT * FROM LibraryCollectionRoom
-            WHERE book_id = ?;
-            """;
-    public String getSelectByBookIDStatement(){
-        return SELECT_BY_BOOK_ID;
-    }
+
+
     @Override
     public void insert(LibraryCollectionRoom element) throws SQLException {
         executeUpdate(
@@ -71,21 +59,19 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
         );
     }
     @Override
-    //没有此方法
-    public int deleteByBookID(ArrayList<Integer> theKeyWantDelete) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException{
-        return -1;
+    public void delete(Integer book_id) throws SQLException {
+        executeUpdate(getDeleteByCopyIdStatement(),book_id);
     }
     public LibraryCollectionRoomSQLDaoImpl() throws SQLException, ConnectException {
         super();
     }
 
-    @Override
     public String getTableName() {
         return tableName;
     }
 
-    @Override
     public int getTableId() {
         return tableId;
     }
+
 }

@@ -1,23 +1,15 @@
 package com.qdu.niit.library.dao.imple;
 
 import com.qdu.niit.library.AbstractDao.BOOK_MANAGER;
-import com.qdu.niit.library.Exception.objectHaveNoAttribute;
 import com.qdu.niit.library.dao.BookCopiesSQLDao;
-import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookCopy;
-import com.qdu.niit.library.entity.BookInfo;
-import com.qdu.niit.library.entity.LibraryCollectionRoom;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLDao {
-    private BookCopiesSQLDaoImpl(int everything){
-        super(1);
-    }
+
     public static final String tableName = "BookCopies";
     public static final int tableId = 2;
     protected String getCreateTableStatement(){
@@ -46,36 +38,6 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     public String getInsertWithoutKeyStatement() {
         return INSERT_WITHOUT_KEY;
     }
-    public static final String DELETE_BY_COPY_ID = """
-            DELETE FROM BookCopies WHERE copy_id = ? ;"""
-            ;
-    public static String getDeleteByCopyIdStatement(){
-        return DELETE_BY_COPY_ID;
-    }
-    public static final String DELETE_BY_BOOK_ID = """
-            DELETE FROM BookCopies WHERE book_id = ? ;"""
-            ;
-    public static String getDeleteByBookIdStatement(){
-        return DELETE_BY_BOOK_ID;
-    }
-
-
-    /*
-    返回值
-    title
-    isbn
-    author
-    publisher
-    receipt_date
-    genre
-    copy_id
-    acquisition_date
-    on_shelf_status
-    book_location
-    is_visible  根据其判断是否可显示
-     */
-
-
 
     private static final String CHANGE_ON_SHELF_STATUS_STATEMENT = """
             UPDATE BookCopies
@@ -90,6 +52,35 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     @Override
     public void changeOnShelfStatus(Integer book_id) throws SQLException {
         executeUpdate(getChangeOnShelfStatusStatement(),book_id);
+    }
+
+    public static final String GET_IS_VISIBLE_STATEMENT = """
+            SELECT is_visible FROM BookCopies
+            WHERE copy_id = ?;
+            """;
+    public String getGetIsVisibleStatement(){
+        return GET_IS_VISIBLE_STATEMENT;
+    }
+    @Override
+    public boolean getIsVisibleByCopyID(Integer copy_id) throws SQLException {
+        Object[] result = null;
+        result = getOne(getGetIsVisibleStatement(),copy_id);
+        return (boolean) result[0];
+    }
+
+    public static final String DELETE_BY_COPY_ID = """
+            DELETE FROM BookCopies
+            WHERE copy_id = ?;
+            """;
+    public static String getDeleteByCopyIdStatement(){
+        return DELETE_BY_COPY_ID;
+    }
+
+    @Override
+    public Integer delete(Integer copy_id) throws SQLException {
+        Object[] result = null;
+        result = getOne(getDeleteByCopyIdStatement(),copy_id);
+        return (Integer) result[0];
     }
 
     @Override
@@ -109,25 +100,18 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
                 )
         );
         assert theKeys != null;
-        return (Integer) theKeys.getFirst()[0];
+        Object[] obj = theKeys.get(0);
+        return (Integer) obj[0];
     }
-    @Override
-    public int deleteByBookID(ArrayList<Integer> theKeyWantDelete) {
-        return -1;
-    }
+
 
 
     public BookCopiesSQLDaoImpl() throws SQLException, ConnectException {
         super();
     }
-
-
-    @Override
     public String getTableName() {
         return tableName;
     }
-
-    @Override
     public int getTableId() {
         return tableId;
     }

@@ -1,19 +1,14 @@
 package com.qdu.niit.library.dao.imple;
 
 import com.qdu.niit.library.Exception.objectHaveNoAttribute;
-import com.qdu.niit.library.dao.BaseSQLDao;
 import com.qdu.niit.library.dao.BookRepositorySQLDao;
-import com.qdu.niit.library.dao.BooksSQLDao;
 import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookCopy;
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.LibraryCollectionRoom;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
-import java.security.PublicKey;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +22,7 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
     /**
      * 构造函数
      */
-    BookRepositorySQLDaoImpl() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, ConnectException {
+    public BookRepositorySQLDaoImpl() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, ConnectException {
 
 //        Class<?> BooksManager = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
 //        Constructor<?> constructorOfBooksManager = BooksManager.getDeclaredConstructor(int.class);
@@ -76,6 +71,25 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
             }
 
             locationsManager.insert(libraryCollectionRoom);
+        }
+    }
+    @Override
+    public void delete(ArrayList<Integer> copy_ids) throws SQLException {
+
+        for(Integer copy_id : copy_ids){
+            //先判断是否存在
+            locationsManager.delete(copy_id);
+            boolean isVisible = bookCopiesManager.getIsVisibleByCopyID(copy_id);
+            Integer book_id = bookCopiesManager.delete(copy_id);  //删除copies表并获得删除的book_id
+            if(isVisible){
+                booksManager.DECQuantityOfVisible(book_id);
+            }
+            else{
+                booksManager.DECQuantityOfNotVisible(book_id);
+            }
+            if(booksManager.isEmpty(book_id)){
+                booksManager.delete(book_id);
+            }
         }
     }
     private static final String GET_BOOK_BY_COPY_ID_STATEMENT = """
@@ -202,51 +216,48 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
     private String getLikeStatement(String keyWord){
         return "%" + keyWord + "%";
     }
+    @Override
     public ArrayList<BookInfo> getBookByCopyID(Integer copy_id) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByCopyId(),copy_id);
         return getBookInfos(gotResult, result);
     }
+    @Override
     public ArrayList<BookInfo> getBookByDate(Date date) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByDateStatement(),date);
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
-    public ArrayList<BookInfo> getGetBookByBookID(Integer book_id) throws SQLException {
+    @Override
+    public ArrayList<BookInfo> getBookByBookID(Integer book_id) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByBookIdStatement(),book_id);
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
 
+    @Override
     public ArrayList<BookInfo> getBookByAuthor(String author) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByAuthorStatement(),getLikeStatement(author));
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
+    @Override
     public ArrayList<BookInfo> getBookByTitle(String title) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByTitleStatement(),getLikeStatement(title));
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
-    public ArrayList<BookInfo> getBookByAuthorAndTitle(String author,String title) throws SQLException {
+    @Override
+    public ArrayList<BookInfo> getBookByAuthorAndTitle(String author, String title) throws SQLException {
         ArrayList<Object[]> gotResult = null;
         ArrayList<BookInfo> result = new ArrayList<>();
         gotResult = getMany(getGetBookByAuthorAndTitleStatement(),getLikeStatement(author),getLikeStatement(title));
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
-    }
-
-    private ArrayList<BookInfo> getBookInfos(ArrayList<Object[]> gotResult, ArrayList<BookInfo> result) {
-        BookInfo bookInfo;
-        for (Object[] obj : gotResult){
-            bookInfo = new BookInfo((Integer)obj[0],(Integer)obj[1],(String) obj[2],(String)obj[3],(String)obj[4],(String)obj[5],(Date)obj[6],(String)obj[7],(Date)obj[8],(String)obj[9],(String)obj[10],(Boolean)obj[11],(Boolean)obj[12]);
-            result.add(bookInfo);
-        }
-        return result;
     }
 
 }

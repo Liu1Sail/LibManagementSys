@@ -1,12 +1,8 @@
 package com.qdu.niit.library.dao;
 
-import com.qdu.niit.library.Exception.objectHaveNoAttribute;
 import com.qdu.niit.library.entity.BookCopy;
-import com.qdu.niit.library.entity.BookInfo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public interface BookCopiesSQLDao {
 
@@ -15,5 +11,26 @@ public interface BookCopiesSQLDao {
      * 在insert函数中已经初始化BookCopy
      */
     Integer insertToBookCopies(BookCopy element) throws SQLException;
+
+    /**
+     * 每次对在架状态取反
+     * @param book_id
+     * @throws SQLException
+     */
     void changeOnShelfStatus(Integer book_id) throws SQLException;
+
+    /**
+     * 获得书籍是否可见
+     *
+     * @param copy_id
+     * @return
+     */
+    boolean getIsVisibleByCopyID(Integer copy_id) throws SQLException;
+
+    /**
+     * 返回book_id
+     * @param copy_id
+     * @return
+     */
+    Integer delete(Integer copy_id) throws SQLException;
 }

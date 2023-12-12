@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
-    private BooksSQLDaoImpl(int everything){
-        super(1);
-    }
     public static final String tableName = "Books";
     public static final int tableId = 1;
     protected String getCreateTableStatement(){
@@ -46,31 +43,15 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     public String getInsertWithoutKeyStatement(){
         return INSERT_WITHOUT_KEY;
     }
-    private static final String DELETE_BY_BOOK_ID = """
-            DELETE FROM Books WHERE book_id = ? ;"""
-            ;
-    private static String getDeleteByBookIdStatement(){
-        return DELETE_BY_BOOK_ID;
-    }
-    private static final String SELECT_BY_BOOK_ID = """
-            SELECT * FROM Books
-            WHERE book_id = ?;
-            """;
-    public String getSelectByBookIDStatement(){
-        return SELECT_BY_BOOK_ID;
-    }
-
 
     public BooksSQLDaoImpl() throws SQLException, ConnectException {
         super();
     }
 
-    @Override
     public String getTableName() {
         return tableName;
     }
 
-    @Override
     public int getTableId() {
         return tableId;
     }
@@ -114,7 +95,8 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
                 )
         );
         assert theKeys != null;
-        return (Integer) theKeys.getFirst()[0];
+        Object[] obj = theKeys.get(0);
+        return (Integer) obj[0];
     }
 
 
@@ -138,6 +120,14 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
                             SET book_quantity_hidden = book_quantity_hidden - 1
                             WHERE book_id = ?;
             """;
+    private static final String GET_BOOK_QUANTITY_STATEMENT = """
+                SELECT book_quantity_visible,book_quantity_hidden FROM Books
+                WHERE book_id = ?;
+            """;
+
+    public static String getGetBookQuantityStatement() {
+        return GET_BOOK_QUANTITY_STATEMENT;
+    }
 
     public static String getDecQuantityOfHiddenStatement() {
         return DEC_QUANTITY_OF_HIDDEN_STATEMENT;
@@ -156,23 +146,43 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     }
 
     @Override
-    public void INCQuantityOfVisible(int book_id) throws SQLException {
+    public void INCQuantityOfVisible(Integer book_id) throws SQLException {
         executeUpdate(getIncQuantityOfVisibleStatement(),book_id);
     }
 
     @Override
-    public void INCQuantityOfNotVisible(int book_id) throws SQLException {
+    public void INCQuantityOfNotVisible(Integer book_id) throws SQLException {
         executeUpdate(getIncQuantityOfHiddenStatement(),book_id);
     }
 
     @Override
-    public void DECQuantityOfVisible(int book_id) throws SQLException {
+    public void DECQuantityOfVisible(Integer book_id) throws SQLException {
         executeUpdate(getDecQuantityOfVisibleStatement(),book_id);
     }
 
     @Override
-    public void DECQuantityOfNotVisible(int book_id) throws SQLException {
+    public void DECQuantityOfNotVisible(Integer book_id) throws SQLException {
         executeUpdate(getDecQuantityOfHiddenStatement());
+    }
+
+    @Override
+    public boolean isEmpty(Integer book_id) throws SQLException {
+        Object[] result = null;
+        result = getOne(getGetBookQuantityStatement(),book_id);
+        return (Integer) result[0] != 0 || (Integer) result[1] != 0;
+    }
+
+    private static final String DELETE_BY_BOOK_ID = """
+            DELETE FROM Books
+            WHERE book_id = ?;
+            """;
+    private static String getDeleteByBookIdStatement(){
+        return DELETE_BY_BOOK_ID;
+    }
+
+    @Override
+    public void delete(Integer book_id) throws SQLException {
+        executeUpdate(getDeleteByBookIdStatement(),book_id);
     }
 
 }

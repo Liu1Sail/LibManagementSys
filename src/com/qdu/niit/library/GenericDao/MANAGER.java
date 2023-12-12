@@ -11,18 +11,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface MANAGER  {
-    String getTableName();
-
-    int getTableId();
+//    String getTableName();
+//
+//    int getTableId();
 
     //别忘了在子类调用setTableName
 
-    void createTable() throws ConnectException, SQLException;
-//    int deleteByBookID(ArrayList<Integer> theKeyWantDelete) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
-//    int deleteByCopyID(ArrayList<Integer> theKeyWantDelete) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
-
-
-
-    //获得 Connection
-    Connection getConnection();
+//    void createTable() throws ConnectException, SQLException;
+////    int deleteByBookID(ArrayList<Integer> theKeyWantDelete) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+////    int deleteByCopyID(ArrayList<Integer> theKeyWantDelete) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+//
+//
+//
+//    //获得 Connection
+//    Connection getConnection();
 }

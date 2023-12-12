@@ -14,10 +14,11 @@ public interface BooksSQLDao {
 
     Integer insert(Book element) throws SQLException;
 
-    void INCQuantityOfVisible(int book_id) throws SQLException;
-    void INCQuantityOfNotVisible(int book_id) throws SQLException;
+    void INCQuantityOfVisible(Integer book_id) throws SQLException;
+    void INCQuantityOfNotVisible(Integer book_id) throws SQLException;
 
-    void DECQuantityOfVisible(int book_id) throws SQLException;
-    void DECQuantityOfNotVisible(int book_id) throws SQLException;
-
+    void DECQuantityOfVisible(Integer book_id) throws SQLException;
+    void DECQuantityOfNotVisible(Integer book_id) throws SQLException;
+    boolean isEmpty(Integer book_id) throws SQLException;
+    void delete(Integer book_id) throws SQLException;
 }
