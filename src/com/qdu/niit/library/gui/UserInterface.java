@@ -2,10 +2,7 @@ package com.qdu.niit.library.gui;
 
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangePasswordPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.panel.center.*;
 import com.qdu.niit.library.gui.tool.UserGui;
 
 import javax.swing.*;
@@ -108,7 +105,7 @@ public class UserInterface extends ResizeFrame {
         bookOption.setBackground(Color.WHITE);
         var bookOptionText=new JLabel();
         bookOptionText.setBounds(0,0,200,80);
-        bookOptionText.setText("图书管理");
+        bookOptionText.setText("借阅图书");
         bookOptionText.setFont(sideBarOptionFont);
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
@@ -184,7 +181,7 @@ public class UserInterface extends ResizeFrame {
         readingRoomOptionText.setVerticalAlignment(SwingConstants.CENTER);
         readingRoomOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         readingRoomOption.add(readingRoomOptionText);
-        var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"借阅室座位",1,1,2);
+        var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"借阅室座位",1,1,3);
         readingRoomOption.add(readingRoomChildOption);
         readingRoomOption.addMouseListener(new MouseAdapter() {
             @Override
@@ -243,12 +240,12 @@ public class UserInterface extends ResizeFrame {
                     case 2->{
                         switch(childOption.panelNumber){
                             case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel(frame));frame.repaint();}
-                            case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel(frame));frame.repaint();}
                         }
                     }
                     case 3->{
                         switch (childOption.panelNumber){
-//                            case 1->{centerBottomPanel.add(com.qdu.niit.library.gui.temp.jpanelTest.getinstance());frame.repaint();}
+                            case 1->{centerBottomPanel.add(UserCenterRoomPanel.getinstance());frame.repaint();}
                         }
                     }
                 }
