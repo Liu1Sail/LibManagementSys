@@ -75,7 +75,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                         info.getPhone(),
                         info.getEmail());
             commit();
-                id.intValue();
+                return id.intValue();
         }catch (SQLException e){rollback();}
         return -1;
     }
@@ -91,7 +91,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 executeTransactionUpdate(INSERT_USERINFO_SQL ,
                        id, null, null, null, null, null);
             commit();
-                id.intValue();
+                return id.intValue();
         }catch (SQLException e){rollback();}
         return -1;
     }
