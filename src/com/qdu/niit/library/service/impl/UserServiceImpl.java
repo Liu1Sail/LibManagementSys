@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public UserServiceImpl getInstance() {
+    public static UserServiceImpl getInstance() {
         if(instance == null)
             instance = new UserServiceImpl();
         return instance;
