@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public class BaseSQLDaoImpl implements BaseSQLDao {
     @Override
-    public void executeUpdate(String SQL, Object... args) throws SQLException {
+    public int executeUpdate(String SQL, Object... args) throws SQLException {
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement =connection.prepareStatement(SQL)) {
             for(int i = 0; i < args.length ; ++i) {
                 preparedStatement.setObject(i+1 , args[i]);
             }
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         }
     }
 
@@ -59,6 +59,16 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
             }
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public <T> T Cast(Object obj)
+    {
+        if(null==obj)
+            return null;
+        return (T)obj;
+    }
+
+
 
 
     /**
