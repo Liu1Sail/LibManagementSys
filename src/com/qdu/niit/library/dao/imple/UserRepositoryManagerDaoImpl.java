@@ -62,7 +62,6 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     public int insert(User user,UserInfo info) throws SQLException {
         try {
             beginTransaction();
-            {
                 List<Object[]> keys = executeTransactionUpdateAndGetKeys(
                         INSERT_USERS_SQL,
                         user.getUName(),
@@ -75,7 +74,8 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                         JavaGenderToSqlGender(info.getGender()),
                         info.getPhone(),
                         info.getEmail());
-            }commit();
+            commit();
+                id.intValue();
         }catch (SQLException e){rollback();}
         return -1;
     }
@@ -83,7 +83,6 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     public int insert(User user) throws SQLException {
         try {
             beginTransaction();
-            {
                 List<Object[]> keys = executeTransactionUpdateAndGetKeys(
                         INSERT_USERS_SQL,
                         user.getUName(),
@@ -91,7 +90,8 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 BigInteger id = Cast(keys.getFirst()[0]);
                 executeTransactionUpdate(INSERT_USERINFO_SQL ,
                        id, null, null, null, null, null);
-            }commit();
+            commit();
+                id.intValue();
         }catch (SQLException e){rollback();}
         return -1;
     }
