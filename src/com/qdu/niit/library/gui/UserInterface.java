@@ -64,7 +64,6 @@ public class UserInterface extends ResizeFrame {
         var sideBarOptionFont=new Font("宋体",Font.PLAIN,20);
         var bookOption = getBookOption(sideBarOptionFont);
         leftPanel.add(bookOption);
-
         var accountOption=getAccountOption(sideBarOptionFont);
         leftPanel.add(accountOption);
         var readingRoomOption=getReadingRoomOption(sideBarOptionFont);

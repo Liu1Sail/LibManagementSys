@@ -30,6 +30,7 @@ public class LoginInterface extends JFrame {
     private final Point offsetMouseToFrame = new Point();
     private boolean userAndAdminSwitch = false;
     private final JDialog loginErrorPopMessage = new JDialog(this, true);
+    private final JLabel LoginErrorPopMessageLabel = new JLabel("登陆失败，账号或密码错误!");
 
     public LoginInterface() {
         loginErrorPopMessage.setLocationRelativeTo(null);
@@ -37,7 +38,6 @@ public class LoginInterface extends JFrame {
         loginErrorPopMessage.setTitle("错误提示");
         loginErrorPopMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         loginErrorPopMessage.setLayout(new BorderLayout());
-        var LoginErrorPopMessageLabel = new JLabel("输入信息存在错误,请修改信息");
         loginErrorPopMessage.add(LoginErrorPopMessageLabel, BorderLayout.CENTER);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
@@ -604,12 +604,17 @@ public class LoginInterface extends JFrame {
                     var userServiceImpl = UserServiceImpl.getInstance();
                     User user = userServiceImpl.login(userName, password);
                     if (user == null) {
+                        LoginErrorPopMessageLabel.setText("登陆失败，账号或密码错误!");
                         loginErrorPopMessage.setVisible(true);
                     } else {
                         //若检测通过，跳转到用户开始界面
                         frame.dispose();
                         new UserInterface(user);
                     }
+                }
+                else{
+                    LoginErrorPopMessageLabel.setText("用户名或密码不能为空!");
+                    loginErrorPopMessage.setVisible(true);
                 }
             }
         });
