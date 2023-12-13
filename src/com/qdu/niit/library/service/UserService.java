@@ -65,7 +65,6 @@ public interface UserService {
     /**
      * 修改本地用户信息。
      *
-     * @param userName 用户名
      * @param name     新的姓名
      * @param birth    新的生日
      * @param gender   新的性别
@@ -73,25 +72,22 @@ public interface UserService {
      * @param email    新的邮箱
      * @return 修改是否成功
      */
-    boolean modifyLocalUserInfo(String userName, String name, Date birth, UserInfo.Gender gender, String phone, String email);
+    boolean modifyLocalUserInfo(String name, Date birth, UserInfo.Gender gender, String phone, String email);
 
     /**
      * 修改本地用户密码。
      *
-     * @param userName     用户名
      * @param newPassword  新的密码
      * @return 修改是否成功
      */
-    boolean modifyLocalUserPassword(String userName, String newPassword);
+    boolean modifyLocalUserPassword(String newPassword);
 
     /**
      * 验证本地用户密码是否正确。
      *
-     * @param userName 用户名
-     * @param password 待验证的密码
      * @return 验证结果，true 表示密码正确，false 表示密码不正确
      */
-    boolean isLocalUserPasswordCorrect(String userName, String password);
+    boolean isLocalUserPasswordCorrect();
 
     /**
      * 判断指定用户名的用户是否存在。

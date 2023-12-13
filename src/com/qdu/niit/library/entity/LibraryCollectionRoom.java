@@ -1,10 +1,7 @@
 package com.qdu.niit.library.entity;
 
 
-import com.qdu.niit.library.AbstractDao.BOOK;
-
-
-public class LibraryCollectionRoom extends BOOK {
+public class LibraryCollectionRoom {
 
     Integer copy_id;
     String room;

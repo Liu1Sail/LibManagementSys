@@ -103,8 +103,8 @@ public class UserCenterRoomPanel {
 
     private UserCenterRoomPanel() {
         only = new JPanel();
-        setUid();
         try {
+            setUid();
             run();
             create();
         } catch (Exception e) {
@@ -294,7 +294,7 @@ public class UserCenterRoomPanel {
                     ReadingRoomService use = new ReadingRoomServiceImpl();
                     try {
                         if (use.ifHaveByUid(uid)) {
-                            JOptionPane.showMessageDialog(only, "你已经预定一个座位了");
+                            JOptionPane.showMessageDialog(only, "你已经预定"+use.findOneByUid(uid).getBid()+"号座位了");
                         } else {
 
                             LocalDateTime first = LocalDateTime.now();
@@ -302,12 +302,12 @@ public class UserCenterRoomPanel {
                             first.withMonth((Integer) pushmonth.getSelectedIndex() + 1);
                             first.withDayOfMonth((Integer) pushday.getSelectedIndex() + 1);
                             LocalDateTime second = first;
-                            second.plusHours((Integer) chooseHour.getSelectedItem());
+                            second = second.plusHours((Integer) chooseHour.getSelectedItem());
                             ReadingRoom push = new ReadingRoom(uid, in.getBid(), first, second);
                             use.insert(push);
                             save[in.getBid()].setColorFlag(0);
                             save[in.getBid()].repaint();
-                            JOptionPane.showMessageDialog(only, "座位预定成功,预定时间为" + first + "————到————" + second);
+                            JOptionPane.showMessageDialog(only, "座位预定成功,预定时间为" + first.getYear()+"年"+(Integer) pushmonth.getSelectedIndex() + 1+"月"+first.getDayOfMonth()+"日"+first.getHour()+"时"+first.getMinute()+"分"+first.getSecond()+"秒" + "——到——" + second.getYear()+"年"+(Integer) pushmonth.getSelectedIndex() + 1+"月"+second.getDayOfMonth()+"日"+second.getHour()+"时"+second.getMinute()+"分"+second.getSecond()+"秒");
                         }
                     } catch (SQLException ex) {
 

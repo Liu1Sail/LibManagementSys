@@ -1,10 +1,8 @@
 package com.qdu.niit.library.entity;
 
-import com.qdu.niit.library.AbstractDao.BOOK;
-
 import java.util.Date;
 
-public class Book extends BOOK {
+public class Book {
     Integer book_id;
     String title;
     String isbn;

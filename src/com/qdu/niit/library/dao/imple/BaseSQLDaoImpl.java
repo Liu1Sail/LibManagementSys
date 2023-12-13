@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class BaseSQLDaoImpl implements BaseSQLDao {
     @Override
     public int executeUpdate(String SQL, Object... args) throws SQLException {
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement =connection.prepareStatement(SQL)) {
             for(int i = 0; i < args.length ; ++i) {
@@ -20,6 +21,7 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
 
     @Override
     public ArrayList<Object[]> executeUpdateAndGetGeneratedKeys(String SQL, Object... args)  throws SQLException{
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement =connection.prepareStatement(SQL , PreparedStatement.RETURN_GENERATED_KEYS)) {
             for(int i = 0; i < args.length ; ++i) {
@@ -34,6 +36,7 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
 
     @Override
     public Object[] getOne(String SQL, Object... args) throws SQLException {
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL)){
             for(int i = 0; i < args.length ; ++i) {
@@ -49,6 +52,7 @@ public class BaseSQLDaoImpl implements BaseSQLDao {
 
     @Override
     public ArrayList<Object[]> getMany(String SQL, Object... args) throws SQLException {
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         try(Connection connection = SqlConfig.getInstance().getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SQL)){
             for(int i = 0; i < args.length ; ++i) {

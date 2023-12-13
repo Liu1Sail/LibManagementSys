@@ -13,10 +13,10 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
     @Override
     public int register(String userName, String password, String name, Date birth, UserInfo.Gender gender, String phone, String email) {
+        assert userName !=null && password != null : "userName 和 password不能为空";
         try{
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
-            int id = dao.insert(new User(null ,userName , password) , new UserInfo(null , name , birth , gender , phone ,email));
-            return id;
+            return dao.insert(new User(null ,userName , password) , new UserInfo(null , name , birth , gender , phone ,email));
         }catch (SQLException e)
         {
             e.printStackTrace();
@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User login(String userName, String password) {
+        assert userName!=null && password != null : "userName 和 password不能为空";
         try {
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
             localUser = dao.getUserByNameAndPassword(userName , password);
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(int id, String password) {
+        assert password != null : "password不能为空";
         try {
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
             localUser = dao.getUserByIdAndPassword(id , password);
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo getUserInfo(String userName) {
+        assert userName!=null : "userName不能为空";
         try {
             return UserRepositoryManagerDaoImpl.getInstance().getUserInfoByUserName(userName);
         }catch (SQLException e)
@@ -68,12 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean modifyLocalUserInfo(String userName, String name, Date birth, UserInfo.Gender gender, String phone, String email) {
+    public boolean modifyLocalUserInfo(String name, Date birth, UserInfo.Gender gender, String phone, String email) {
         if(getLocalUser() == null)return false;
         try {
             UserInfoSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
             dao.updateUserInfoAll(new UserInfo(localUser.getUID() ,
-                    userName ,
+                    name ,
                     birth ,
                     gender ,
                     phone ,
@@ -88,11 +91,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean modifyLocalUserPassword(String userName, String newPassword) {
+    public boolean modifyLocalUserPassword(String newPassword) {
+        assert  newPassword != null : "password不能为空";
         if(getLocalUser()!=null){
             try {
                 UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
-                dao.updateUserPasswordById(localUser.getUID() , localUser.getUPassword());
+                dao.updateUserPasswordById(localUser.getUID() , newPassword);
                 return true;
             }catch (SQLException e){
                 e.printStackTrace();
@@ -101,7 +105,7 @@ public class UserServiceImpl implements UserService {
         } else return false;
     }
     @Override
-    public boolean isLocalUserPasswordCorrect(String userName, String password){
+    public boolean isLocalUserPasswordCorrect(){
         if(localUser == null)return false;
         try{
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
@@ -116,6 +120,7 @@ public class UserServiceImpl implements UserService {
     }
     public boolean userExists(String userName)
     {
+        assert userName!=null : "userName不能为空";
         try{
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
             return dao.doesUserExistsByUserName(userName);
@@ -146,7 +151,5 @@ public class UserServiceImpl implements UserService {
     }
 
     private User localUser;
-    private UserInfo localUserInfo;
-
     private static UserServiceImpl instance;
 }
