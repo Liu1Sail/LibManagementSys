@@ -1,5 +1,6 @@
 package com.qdu.niit.library.gui;
 
+import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
@@ -11,8 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+/**
+ * 返回账号
+ */
 
 /**
  * @author 李冠良
@@ -26,6 +32,7 @@ public class RegisterInterface extends JFrame {
     private final Point offsetMouseToFrame = new Point();
     private final InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
+    private final UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
 
     public RegisterInterface() {
         frame.setLayout(null);
@@ -74,20 +81,20 @@ public class RegisterInterface extends JFrame {
             }
         });
 
-        var errorPopMessage=new JDialog(frame,true);
+        var errorPopMessage = new JDialog(frame, true);
         errorPopMessage.setLocationRelativeTo(null);
-        errorPopMessage.setSize(200,100);
+        errorPopMessage.setSize(200, 100);
         errorPopMessage.setTitle("错误提示");
         errorPopMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         errorPopMessage.setLayout(new BorderLayout());
-        var errorPopMessageLabel=new JLabel("输入信息存在错误,请修改信息");
-        errorPopMessage.add(errorPopMessageLabel,BorderLayout.CENTER);
+        var errorPopMessageLabel = new JLabel("输入信息存在错误,请修改信息");
+        errorPopMessage.add(errorPopMessageLabel, BorderLayout.CENTER);
 
         var inputBorderColor = new Color(84, 157, 248);
         var inputInnerTextColor = new Color(153, 153, 153);
         var inputBackgroundColor = new Color(229, 244, 251);
         var buttonBackColor = new Color(0, 133, 255);
-        var buttonPressedBackColor = new Color(0, 124, 237);
+//        var buttonPressedBackColor = new Color(0, 124, 237);
         var rightInputColor = new Color(4, 115, 18);
         var inputInnerTextDefaultFont = new Font("宋体", Font.PLAIN, 14);
         var titleText = new JLabel("欢迎注册图书馆账号");
@@ -100,7 +107,7 @@ public class RegisterInterface extends JFrame {
             @Override
             public void gainFocusMovement(InputInnerTextField textField) {
                 if (!isInitial) {
-                    for (int i = 3; i <= 13; i++) {
+                    for (int i = 3; i <= 15; i++) {
                         var tmp = componentMap.get(i);
                         tmp.setLocation(tmp.getX(), tmp.getY() - 10);
                     }
@@ -108,7 +115,7 @@ public class RegisterInterface extends JFrame {
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
                 tip.setForeground(inputInnerTextColor);
                 tip.setText("用户名限制3-20个字符");
-                for (int i = 3; i <= 13; i++) {
+                for (int i = 3; i <= 15; i++) {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
@@ -152,7 +159,7 @@ public class RegisterInterface extends JFrame {
             @Override
             public void gainFocusMovement(InputInnerPasswordField textField) {
                 if (!isInitial) {
-                    for (int i = 5; i <= 13; i++) {
+                    for (int i = 5; i <= 15; i++) {
                         var tmp = componentMap.get(i);
                         tmp.setLocation(tmp.getX(), tmp.getY() - 10);
                     }
@@ -160,7 +167,7 @@ public class RegisterInterface extends JFrame {
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
                 tip.setForeground(inputInnerTextColor);
                 tip.setText("密码限制8-20个字符，至少包含一个大写字母和一个特殊字符");
-                for (int i = 5; i <= 13; i++) {
+                for (int i = 5; i <= 15; i++) {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
@@ -208,18 +215,18 @@ public class RegisterInterface extends JFrame {
             @Override
             public void gainFocusMovement(InputInnerPasswordField textField) {
                 if (!isInitial) {
-                    for (int i = 7; i <= 13; i++) {
+                    for (int i = 7; i <= 15; i++) {
                         var tmp = componentMap.get(i);
                         tmp.setLocation(tmp.getX(), tmp.getY() - 10);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
-                for (int i = 7; i <= 13; i++) {
+                for (int i = 7; i <= 15; i++) {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
                 tip.setForeground(inputInnerTextColor);
-                tip.setText("请在再次输入密码");
+                tip.setText("请再次输入密码");
                 tip.setVisible(true);
             }
 
@@ -228,7 +235,8 @@ public class RegisterInterface extends JFrame {
                 if (new String(textField.getPassword()).equals("密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
-                    tip.setText("密码不能为空");
+                    tip.setForeground(Color.RED);
+                    tip.setText("两次输入的密码不一致");
                     tip.setVisible(true);
                 } else {
                     isInitial = false;
@@ -240,7 +248,7 @@ public class RegisterInterface extends JFrame {
                         tip.setVisible(true);
                     } else {
                         tip.setForeground(rightInputColor);
-                        tip.setText("密码正确");
+                        tip.setText("密码相同！");
                         tip.setVisible(true);
                     }
                 }
@@ -263,12 +271,12 @@ public class RegisterInterface extends JFrame {
             @Override
             public void gainFocusMovement(InputInnerTextField textField) {
                 if (!isInitial) {
-                    for (int i = 11; i <= 13; i++) {
+                    for (int i = 11; i <= 15; i++) {
                         var tmp = componentMap.get(i);
                         tmp.setLocation(tmp.getX(), tmp.getY() - 10);
                     }
                 }
-                for (int i = 11; i <= 13; i++) {
+                for (int i = 11; i <= 15; i++) {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
@@ -311,19 +319,19 @@ public class RegisterInterface extends JFrame {
             @Override
             public void gainFocusMovement(InputInnerTextField textField) {
                 if (!isInitial) {
-                    for (int i = 13; i <= 13; i++) {
+                    for (int i = 13; i <= 15; i++) {
                         var tmp = componentMap.get(i);
                         tmp.setLocation(tmp.getX(), tmp.getY() - 10);
                     }
                 }
                 TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
-                for (int i = 13; i <= 13; i++) {
+                for (int i = 13; i <= 15; i++) {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
-                tip.setForeground(Color.RED);
+                tip.setForeground(inputInnerTextColor);
                 tip.setText("邮箱的格式为*@*.*");
-                tip.setVisible(false);
+                tip.setVisible(true);
             }
 
             @Override
@@ -331,6 +339,7 @@ public class RegisterInterface extends JFrame {
                 if (textField.getText().equals("邮箱")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
+                    tip.setTextColor(Color.RED);
                     tip.setText("邮箱不能为空");
                     tip.setVisible(true);
                 } else {
@@ -341,8 +350,7 @@ public class RegisterInterface extends JFrame {
                         tip.setForeground(Color.RED);
                         tip.setText("邮箱错误");
                         tip.setVisible(true);
-                    }
-                    else{
+                    } else {
                         tip.setForeground(rightInputColor);
                         tip.setText("邮箱正确");
                         tip.setVisible(true);
@@ -353,6 +361,55 @@ public class RegisterInterface extends JFrame {
         var emailPanel = new Translation(emailInput, 1, 6, 10, Translation.TO_BELOW);
         var emailTip = new TextEmergeLabel("邮箱不能为空", 0.01, 255, 255, Color.RED);
         var emailTipPanel = new Translation(emailTip, 1, 6, 10, Translation.TO_BELOW);
+
+        var birthdayInput = new InputInnerTextField("生日", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+            private boolean isInitial = true;
+            @Override
+            public void gainFocusMovement(InputInnerTextField textField) {
+                if (!isInitial) {
+                    for (int i = 15; i <= 15; i++) {
+                        var tmp = componentMap.get(i);
+                        tmp.setLocation(tmp.getX(), tmp.getY() - 10);
+                    }
+                }
+                TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(14).getTargetComponent();
+                for (int i = 15; i <= 15; i++) {
+                    var tmp = componentMap.get(i);
+                    tmp.setLocation(tmp.getX(), tmp.getY() + 10);
+                }
+                tip.setForeground(inputInnerTextColor);
+                tip.setText("生日的格式例如2001-01-01或2001-11-11");
+                tip.setVisible(true);
+            }
+
+            @Override
+            public void lostFocusMovement(InputInnerTextField textField) {
+                if (textField.getText().equals("生日")) {
+                    isInitial = false;
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(14).getTargetComponent();
+                    tip.setTextColor(Color.RED);
+                    tip.setText("生日不能为空");
+                    tip.setVisible(true);
+                } else {
+                    isInitial = false;
+                    inputTextHandle.setBirthday(textField.getText());
+                    TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(14).getTargetComponent();
+                    if (!inputTextHandle.isRightBirthday()) {
+                        tip.setForeground(Color.RED);
+                        tip.setText("生日错误");
+                        tip.setVisible(true);
+                    } else {
+                        tip.setForeground(rightInputColor);
+                        tip.setText("生日正确");
+                        tip.setVisible(true);
+                    }
+                }
+            }
+        };
+        var birthdayPanel = new Translation(birthdayInput, 1, 6, 10, Translation.TO_BELOW);
+        var birthdayTip = new TextEmergeLabel("生日不能为空", 0.01, 255, 255, Color.RED);
+        var birthdayTipPanel = new Translation(birthdayTip, 1, 6, 10, Translation.TO_BELOW);
+
 
         var defineButton = new JButton();
         var defineButtonPanel = new Translation(defineButton, 1, 6, 10, Translation.TO_BELOW);
@@ -395,7 +452,13 @@ public class RegisterInterface extends JFrame {
         emailInput.setFont(inputInnerTextDefaultFont);
         emailTipPanel.setBounds(70, 330, 250, 35);
         emailTip.setVisible(false);
-        defineButtonPanel.setBounds(100, 360, 200, 50);
+
+        birthdayPanel.setBounds(70, 360, 250, 35);
+        birthdayInput.setFont(inputInnerTextDefaultFont);
+        birthdayTipPanel.setBounds(70, 390, 250, 35);
+        birthdayTip.setVisible(false);
+
+        defineButtonPanel.setBounds(100, 420, 200, 50);
         defineButton.setForeground(Color.WHITE);
         defineButton.setFont(new Font("宋体", Font.BOLD, 20));
         defineButton.setText("立即注册");
@@ -411,11 +474,31 @@ public class RegisterInterface extends JFrame {
             inputTextHandle.setGender(genderNumber);
             inputTextHandle.setPhoneNumber(phoneInput.getText());
             inputTextHandle.setEmailAddress(emailInput.getText());
-            if(inputTextHandle.checkInputText()==inputTextHandle.RIGHT){
-
-            }
-            else{
-                System.out.println(inputTextHandle.checkInputText());
+            if (inputTextHandle.checkInputText() == InputTextHandle.RIGHT) {
+                UserInfo.Gender gender;
+                if(genderNumber==0){
+                    gender= UserInfo.Gender.MALE;
+                }
+                else{
+                    gender= UserInfo.Gender.FEMALE;
+                }
+                String[] result = inputTextHandle.getBirthday().split("-");
+                Calendar cal = Calendar.getInstance();
+                int year=Integer.parseInt(result[0])-1900;
+                int month=Integer.parseInt(result[1])-1;
+                int day=Integer.parseInt(result[2]);
+                Date birthday=new Date(year,month,day);
+                int uid=userServiceImpl.register(inputTextHandle.getName(), inputTextHandle.getPassword(),
+                        inputTextHandle.getName(),birthday,gender,
+                        inputTextHandle.getPhoneNumber(),inputTextHandle.getEmailAddress());
+                if(uid==-1){
+                    System.out.println("注册失败");
+                }
+                else{
+                    frame.dispose();
+                }
+                //
+            } else {
                 errorPopMessage.setVisible(true);
             }
         });
@@ -432,7 +515,9 @@ public class RegisterInterface extends JFrame {
         componentMap.put(10, phoneTipPanel);
         componentMap.put(11, emailPanel);
         componentMap.put(12, emailTipPanel);
-        componentMap.put(13, defineButtonPanel);
+        componentMap.put(13, birthdayPanel);
+        componentMap.put(14, birthdayTipPanel);
+        componentMap.put(15, defineButtonPanel);
 
         bodyPanel.add(titleText);
         bodyPanel.add(namePanel);
@@ -447,8 +532,9 @@ public class RegisterInterface extends JFrame {
         bodyPanel.add(phoneTipPanel);
         bodyPanel.add(emailPanel);
         bodyPanel.add(emailTipPanel);
+        bodyPanel.add(birthdayPanel);
+        bodyPanel.add(birthdayTipPanel);
         bodyPanel.add(defineButtonPanel);
-
         return bodyPanel;
     }
 
@@ -500,7 +586,8 @@ public class RegisterInterface extends JFrame {
         private int gender;
         private String phoneNumber;
         private String emailAddress;
-        private final int RIGHT = 0;
+        private String birthday;
+        private final static int RIGHT = 0;
         private final static int WRONG_NAME_SHORT = 1;
         private final static int WRONG_NAME_LONG = 2;
         private final static int WRONG_EMPTY_PASSWORD = 3;
@@ -511,6 +598,7 @@ public class RegisterInterface extends JFrame {
         private final static int WRONG_GENDER = 8;
         private final static int WRONG_PHONE = 9;
         private final static int WRONG_EMAIL = 10;
+        private final static int WRONG_BIRTHDAY = 11;
 
         public InputTextHandle() {
         }
@@ -535,6 +623,7 @@ public class RegisterInterface extends JFrame {
             if (!isRightGender()) return WRONG_GENDER;
             if (!isRightPhoneNumber()) return WRONG_PHONE;
             if (!isRightEmail()) return WRONG_EMAIL;
+            if(!isRightBirthday()) return WRONG_BIRTHDAY;
             return RIGHT;
         }
 
@@ -551,7 +640,7 @@ public class RegisterInterface extends JFrame {
         }
 
         public boolean isSamePassWord() {
-            if(password==null){
+            if (password == null) {
                 return false;
             }
             return password.equals(passwordAgain);
@@ -575,6 +664,40 @@ public class RegisterInterface extends JFrame {
 
         public boolean isRightPhoneNumber() {
             return Pattern.matches("^(13[0-9]|14[57]|15[0-35-9]|18[0-35-9])\\d{8}$", phoneNumber);
+        }
+
+        public boolean isRightBirthday() {
+            if (!Pattern.matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", birthday)) {
+                return false;
+            }
+            String[] result = birthday.split("-");
+            if (result.length != 3) {
+                return false;
+            }
+            Calendar cal = Calendar.getInstance();
+            int nowYear=cal.get(Calendar.YEAR);
+            int nowMonth=cal.get(Calendar.MONTH);
+            int nowDay=cal.get(Calendar.DATE);
+            int year=Integer.parseInt(result[0]);
+            int month=Integer.parseInt(result[1]);
+            int day=Integer.parseInt(result[2]);
+            //年月日不大于当前日期
+            if(year>nowYear||(year==nowYear&&month>nowMonth)||(year==nowYear&&month==nowMonth&&day>nowDay)){
+                return false;
+            }
+            //除2月以外日正确
+            if(month<1||month>12||((month==4||month==6||month==9||month==11)&&(day<1||day>30))||
+                    ((month==1||month==3||month==5||month==7||month==8||month==10||month==12)&&(day<1||day>31)))
+                    {
+                return false;
+            }
+            //判断闰年
+            if(year%400==0||(year%100!=0&&year%4==0)){
+                return month != 2 || (day >= 1 && day <= 29);
+            }
+            else{
+                return month != 2 || (day >= 1 && day <= 28);
+            }
         }
 
         public boolean isRightEmail() {
@@ -627,6 +750,14 @@ public class RegisterInterface extends JFrame {
 
         public void setEmailAddress(String emailAddress) {
             this.emailAddress = emailAddress;
+        }
+
+        public String getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
         }
     }
 }

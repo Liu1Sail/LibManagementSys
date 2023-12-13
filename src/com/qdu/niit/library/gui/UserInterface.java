@@ -1,9 +1,12 @@
 package com.qdu.niit.library.gui;
 
+import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.center.*;
-import com.qdu.niit.library.gui.tool.UserGui;
+import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
+import com.qdu.niit.library.gui.panel.center.UserCenterRoomPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,10 +29,10 @@ public class UserInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-    private final UserGui loggedUser;
+    private final User user;
 
-    public UserInterface(String id,String name,String password) {
-        loggedUser=new UserGui(id,name,password);
+    public UserInterface(User user) {
+        this.user=user;
         this.setLayout(new BorderLayout());
         this.setSize(initialWidth, initialHeight);
         this.setLocationRelativeTo(null);
@@ -66,6 +69,57 @@ public class UserInterface extends ResizeFrame {
         var readingRoomOption=getReadingRoomOption(sideBarOptionFont);
         leftPanel.add(readingRoomOption);
         bottomPanel.add(leftPanel,BorderLayout.WEST);
+        bookOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                bookOption.setBounds(0,0,200,480);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    bookOption.setBounds(0,0,200,80);
+                }
+            }
+
+        });
+        accountOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                accountOption.setBounds(0,80,200,240);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    accountOption.setBounds(0,80,200,80);
+                }
+            }
+
+        });
+        readingRoomOption.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                readingRoomOption.setBounds(0,160,200,160);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                int x=e.getX(),y=e.getY();
+                if(x<0||x>=200||y<0||y>=360){
+                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    readingRoomOption.setBounds(0,160,200,80);
+                }
+            }
+
+        });
 
         var topBottomPanel=new JPanel();//顶部根面板
         topBottomPanel.setBackground(Color.WHITE);
@@ -97,7 +151,6 @@ public class UserInterface extends ResizeFrame {
         this.add(bottomPanel,BorderLayout.CENTER);
         this.setVisible(true);
     }
-
     private JPanel getBookOption(Font sideBarOptionFont) {
         var bookOption=new JPanel();
         bookOption.setBounds(0,0,400,80);
@@ -114,23 +167,6 @@ public class UserInterface extends ResizeFrame {
         bookOption.add(bookAddChildOption);
         var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"查询个人借书记录",2,2,1);
         bookOption.add(bookDeleteChildOption);
-        bookOption.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                bookOption.setBounds(0,0,200,480);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
-                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    bookOption.setBounds(0,0,200,80);
-                }
-            }
-
-        });
         return bookOption;
     }
     private JPanel getAccountOption(Font sideBarOptionFont) {
@@ -145,28 +181,8 @@ public class UserInterface extends ResizeFrame {
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改密码",2,1,2);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改个人信息",2,1,2);
         accountOption.add(accountAddChildOption);
-        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"修改个人信息",2,2,2);
-        accountOption.add(accountDeleteChildOption);
-        accountOption.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                accountOption.setBounds(0,80,200,240);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
-                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    accountOption.setBounds(0,80,200,80);
-                }
-            }
-
-        });
-
         return accountOption;
     }
     private JPanel getReadingRoomOption(Font sideBarOptionFont) {
@@ -183,24 +199,6 @@ public class UserInterface extends ResizeFrame {
         readingRoomOption.add(readingRoomOptionText);
         var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"借阅室座位",1,1,3);
         readingRoomOption.add(readingRoomChildOption);
-        readingRoomOption.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                readingRoomOption.setBounds(0,160,200,160);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
-                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    readingRoomOption.setBounds(0,160,200,80);
-                }
-            }
-
-        });
-
         return readingRoomOption;
     }
     private JLabel getChildOption(Font sideBarOptionFont, int positionY, String text,int OptionAmount,int number,int groupNumber) {
@@ -239,8 +237,7 @@ public class UserInterface extends ResizeFrame {
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterAccountChangePasswordPanel(frame));frame.repaint();}
-                            case 2->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel(frame));frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel(frame,user));frame.setVisible(true);frame.repaint();}
                         }
                     }
                     case 3->{
