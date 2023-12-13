@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         if(getLocalUser()!=null){
             try {
                 UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
-                dao.updateUserPasswordById(localUser.getUID() , localUser.getUPassword());
+                dao.updateUserPasswordById(localUser.getUID() , newPassword);
                 return true;
             }catch (SQLException e){
                 e.printStackTrace();
