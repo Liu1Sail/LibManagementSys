@@ -103,9 +103,8 @@ public class UserCenterRoomPanel {
 
     private UserCenterRoomPanel() {
         only = new JPanel();
-        uid = 1199;
-        //setUid();
         try {
+            setUid();
             run();
             create();
         } catch (Exception e) {
