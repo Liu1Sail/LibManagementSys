@@ -237,7 +237,7 @@ public class UserInterface extends ResizeFrame {
                     }
                     case 2->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel(frame));frame.setVisible(true);frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterAccountChangeInfoPanel(frame,user));frame.setVisible(true);frame.repaint();}
                         }
                     }
                     case 3->{

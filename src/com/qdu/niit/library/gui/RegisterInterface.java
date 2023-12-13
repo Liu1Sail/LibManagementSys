@@ -235,6 +235,7 @@ public class RegisterInterface extends JFrame {
                 if (new String(textField.getPassword()).equals("密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
+                    tip.setForeground(Color.RED);
                     tip.setText("两次输入的密码不一致");
                     tip.setVisible(true);
                 } else {
@@ -247,7 +248,7 @@ public class RegisterInterface extends JFrame {
                         tip.setVisible(true);
                     } else {
                         tip.setForeground(rightInputColor);
-                        tip.setText("密码正确");
+                        tip.setText("密码相同！");
                         tip.setVisible(true);
                     }
                 }

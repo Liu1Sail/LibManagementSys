@@ -1,20 +1,26 @@
 package com.qdu.niit.library.gui.panel.center;
 
+import com.qdu.niit.library.entity.User;
+import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;
 import com.qdu.niit.library.gui.input.InputInnerPasswordField;
 import com.qdu.niit.library.gui.input.InputInnerTextField;
+import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Pattern;
 /**
  * 目标修改，初始时显示当前个人信息
  */
+
 /**
  * @author 李冠良
  * @program LibManagementSys
@@ -32,28 +38,32 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
     private String email;
     private final JFrame frame;
     private int genderNumber = 1;
+    private final UserServiceImpl userServiceImpl=UserServiceImpl.getInstance();
+    private final User user;
 
-    public UserCenterAccountChangeInfoPanel(JFrame frame) {
-        this.frame=frame;
-        this.setBounds(0,0,800,640);
+    public UserCenterAccountChangeInfoPanel(JFrame frame,User user) {
+        this.frame = frame;
+        this.user=user;
+        this.setBounds(0, 0, 800, 640);
         var inputBottomPanel = new JPanel();
-        inputBottomPanel.setBounds(40,40,720,560);
+        inputBottomPanel.setBounds(40, 40, 720, 560);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         var titleLabel = new JLabel("修改个人信息");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         inputBottomPanel.add(titleLabel);
-        var tipText=new JLabel("请输入新的个人信息，不需要修改的信息请留空");
+        var tipText = new JLabel("请输入新的个人信息，不需要修改的信息请跳过");
         tipText.setBounds(10, 50, 400, 30);
         tipText.setFont(new Font("宋体", Font.PLAIN, 18));
         inputBottomPanel.add(tipText);
-        var bodyPanel=getBodyPanel();
+        var bodyPanel = getBodyPanel();
         inputBottomPanel.add(bodyPanel);
         this.add(inputBottomPanel);
     }
+
     private JPanel getBodyPanel() {
-        var inputTextHandle=new InputTextHandle();
+        var inputTextHandle = new InputTextHandle();
         HashMap<Integer, Translation> componentMap = new HashMap<>();
         var bodyPanel = new JPanel();
         bodyPanel.setBounds(0, 20, 400, 560);
@@ -227,7 +237,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                         tip.setVisible(true);
                     } else {
                         tip.setForeground(rightInputColor);
-                        tip.setText("密码正确");
+                        tip.setText("密码相同！");
                         tip.setVisible(true);
                     }
                 }
@@ -244,6 +254,11 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         var genderGroup = new ButtonGroup();
         var maleButton = new JRadioButton("男", true);
         var femaleButton = new JRadioButton("女", false);
+        if(userServiceImpl.getUserInfo(user.getUName()).getGender()== UserInfo.Gender.FEMALE){
+            genderNumber=2;
+            maleButton.setSelected(false);
+            femaleButton.setSelected(true);
+        }
         var phoneInput = new InputInnerTextField("手机号", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
@@ -343,6 +358,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
 
         var birthdayInput = new InputInnerTextField("生日", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
+
             @Override
             public void gainFocusMovement(InputInnerTextField textField) {
                 if (!isInitial) {
@@ -440,21 +456,91 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         defineButtonPanel.setBounds(100, 420, 200, 50);
         defineButton.setForeground(Color.WHITE);
         defineButton.setFont(new Font("宋体", Font.BOLD, 20));
-        defineButton.setText("立即注册");
+        defineButton.setText("立即修改");
         defineButton.setHorizontalAlignment(SwingConstants.CENTER);
         defineButton.setVerticalAlignment(SwingConstants.CENTER);
         defineButton.setBackground(buttonBackColor);
         defineButton.setBorder(null);
         defineButton.setFocusPainted(false);
         defineButton.addActionListener(e -> {
-            inputTextHandle.setName(nameInput.getText());
-            inputTextHandle.setPassword(new String(passInput.getPassword()));
-            inputTextHandle.setPasswordAgain(new String(passRepeatInput.getPassword()));
-            inputTextHandle.setGender(genderNumber);
-            inputTextHandle.setPhoneNumber(phoneInput.getText());
-            inputTextHandle.setEmailAddress(emailInput.getText());
+            inputTextHandle.setName(null);
+            inputTextHandle.setPassword(null);
+            inputTextHandle.setPasswordAgain(null);
+            inputTextHandle.setGender(0);
+            inputTextHandle.setPhoneNumber(null);
+            inputTextHandle.setEmailAddress(null);
+            inputTextHandle.setBirthday(null);
+            String name=nameInput.getText();
+            String password=new String(passInput.getPassword());
+            String passRepeat=new String(passRepeatInput.getPassword());
+            int gender=genderNumber;
+            String phone=phoneInput.getText();
+            String email=emailInput.getText();
+            String birthday=birthdayInput.getText();
+            if(!Objects.equals(name, "用户名")){
+                inputTextHandle.setName(name);
+            }
+            if(!Objects.equals(password, "密码")){
+                inputTextHandle.setPassword(password);
+            }
+            if(!Objects.equals(passRepeat, "重复密码")){
+                inputTextHandle.setPasswordAgain(passRepeat);
+            }
+            if(gender!=0){
+                inputTextHandle.setGender(gender);
+            }
+            if(!Objects.equals(phone, "手机号")){
+                inputTextHandle.setPhoneNumber(phone);
+            }
+            if(!Objects.equals(email, "邮箱")){
+                inputTextHandle.setEmailAddress(email);
+            }
+            if(!Objects.equals(birthday, "生日")){
+                inputTextHandle.setBirthday(birthday);
+            }
             if (inputTextHandle.checkInputText() == InputTextHandle.RIGHT) {
-
+                if(inputTextHandle.password!=null){
+                    userServiceImpl.modifyLocalUserPassword(inputTextHandle.password);
+                }
+                UserInfo userInfo=userServiceImpl.getUserInfo(user.getUName());
+                UserInfo.Gender genderPacked;
+                Date birthdayPacked;
+                if(userInfo!=null){
+                    if(inputTextHandle.getName()==null){
+                        name=userInfo.getName();
+                    }
+                    if(inputTextHandle.getGender()==0){
+                        genderPacked=userInfo.getGender();
+                    }
+                    else{
+                        if(inputTextHandle.getGender()==1){
+                            genderPacked= UserInfo.Gender.MALE;
+                        }
+                        else{
+                            genderPacked=UserInfo.Gender.FEMALE;
+                        }
+                    }
+                    if(inputTextHandle.getPhoneNumber()==null){
+                        phone=userInfo.getPhone();
+                    }
+                    if(inputTextHandle.getEmailAddress()==null){
+                        email=userInfo.getEmail();
+                    }
+                    if(inputTextHandle.getBirthday()==null){
+                        birthdayPacked=userInfo.getBirthday();
+                    }
+                    else{
+                        String[] result = inputTextHandle.getBirthday().split("-");
+                        int year=Integer.parseInt(result[0])-1900;
+                        int month=Integer.parseInt(result[1])-1;
+                        int day=Integer.parseInt(result[2]);
+                        birthdayPacked=new Date(Integer.parseInt(result[0])-1900,Integer.parseInt(result[1])-1,Integer.parseInt(result[2]));
+                    }
+                    userServiceImpl.modifyLocalUserInfo(name,birthdayPacked,genderPacked,phone,email);
+                }
+                else{
+                    //弹出系统错误信息
+                }
             } else {
                 errorPopMessage.setVisible(true);
             }
@@ -493,11 +579,12 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         bodyPanel.add(defineButtonPanel);
         return bodyPanel;
     }
+
     private static class InputTextHandle {
         private String name;
         private String password;
         private String passwordAgain;
-        private int gender;
+        private int gender = 0;
         private String phoneNumber;
         private String emailAddress;
         private String birthday;
@@ -527,17 +614,21 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         }
 
         public int checkInputText() {
-            if (!isNameNotShorter()) return WRONG_NAME_SHORT;
-            if (!isNameNotLonger()) return WRONG_NAME_LONG;
-            if (isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
-            if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
-            if (!isTrueLengthPassword()) return WRONG_PASSWORD_LENGTH;
-            if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;
-            if (!isHaveSpecialCharacterPassword()) return WRONG_PASSWORD_SPECIAL;
-            if (!isRightGender()) return WRONG_GENDER;
-            if (!isRightPhoneNumber()) return WRONG_PHONE;
-            if (!isRightEmail()) return WRONG_EMAIL;
-            if(!isRightBirthday()) return WRONG_BIRTHDAY;
+            if (name != null) {
+                if (!isNameNotShorter()) return WRONG_NAME_SHORT;
+                if (!isNameNotLonger()) return WRONG_NAME_LONG;
+            }
+            if (password != null) {
+                if (isEmptyPassword()) return WRONG_EMPTY_PASSWORD;
+                if (!isSamePassWord()) return WRONG_PASSWORD_NOT_SAME;
+                if (!isTrueLengthPassword()) return WRONG_PASSWORD_LENGTH;
+                if (!isHaveUpperCharacterPassword()) return WRONG_PASSWORD_UPPER;
+                if (!isHaveSpecialCharacterPassword()) return WRONG_PASSWORD_SPECIAL;
+            }
+            if (gender != 0 && !isRightGender()) return WRONG_GENDER;
+            if (phoneNumber != null && !isRightPhoneNumber()) return WRONG_PHONE;
+            if (emailAddress != null && !isRightEmail()) return WRONG_EMAIL;
+            if (birthday != null && !isRightBirthday()) return WRONG_BIRTHDAY;
             return RIGHT;
         }
 
@@ -589,27 +680,25 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                 return false;
             }
             Calendar cal = Calendar.getInstance();
-            int nowYear=cal.get(Calendar.YEAR);
-            int nowMonth=cal.get(Calendar.MONTH);
-            int nowDay=cal.get(Calendar.DATE);
-            int year=Integer.parseInt(result[0]);
-            int month=Integer.parseInt(result[1]);
-            int day=Integer.parseInt(result[2]);
+            int nowYear = cal.get(Calendar.YEAR);
+            int nowMonth = cal.get(Calendar.MONTH);
+            int nowDay = cal.get(Calendar.DATE);
+            int year = Integer.parseInt(result[0]);
+            int month = Integer.parseInt(result[1]);
+            int day = Integer.parseInt(result[2]);
             //年月日不大于当前日期
-            if(year>nowYear||(year==nowYear&&month>nowMonth)||(year==nowYear&&month==nowMonth&&day>nowDay)){
+            if (year > nowYear || (year == nowYear && month > nowMonth) || (year == nowYear && month == nowMonth && day > nowDay)) {
                 return false;
             }
             //除2月以外日正确
-            if(month<1||month>12||((month==4||month==6||month==9||month==11)&&(day<1||day>30))||
-                    ((month==1||month==3||month==5||month==7||month==8||month==10||month==12)&&(day<1||day>31)))
-            {
+            if (month < 1 || month > 12 || ((month == 4 || month == 6 || month == 9 || month == 11) && (day < 1 || day > 30)) ||
+                    ((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && (day < 1 || day > 31))) {
                 return false;
             }
             //判断闰年
-            if(year%400==0||(year%100!=0&&year%4==0)){
+            if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
                 return month != 2 || (day >= 1 && day <= 29);
-            }
-            else{
+            } else {
                 return month != 2 || (day >= 1 && day <= 28);
             }
         }
@@ -672,6 +761,19 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
 
         public void setBirthday(String birthday) {
             this.birthday = birthday;
+        }
+
+        @Override
+        public String toString() {
+            return "InputTextHandle{" +
+                    "name='" + name + '\'' +
+                    ", password='" + password + '\'' +
+                    ", passwordAgain='" + passwordAgain + '\'' +
+                    ", gender=" + gender +
+                    ", phoneNumber='" + phoneNumber + '\'' +
+                    ", emailAddress='" + emailAddress + '\'' +
+                    ", birthday='" + birthday + '\'' +
+                    '}';
         }
     }
 }
