@@ -21,7 +21,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 uid ,
                 password
         );
-        if(meta.length<1)return null;
+        if(meta == null || meta.length<1)return null;
         return new User(uid, Cast(meta[0])  ,password);
     }
     @Override
@@ -31,7 +31,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                 name ,
                 password
         );
-        if(meta.length<1)return null;
+        if(meta == null || meta.length<1)return null;
         return new User(Cast(meta[0]), name  ,password);
     }
     @Override
@@ -110,16 +110,18 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     @Override
     public boolean doesUserExistsByUserName(String userName)throws  SQLException
     {
-        return this.<Integer>Cast(
+        Integer count = this.<Integer>Cast(
                 getOne(SELECT_USERS_COUNT_BY_USERNAME , userName)
-        ) > 0;
+        );
+        return  null != count && count > 0;
     }
     @Override
     public boolean doesUserExistsById(int id)throws SQLException
     {
-        return this.<Integer>Cast(
+        Integer count = this.<Integer>Cast(
                 getOne(SELECT_USERS_COUNT_BY_ID , id)
-        ) > 0;
+        );
+        return  null != count && count > 0;
     }
 
     //=========================||   UserInfo    ||===========================//
@@ -179,6 +181,12 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     private static final String SELECT_USERS_COUNT_BY_USERNAME="SELECT COUNT(uName) WHERE uName = ?";
 
     /*======================||    USERINFO    ||===========================*/
+
+    /**
+     * 组装UserInfo
+     * @param resultSet 数据库元组 ,  可以为null
+     * @return UserInfo对象  ， 如果元组为null则返回null
+     */
     private UserInfo assembleUserInfo(Object[] resultSet)
     {
         if(resultSet ==null || resultSet.length < 6)return null;
