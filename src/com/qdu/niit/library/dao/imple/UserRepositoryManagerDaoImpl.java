@@ -237,7 +237,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
             );
             """;
     private static final String INSERT_USERINFO_SQL= "INSERT INTO USERINFO (uId,uName,uBirthday,uGender, uPhone , uEmail) VALUES (?,?,?,?,?,?)";
-    private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?,uBirthday = ?,uGender = ?,uPhone = ?,uEmail = ?where uId = ?;";
-    private static final String SELECT_USERINFO_SQL = "SELECT * FROM USERINFO WHERE uId = ?;";
+    private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?,uBirthday = ?,uGender = ?,uPhone = ?,uEmail = ? where uId = ?";
+    private static final String SELECT_USERINFO_SQL = "SELECT * FROM USERINFO WHERE uId = ?";
     private static final String SELECT_USERINFO_BY_USER_NAME_SQL= "SELECT USERINFO.* FROM USERINFO , USERS WHERE USERS.uName = ? AND USERS.uId = USERINFO.uId";
 }
