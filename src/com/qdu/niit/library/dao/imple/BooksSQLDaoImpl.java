@@ -1,6 +1,6 @@
 package com.qdu.niit.library.dao.imple;
 
-import com.qdu.niit.library.abstractdao.BOOK_MANAGER;
+import com.qdu.niit.library.dao.abstractdao.BOOK_MANAGER;
 import com.qdu.niit.library.dao.BooksSQLDao;
 import com.qdu.niit.library.entity.Book;
 
