@@ -2,6 +2,7 @@ import com.qdu.niit.library.dao.UserInfoSQLDao;
 import com.qdu.niit.library.dao.UserSQLDao;
 import com.qdu.niit.library.dao.imple.UserRepositoryManagerDaoImpl;
 import com.qdu.niit.library.entity.User;
+import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.service.UserService;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
 import com.qdu.niit.library.utils.SqlConfig;
@@ -19,6 +20,11 @@ public class UManger {
             System.out.println(ser.login(userName , password));
             System.out.println(ser.getLocalUser());
             System.out.println(ser.getUserInfo(userName));
+            ser.modifyLocalUserInfo("刘一帆" ,null , UserInfo.Gender.MALE , "15864158468" , "2311889551@qq.com");
+            System.out.println(ser.getUserInfo(userName));
+            ser.modifyLocalUserPassword("231398103");
 
+            ser.logout();
+            System.out.println(ser.login(userName , "231398103"));
     }
 }

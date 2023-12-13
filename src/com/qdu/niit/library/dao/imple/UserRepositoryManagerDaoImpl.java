@@ -123,6 +123,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
         assert info != null : "info不能传入空指针";
         executeUpdate(UPDATE_USERINFO_SQL ,
                 info.getName() ,
+                JavaDateToSqlDate(info.getBirthday()),
                 JavaGenderToSqlGender(info.getGender()),
                 info.getPhone() ,
                 info.getEmail(),
