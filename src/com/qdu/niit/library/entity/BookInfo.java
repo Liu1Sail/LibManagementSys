@@ -1,6 +1,6 @@
 package com.qdu.niit.library.entity;
 
-import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
+import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 
 import java.util.Date;
 

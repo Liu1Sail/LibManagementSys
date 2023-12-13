@@ -1,14 +1,4 @@
-package com.qdu.niit.library.GenericDao;
-
-import com.qdu.niit.library.entity.Book;
-import com.qdu.niit.library.entity.BookCopy;
-import com.qdu.niit.library.entity.LibraryCollectionRoom;
-
-import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
+package com.qdu.niit.library.genericdao;
 
 public interface MANAGER  {
 //    String getTableName();

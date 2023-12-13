@@ -1,6 +1,6 @@
 package com.qdu.niit.library.dao.imple;
 
-import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
+import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.dao.BookRepositorySQLDao;
 import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookCopy;

@@ -1,19 +1,14 @@
-package com.qdu.niit.library.AbstractDao;
+package com.qdu.niit.library.abstractdao;
 
 
-import com.qdu.niit.library.GenericDao.MANAGER;
+import com.qdu.niit.library.genericdao.MANAGER;
 import com.qdu.niit.library.dao.imple.BaseSQLDaoImpl;
 import com.qdu.niit.library.utils.SqlConfig;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 abstract public class BOOK_MANAGER extends BaseSQLDaoImpl implements MANAGER {
     Connection connection = null;

@@ -1,7 +1,7 @@
 package com.qdu.niit.library.entity;
 
 
-import com.qdu.niit.library.AbstractDao.BOOK;
+import com.qdu.niit.library.abstractdao.BOOK;
 
 
 public class LibraryCollectionRoom extends BOOK {

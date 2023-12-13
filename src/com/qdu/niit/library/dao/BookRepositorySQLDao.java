@@ -1,6 +1,6 @@
 package com.qdu.niit.library.dao;
 
-import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
+import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.entity.BookInfo;
 
 import java.sql.SQLException;
