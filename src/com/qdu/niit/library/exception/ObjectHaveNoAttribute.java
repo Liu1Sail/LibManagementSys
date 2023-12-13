@@ -1,4 +1,4 @@
-package com.qdu.niit.library.Exception;
+package com.qdu.niit.library.exception;
 
 public class ObjectHaveNoAttribute extends Exception{
     public ObjectHaveNoAttribute() {

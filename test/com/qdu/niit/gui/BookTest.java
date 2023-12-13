@@ -1,6 +1,6 @@
 package com.qdu.niit.gui;
 
-import com.qdu.niit.library.Exception.ObjectHaveNoAttribute;
+import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.dao.imple.BookRepositorySQLDaoImpl;
 import com.qdu.niit.library.utils.SqlConfig;
 
@@ -8,14 +8,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookTest {
 
 
     public static void main(String[] args) throws SQLException, ConnectException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException, InstantiationException, ObjectHaveNoAttribute {
 
-//        long timestamp = System.currentTimeMillis(); // 获取当前时间的时间戳
-//        Date date = new Date(timestamp);
+        long timestamp = System.currentTimeMillis(); // 获取当前时间的时间戳
+        Date date = new Date(timestamp);
         SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/qdu" , "root" , "root");//配置数据库
         BookRepositorySQLDaoImpl bookRepositoryManager = new BookRepositorySQLDaoImpl();
 //

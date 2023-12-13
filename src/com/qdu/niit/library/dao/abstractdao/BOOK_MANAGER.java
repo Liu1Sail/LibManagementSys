@@ -1,44 +1,39 @@
-package com.qdu.niit.library.AbstractDao;
+package com.qdu.niit.library.dao.abstractdao;
 
 
-import com.qdu.niit.library.GenericDao.MANAGER;
 import com.qdu.niit.library.dao.imple.BaseSQLDaoImpl;
 import com.qdu.niit.library.utils.SqlConfig;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-abstract public class BOOK_MANAGER extends BaseSQLDaoImpl implements MANAGER {
+abstract public class BOOK_MANAGER extends BaseSQLDaoImpl  {
     Connection connection = null;
     PreparedStatement statement = null;
-//    String tableName = null;  //需要初始化
-//    String tableId = null;
-//
+    public BOOK_MANAGER() throws SQLException, ConnectException {    //connect MySQL server
+        createTable();
+    }
     abstract protected String getCreateTableStatement();
 //    //别忘了在子类调用setTableName
 //    @Override
     public void createTable() throws ConnectException, SQLException {
-        //连接是否丢失
-        if (connection == null) {
-            throw new ConnectException();
-        }
-        String createTableStatement = null;
-
-        //选择要建表的语句
-        createTableStatement = getCreateTableStatement();
-        statement = connection.prepareStatement(createTableStatement);
-
-        //建表是否成功返回
-        statement.execute();
-        connection.close();
+        executeUpdate(getCreateTableStatement());
     }
+
+    //获得 Connection
+//    public Connection getConnection() {
+//        Connection conn;
+//        SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/qdu?serverTimezone=GMT%2B8", "root", "root");//配置数据库
+//        try {
+//            conn = SqlConfig.getInstance().getConnection();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return conn;
+//    }
+}
 //
 //
 //    /*如果这样的话public abstract String getDeleteByBookIdStatement();有些不需要book_id删除的类也需要写，所以用反射
@@ -98,27 +93,3 @@ abstract public class BOOK_MANAGER extends BaseSQLDaoImpl implements MANAGER {
 //        return theNumberOfEffectedLines;
 //
 //    }
-    public BOOK_MANAGER() throws SQLException, ConnectException {    //connect MySQL server
-        connection = getConnection();
-        createTable();
-    }
-//    public BOOK_MANAGER(int everything){
-//        ;
-//    }
-//
-//
-//
-//
-//
-    //获得 Connection
-    public Connection getConnection() {
-        Connection conn;
-        SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/qdu?serverTimezone=GMT%2B8", "root", "root");//配置数据库
-        try {
-            conn = SqlConfig.getInstance().getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return conn;
-    }
-}

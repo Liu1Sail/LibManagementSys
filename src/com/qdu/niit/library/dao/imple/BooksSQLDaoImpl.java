@@ -1,11 +1,9 @@
 package com.qdu.niit.library.dao.imple;
 
-import com.qdu.niit.library.AbstractDao.BOOK_MANAGER;
+import com.qdu.niit.library.dao.abstractdao.BOOK_MANAGER;
 import com.qdu.niit.library.dao.BooksSQLDao;
 import com.qdu.niit.library.entity.Book;
-import com.qdu.niit.library.entity.BookCopy;
 
-import javax.crypto.interfaces.PBEKey;
 import java.math.BigInteger;
 import java.net.ConnectException;
 import java.sql.SQLException;

@@ -1,14 +1,11 @@
 package com.qdu.niit.library.dao.imple;
 
-import com.qdu.niit.library.AbstractDao.BOOK_MANAGER;
+import com.qdu.niit.library.dao.abstractdao.BOOK_MANAGER;
 import com.qdu.niit.library.dao.LibraryCollectionRoomSQLDao;
-import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.LibraryCollectionRoom;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements LibraryCollectionRoomSQLDao {
     public static final String tableName = "LibraryCollectionRoom";
