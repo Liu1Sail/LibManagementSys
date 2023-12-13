@@ -73,7 +73,7 @@ public class UserInfo {
     }
 
     /*-----------------------------------------------------------------------------------*/
-    private final int m_UID;
+    private final Integer m_UID;
 
     private String m_UName;
 

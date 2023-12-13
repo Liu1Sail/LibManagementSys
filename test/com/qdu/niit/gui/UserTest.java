@@ -1,5 +1,6 @@
 package com.qdu.niit.gui;
 
+import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.UserInterface;
 
 /**
@@ -11,6 +12,6 @@ import com.qdu.niit.library.gui.UserInterface;
 
 public class UserTest {
     public static void main(String[] args) {
-        new UserInterface("1","1","1");
+        new UserInterface(new User(1,"1","1"));
     }
 }

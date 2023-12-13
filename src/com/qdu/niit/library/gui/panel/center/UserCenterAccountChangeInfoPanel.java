@@ -4,16 +4,16 @@ import com.qdu.niit.library.gui.animation.TextEmergeLabel;
 import com.qdu.niit.library.gui.animation.Translation;
 import com.qdu.niit.library.gui.input.InputInnerPasswordField;
 import com.qdu.niit.library.gui.input.InputInnerTextField;
-import com.qdu.niit.library.gui.input.InputTextPanel;
-import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+/**
+ * 目标修改，初始时显示当前个人信息
+ */
 
 /**
  * @author 李冠良
@@ -23,43 +23,40 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
-//    private final InputTextPanel id;
-//    private final InputTextPanel name;
-//    private final InputTextPanel password;
-//    private final InputTextPanel age;
-//    private final InputTextPanel gender;
-//    private final InputTextPanel phone;
-//    private final InputTextPanel email;
+    private String id;
+    private String name;
+    private String password;
+    private String age;
+    private String gender;
+    private String phone;
+    private String email;
     private final JFrame frame;
     private int genderNumber = 1;
 
     public UserCenterAccountChangeInfoPanel(JFrame frame) {
         this.frame=frame;
+        this.setBounds(0,0,800,640);
         var inputBottomPanel = new JPanel();
-        inputBottomPanel.setBounds(40, 40, 720, 500);
+        inputBottomPanel.setBounds(40,40,720,560);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         var titleLabel = new JLabel("修改个人信息");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         inputBottomPanel.add(titleLabel);
-        var scrollPane=new JScrollPane(inputBottomPanel);
-        scrollPane.setBounds(0,0,800,600);
-        this.add(scrollPane);
-    }
-    public void resetInputContent(){
-//        id.setInputText("");
-//        name.setInputText("");
-//        password.setInputText("");
-//        age.setInputText("");
-//        gender.setInputText("");
-//        phone.setInputText("");
+        var tipText=new JLabel("请输入新的个人信息，不需要修改的信息请留空");
+        tipText.setBounds(10, 50, 400, 30);
+        tipText.setFont(new Font("宋体", Font.PLAIN, 18));
+        inputBottomPanel.add(tipText);
+        var bodyPanel=getBodyPanel();
+        inputBottomPanel.add(bodyPanel);
+        this.add(inputBottomPanel);
     }
     private JPanel getBodyPanel() {
         HashMap<Integer, Translation> componentMap = new HashMap<>();
         InputTextHandle inputTextHandle = new InputTextHandle();
         var bodyPanel = new JPanel();
-        bodyPanel.setBounds(0, 40, 400, 560);
+        bodyPanel.setBounds(0,50,400,800);
         bodyPanel.setOpaque(false);
         bodyPanel.setLayout(null);
         bodyPanel.addMouseListener(new MouseAdapter() {
@@ -85,11 +82,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         var buttonPressedBackColor = new Color(0, 124, 237);
         var rightInputColor = new Color(4, 115, 18);
         var inputInnerTextDefaultFont = new Font("宋体", Font.PLAIN, 14);
-        var titleText = new JLabel("欢迎注册图书馆账号");
-        titleText.setFont(new Font("宋体", Font.PLAIN, 35));
-        titleText.setBounds(30, 0, 350, 50);
-        titleText.setFocusable(true);
-        var nameInput = new InputInnerTextField("用户名", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+        var nameInput = new InputInnerTextField("请输入新的用户名", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
             @Override
@@ -112,7 +105,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
 
             @Override
             public void lostFocusMovement(InputInnerTextField textField) {
-                if (textField.getText().equals("用户名")) {
+                if (textField.getText().equals("请输入新的用户名")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
                     tip.setForeground(Color.RED);
@@ -141,7 +134,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         var namePanel = new Translation(nameInput, 1, 6, 10, Translation.TO_BELOW);
         var nameTip = new TextEmergeLabel("用户名不能为空", 0.01, 255, 255, Color.RED);
         var nameTipPanel = new Translation(nameTip, 1, 6, 10, Translation.TO_BELOW);
-        var passInput = new InputInnerPasswordField("密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+        var passInput = new InputInnerPasswordField("请输入新的密码", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
             @Override
@@ -164,7 +157,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
 
             @Override
             public void lostFocusMovement(InputInnerPasswordField textField) {
-                if (new String(textField.getPassword()).equals("密码")) {
+                if (new String(textField.getPassword()).equals("请输入新的密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
                     tip.setForeground(Color.RED);
@@ -214,16 +207,17 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
                 tip.setForeground(inputInnerTextColor);
-                tip.setText("请在再次输入密码");
+                tip.setText("请再次输入密码");
                 tip.setVisible(true);
             }
 
             @Override
             public void lostFocusMovement(InputInnerPasswordField textField) {
-                if (new String(textField.getPassword()).equals("密码")) {
+                if (new String(textField.getPassword()).equals("重复密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
-                    tip.setText("密码不能为空");
+                    tip.setForeground(Color.RED);
+                    tip.setText("两次输入的密码不一致");
                     tip.setVisible(true);
                 } else {
                     isInitial = false;
@@ -252,7 +246,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         var genderGroup = new ButtonGroup();
         var maleButton = new JRadioButton("男", true);
         var femaleButton = new JRadioButton("女", false);
-        var phoneInput = new InputInnerTextField("手机号", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
+        var phoneInput = new InputInnerTextField("请输入新的手机号", inputBorderColor, inputBackgroundColor, inputInnerTextColor, Color.BLACK, 5, 5) {
             private boolean isInitial = true;
 
             @Override
@@ -275,7 +269,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
 
             @Override
             public void lostFocusMovement(InputInnerTextField textField) {
-                if (textField.getText().equals("手机号")) {
+                if (textField.getText().equals("请输入新的手机号")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
                     tip.setText("手机号不能为空");
@@ -316,9 +310,9 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                     var tmp = componentMap.get(i);
                     tmp.setLocation(tmp.getX(), tmp.getY() + 10);
                 }
-                tip.setForeground(Color.RED);
+                tip.setForeground(inputInnerTextColor);
                 tip.setText("邮箱的格式为*@*.*");
-                tip.setVisible(false);
+                tip.setVisible(true);
             }
 
             @Override
@@ -326,6 +320,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                 if (textField.getText().equals("邮箱")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();
+                    tip.setTextColor(Color.RED);
                     tip.setText("邮箱不能为空");
                     tip.setVisible(true);
                 } else {
@@ -393,7 +388,7 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         defineButtonPanel.setBounds(100, 360, 200, 50);
         defineButton.setForeground(Color.WHITE);
         defineButton.setFont(new Font("宋体", Font.BOLD, 20));
-        defineButton.setText("立即注册");
+        defineButton.setText("立即修改");
         defineButton.setHorizontalAlignment(SwingConstants.CENTER);
         defineButton.setVerticalAlignment(SwingConstants.CENTER);
         defineButton.setBackground(buttonBackColor);
@@ -428,7 +423,6 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
         componentMap.put(12, emailTipPanel);
         componentMap.put(13, defineButtonPanel);
 
-        bodyPanel.add(titleText);
         bodyPanel.add(namePanel);
         bodyPanel.add(nameTipPanel);
         bodyPanel.add(passPanel);
