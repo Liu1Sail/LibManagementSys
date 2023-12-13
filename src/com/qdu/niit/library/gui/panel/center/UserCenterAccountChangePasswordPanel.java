@@ -10,12 +10,12 @@ import java.awt.event.ActionListener;
 /**
  * @author 李冠良
  * @program LibManagementSys
+ * @description 已弃用
  * @description 修改密码面板，仅用于用户界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangePasswordPanel extends centerPanelModel {
-//    private final UserGui loggedUser;//存储当前用户
     private final JFrame frame;
     public UserCenterAccountChangePasswordPanel(JFrame frame) {
         this.frame=frame;

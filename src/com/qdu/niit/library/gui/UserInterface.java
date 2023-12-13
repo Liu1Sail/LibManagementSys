@@ -7,7 +7,6 @@ import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
 import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
 import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
 import com.qdu.niit.library.gui.panel.center.UserCenterRoomPanel;
-import com.qdu.niit.library.gui.tool.UserGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,12 +29,10 @@ public class UserInterface extends ResizeFrame {
     private final int initialHeight=700;
     private int mouseX;
     private int mouseY;
-    private final UserGui loggedUser;
     private final User user;
 
     public UserInterface(User user) {
         this.user=user;
-        loggedUser=new UserGui(String.valueOf(user.getUID()),user.getUName(),user.getUPassword());
         this.setLayout(new BorderLayout());
         this.setSize(initialWidth, initialHeight);
         this.setLocationRelativeTo(null);
@@ -155,7 +152,6 @@ public class UserInterface extends ResizeFrame {
         this.add(bottomPanel,BorderLayout.CENTER);
         this.setVisible(true);
     }
-
     private JPanel getBookOption(Font sideBarOptionFont) {
         var bookOption=new JPanel();
         bookOption.setBounds(0,0,400,80);
@@ -186,7 +182,7 @@ public class UserInterface extends ResizeFrame {
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改密码",2,1,2);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改个人信息",2,1,2);
         accountOption.add(accountAddChildOption);
         return accountOption;
     }

@@ -27,7 +27,7 @@ public class LoginInterface extends JFrame {
     private final Dimension initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
     private final int initialX = initialDimension.width / 4;
     private final int initialY = initialDimension.height / 6;
-    private Point offsetMouseToFrame = new Point();
+    private final Point offsetMouseToFrame = new Point();
     private boolean userAndAdminSwitch = false;
     private final JDialog loginErrorPopMessage = new JDialog(this, true);
 
@@ -251,7 +251,7 @@ public class LoginInterface extends JFrame {
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
         //管理员密码登录输入框Panel
-        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, userPassInputPasswordField, userInputTextField, frame);
+        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, frame);
         //用户登录和管理员登陆切换
         userLoginPanel.addMouseListener(new MouseAdapter() {
             private final Color firstColor = new Color(166, 166, 166);
@@ -370,7 +370,7 @@ public class LoginInterface extends JFrame {
         return userPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField, JFrame frame) {
+    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JFrame frame) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
         adminLoginInputPanel.setLayout(null);
@@ -425,7 +425,7 @@ public class LoginInterface extends JFrame {
         var adminPassInputPasswordField = getAdminPassInputPasswordField(textFont, textColor);
         adminPassInputPasswordBorder.add(adminPassInputPasswordField);
         //管理员密码输入框中的登录按钮
-        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField, frame);
+        var adminLoginButton = getAdminLoginButton(frame);
         adminPassInputPasswordBorder.add(adminLoginButton);
         adminLoginInputPanel.add(adminInputTextBorder);
         adminLoginInputPanel.add(adminPassInputPasswordBorder);
@@ -463,7 +463,7 @@ public class LoginInterface extends JFrame {
         return adminPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
+    private static JPanel getAdminLoginButton(JFrame frame) {
         var adminLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -521,11 +521,11 @@ public class LoginInterface extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 //管理员，获取用户名、密码字段
-                String userId = userInputTextField.getText();
-                String password = new String(userPassInputPasswordField.getPassword());
+//                String userId = userInputTextField.getText();
+//                String password = new String(userPassInputPasswordField.getPassword());
 //                System.out.println(userId);
 //                System.out.println(password);
-                var userServiceImpl = UserServiceImpl.getInstance();
+//                var userServiceImpl = UserServiceImpl.getInstance();
                 //从数据库比较用户用户名，密码
 //                userServiceImpl.login()
                 //若检测通过，跳转到用户开始界面
