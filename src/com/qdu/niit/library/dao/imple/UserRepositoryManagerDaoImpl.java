@@ -109,18 +109,12 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     public boolean doesUserExistsByUserName(String userName)throws  SQLException
     {
         assert userName != null : "userName不能传入空指针";
-        Integer count = this.<Integer>Cast(
-                getOne(SELECT_USERS_COUNT_BY_USERNAME , userName)
-        );
-        return  null != count && count > 0;
+        return  null != getOne(SELECT_USERS_COUNT_BY_USERNAME , userName);
     }
     @Override
     public boolean doesUserExistsById(int id)throws SQLException
     {
-        Integer count = this.<Integer>Cast(
-                getOne(SELECT_USERS_COUNT_BY_ID , id)
-        );
-        return  null != count && count > 0;
+        return  null != getOne(SELECT_USERS_COUNT_BY_ID , id);
     }
 
     //=========================||   UserInfo    ||===========================//
@@ -177,9 +171,9 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     private static final String UPDATE_USERS_PASSWORD_SQL ="""
                     UPDATE USERS SET uPwd = ? WHERE uId = ?""";
 
-    private static final String SELECT_USERS_COUNT_BY_ID="SELECT COUNT(uId) WHERE uId = ?";
+    private static final String SELECT_USERS_COUNT_BY_ID="SELECT uId  FROM USERS WHERE uId = ?";
 
-    private static final String SELECT_USERS_COUNT_BY_USERNAME="SELECT COUNT(uName) WHERE uName = ?";
+    private static final String SELECT_USERS_COUNT_BY_USERNAME="SELECT uName FROM USERS WHERE uName = ?";
 
     /*======================||    USERINFO    ||===========================*/
 
@@ -244,5 +238,5 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     private static final String INSERT_USERINFO_SQL= "INSERT INTO USERINFO (uId,uName,uBirthday,uGender, uPhone , uEmail) VALUES (?,?,?,?,?,?)";
     private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?,uBirthday = ?,uGender = ?,uPhone = ?,uEmail = ?where uId = ?;";
     private static final String SELECT_USERINFO_SQL = "SELECT * FROM USERINFO WHERE uId = ?;";
-    private static final String SELECT_USERINFO_BY_USER_NAME_SQL= "SELECT USERINFO.* FROM USERINFO , USER WHERE USER.uId = ? AND USER.uId = USERINFO.uId";
+    private static final String SELECT_USERINFO_BY_USER_NAME_SQL= "SELECT USERINFO.* FROM USERINFO , USERS WHERE USERS.uName = ? AND USERS.uId = USERINFO.uId";
 }

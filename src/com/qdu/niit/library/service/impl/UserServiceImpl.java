@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
     @Override
     public int register(String userName, String password, String name, Date birth, UserInfo.Gender gender, String phone, String email) {
-        assert userName!=null && password != null : "userName 和 password不能为空";
+        assert userName !=null && password != null : "userName 和 password不能为空";
         try{
             UserSQLDao dao = UserRepositoryManagerDaoImpl.getInstance();
             return dao.insert(new User(null ,userName , password) , new UserInfo(null , name , birth , gender , phone ,email));
