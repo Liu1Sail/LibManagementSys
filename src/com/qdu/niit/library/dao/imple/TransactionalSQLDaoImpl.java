@@ -39,6 +39,7 @@ public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements Transacti
 
     @Override
     public void executeTransactionUpdate(String SQL, Object... args) throws SQLException {
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         if(null == connection)
             throw new SQLException("链接未打开");
         try(PreparedStatement preparedStatement =connection.prepareStatement(SQL)) {
@@ -52,6 +53,7 @@ public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements Transacti
 
     @Override
     public ArrayList<Object[]> executeTransactionUpdateAndGetKeys(String SQL, Object... args) throws SQLException {
+        assert SQL !=null&&args!=null : "SQL 和args不能传入空指针";
         if(null == connection)
             throw new SQLException("链接未打开");
 
