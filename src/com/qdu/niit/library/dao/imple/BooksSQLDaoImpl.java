@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     public static final String tableName = "Books";
@@ -19,7 +20,7 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
             CREATE TABLE if NOT EXISTS Books(
              book_id INT AUTO_INCREMENT PRIMARY KEY,
              title VARCHAR(50) NOT NULL,
-             isbn VARCHAR(13) UNIQUE,
+             isbn VARCHAR(13) UNIQUE NOT NULL,
              author VARCHAR(50) NOT NULL,
              publisher VARCHAR(50) NOT NULL,
              receipt_date DATE NOT NULL,
@@ -42,7 +43,84 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     public String getInsertWithoutKeyStatement(){
         return INSERT_WITHOUT_KEY;
     }
+    private static final String UPDATE_TITLE_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET title = ?
+            WHERE book_id = ?;
+            """;
 
+    public static String getUpdateTitleByBookIdStatement() {
+        return UPDATE_TITLE_BY_BOOK_ID_STATEMENT;
+    }
+    void updateTitleByBookID(Integer book_id, String title) throws SQLException {
+        executeUpdate(getUpdateTitleByBookIdStatement(),title,book_id);
+    }
+
+    private static final String UPDATE_ISBN_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET isbn = ?
+            WHERE book_id = ?;
+            """;
+
+    public static String getUpdateIsbnByBookIdStatement() {
+        return UPDATE_ISBN_BY_BOOK_ID_STATEMENT;
+    }
+
+    void updateISBNByBookID(Integer book_id, String isbn) throws SQLException {
+        executeUpdate(getUpdateIsbnByBookIdStatement(),isbn,book_id);
+    }
+    private static final String UPDATE_AUTHOR_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET author = ?
+            WHERE book_id = ?;
+            """;
+
+    public static String getUpdateAuthorByBookIdStatement() {
+        return UPDATE_AUTHOR_BY_BOOK_ID_STATEMENT;
+    }
+
+    void updateAuthorByBookID(Integer book_id, String author) throws SQLException {
+        executeUpdate(getUpdateAuthorByBookIdStatement(),author,book_id);
+    }
+    private static final String UPDATE_PUBLISHER_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET publisher = ?
+            WHERE book_id = ?;
+            """;
+
+    public static String getUpdatePublisherByBookIdStatement() {
+        return UPDATE_PUBLISHER_BY_BOOK_ID_STATEMENT;
+    }
+
+    void updatePublisherByBookID(Integer book_id, String publisher) throws SQLException {
+        executeUpdate(getUpdatePublisherByBookIdStatement(),publisher,book_id);
+    }
+    private static final String UPDATE_RECEIPT_DATE_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET receipt_date = ?
+            WHERE book_id = ?;
+            """;
+
+    public static String getUpdateReceiptDate_byBookIdStatement() {
+        return UPDATE_RECEIPT_DATE_BY_BOOK_ID_STATEMENT;
+    }
+
+    void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException {
+        executeUpdate(getUpdateReceiptDate_byBookIdStatement(),date,book_id);
+    }
+    private static final String UPDATE_GENRE_BY_BOOK_ID_STATEMENT = """
+            UPDATE Books
+            SET genre = ?
+            WHERE book_id = ?;
+            """;
+
+    public static String getUpdateGenreByBookIdStatement() {
+        return UPDATE_GENRE_BY_BOOK_ID_STATEMENT;
+    }
+
+    void updateGenreByBookID(Integer book_id, String genre) throws SQLException {
+        executeUpdate(getUpdateGenreByBookIdStatement(),genre,book_id);
+    }
     public BooksSQLDaoImpl() throws SQLException, ConnectException {
         super();
     }
@@ -83,7 +161,7 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
             return -1;
         }
         theKeys = (
-                executeUpdateAndGetGeneratedKeys(
+                executeTransactionUpdateAndGetKeys(
                         getInsertWithoutKeyStatement(),
                         element.getTitle(),
                         element.getIsbn(),
@@ -147,22 +225,22 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
 
     @Override
     public void INCQuantityOfVisible(Integer book_id) throws SQLException {
-        executeUpdate(getIncQuantityOfVisibleStatement(),book_id);
+        executeTransactionUpdate(getIncQuantityOfVisibleStatement(),book_id);
     }
 
     @Override
     public void INCQuantityOfNotVisible(Integer book_id) throws SQLException {
-        executeUpdate(getIncQuantityOfHiddenStatement(),book_id);
+        executeTransactionUpdate(getIncQuantityOfHiddenStatement(),book_id);
     }
 
     @Override
     public void DECQuantityOfVisible(Integer book_id) throws SQLException {
-        executeUpdate(getDecQuantityOfVisibleStatement(),book_id);
+        executeTransactionUpdate(getDecQuantityOfVisibleStatement(),book_id);
     }
 
     @Override
     public void DECQuantityOfNotVisible(Integer book_id) throws SQLException {
-        executeUpdate(getDecQuantityOfHiddenStatement(),book_id);
+        executeTransactionUpdate(getDecQuantityOfHiddenStatement(),book_id);
     }
 
     @Override
@@ -182,7 +260,7 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
 
     @Override
     public void delete(Integer book_id) throws SQLException {
-        executeUpdate(getDeleteByBookIdStatement(),book_id);
+        executeTransactionUpdate(getDeleteByBookIdStatement(),book_id);
     }
 
 }

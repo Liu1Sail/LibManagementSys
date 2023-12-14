@@ -2,14 +2,15 @@ package com.qdu.niit.library.dao.abstractdao;
 
 
 import com.qdu.niit.library.dao.imple.BaseSQLDaoImpl;
-import com.qdu.niit.library.utils.SqlConfig;
+import com.qdu.niit.library.dao.imple.TransactionalSQLDaoImpl;
+
 
 import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-abstract public class BOOK_MANAGER extends BaseSQLDaoImpl  {
+abstract public class BOOK_MANAGER extends TransactionalSQLDaoImpl {
     Connection connection = null;
     PreparedStatement statement = null;
     public BOOK_MANAGER() throws SQLException, ConnectException {    //connect MySQL server

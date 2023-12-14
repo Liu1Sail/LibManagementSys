@@ -7,13 +7,12 @@ import com.qdu.niit.library.entity.BookCopy;
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.LibraryCollectionRoom;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRepositorySQLDao {
+public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements  BookRepositorySQLDao {
 
     BooksSQLDaoImpl booksManager;
     BookCopiesSQLDaoImpl bookCopiesManager;
@@ -22,82 +21,86 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
     /**
      * 构造函数
      */
-    public BookRepositorySQLDaoImpl() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, ConnectException {
+    public BookRepositorySQLDaoImpl() throws  SQLException, ConnectException {
 
-//        Class<?> BooksManager = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
-//        Constructor<?> constructorOfBooksManager = BooksManager.getDeclaredConstructor(int.class);
-//        constructorOfBooksManager.setAccessible(true);
-//        BooksSQLDaoImpl booksManager = (BooksSQLDaoImpl) constructorOfBooksManager.newInstance(1);
-//
-//        Class<?> BookCopiesManager = Class.forName("com.qdu.niit.library.dao.imple.BookCopiesSQLDaoImpl");
-//        Constructor<?> constructorOfBookCopiesManager = BookCopiesManager.getDeclaredConstructor(int.class);
-//        constructorOfBookCopiesManager.setAccessible(true);
-//        BookCopiesSQLDaoImpl bookCopiesSQLDao = (BookCopiesSQLDaoImpl) constructorOfBookCopiesManager.newInstance(1);
-//
-//        Class<?> LocationsManager = Class.forName("com.qdu.niit.library.dao.imple.LibraryCollectionRoomSQLDaoImpl");
-//        Constructor<?> constructorOfLocationsManager = LocationsManager.getDeclaredConstructor(int.class);
-//        constructorOfLocationsManager.setAccessible(true);
-//        LibraryCollectionRoomSQLDaoImpl locationsManager = (LibraryCollectionRoomSQLDaoImpl) constructorOfLocationsManager.newInstance(1);
         booksManager = new BooksSQLDaoImpl();
         bookCopiesManager = new BookCopiesSQLDaoImpl();
         locationsManager = new LibraryCollectionRoomSQLDaoImpl();
     }
     @Override
-    public void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, InstantiationException, ObjectHaveNoAttribute {
+    public void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, ObjectHaveNoAttribute {
         Integer book_id;
         Integer copy_id;
 
-        for(BookInfo bookInfo : insertArrayOutGet){
-            //先判断是否存在
-            book_id = booksManager.getIfBookIsExistByISBN(bookInfo.getIsbn());
-            Book book = new Book(bookInfo);
-            BookCopy bookCopy = new BookCopy(bookInfo);
-            LibraryCollectionRoom libraryCollectionRoom = new LibraryCollectionRoom(bookInfo);
-            //不存在先创建book
-            if(book_id == -1){
-                book_id = booksManager.insert(book);
-            }
-            book.setBook_id(book_id);  //设置book和copy的book_id
-            bookCopy.setBook_id(book_id);
+        try{
+            beginTransaction();
 
-            copy_id = bookCopiesManager.insertToBookCopies(bookCopy);
-            bookCopy.setCopy_id(copy_id);
+                for(BookInfo bookInfo : insertArrayOutGet){
+                    //先判断是否存在
+                    book_id = booksManager.getIfBookIsExistByISBN(bookInfo.getIsbn());
+                    Book book = new Book(bookInfo);
+                    BookCopy bookCopy = new BookCopy(bookInfo);
+                    LibraryCollectionRoom libraryCollectionRoom = new LibraryCollectionRoom(bookInfo);
+                    //不存在先创建book
+                    if(book_id == -1){
+                        book_id = booksManager.insert(book);
+                    }
+                    book.setBook_id(book_id);  //设置book和copy的book_id
+                    bookCopy.setBook_id(book_id);
 
-            bookInfo.setBook_id(book_id);
-            bookInfo.setCopy_id(copy_id);
-            if(bookInfo.getIs_visible()){   //更改图书的数量
-                booksManager.INCQuantityOfVisible(book_id);
+                    copy_id = bookCopiesManager.insertToBookCopies(bookCopy);
+                    bookCopy.setCopy_id(copy_id);
+
+                    bookInfo.setBook_id(book_id);
+                    bookInfo.setCopy_id(copy_id);
+                    if(bookInfo.getIs_visible()){   //更改图书的数量
+                        booksManager.INCQuantityOfVisible(book_id);
+                    }
+                    else{
+                        booksManager.INCQuantityOfNotVisible(book_id);
+                    }
+                    //别而忘了赋值！！！
+                    libraryCollectionRoom.setCopy_id(copy_id);
+                    locationsManager.insert(libraryCollectionRoom);
             }
-            else{
-                booksManager.INCQuantityOfNotVisible(book_id);
-            }
-            //别而忘了赋值！！！
-            libraryCollectionRoom.setCopy_id(copy_id);
-            locationsManager.insert(libraryCollectionRoom);
+        } catch (SQLException | ObjectHaveNoAttribute e) {
+            rollback();
+            throw new RuntimeException(e);
         }
+
+
     }
     @Override
     public void delete(ArrayList<Integer> copy_ids) throws SQLException {
 
-        for(Integer copy_id : copy_ids){
-            //最开始先查要删除的书籍
-            ArrayList<BookInfo> book = getBookByCopyID(copy_id);
-            //先判断是否存在
-            locationsManager.delete(copy_id);
-            boolean isVisible = bookCopiesManager.getIsVisibleByCopyID(copy_id);
-            //book是查询结果
-            Integer book_id = book.get(0).getBook_id();
-            bookCopiesManager.delete(copy_id);  //删除copies表并获得删除的book_id
-            if(isVisible){
-                booksManager.DECQuantityOfVisible(book_id);
-            }
-            else{
-                booksManager.DECQuantityOfNotVisible(book_id);
-            }
-            if(booksManager.isEmpty(book_id)){
-                booksManager.delete(book_id);
-            }
+        try{
+            beginTransaction();
+
+                for(Integer copy_id : copy_ids){
+                    //最开始先查要删除的书籍
+                    ArrayList<BookInfo> book = getBookByCopyID(copy_id);
+                    //先判断是否存在
+                    locationsManager.delete(copy_id);
+                    boolean isVisible = bookCopiesManager.getIsVisibleByCopyID(copy_id);
+                    //book是查询结果
+                    Integer book_id = book.get(0).getBook_id();
+                    bookCopiesManager.delete(copy_id);  //删除copies表并获得删除的book_id
+                    if(isVisible){
+                        booksManager.DECQuantityOfVisible(book_id);
+                    }
+                    else{
+                        booksManager.DECQuantityOfNotVisible(book_id);
+                    }
+                    if(booksManager.isEmpty(book_id)){
+                        booksManager.delete(book_id);
+                    }
+                }
+        } catch (SQLException e) {
+            rollback();
+            throw new RuntimeException(e);
         }
+
+
     }
     private static final String GET_BOOK_BY_COPY_ID_STATEMENT = """
             SELECT
@@ -230,6 +233,45 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
         gotResult = getMany(getGetBookByCopyId(),copy_id);
         return getBookInfos(gotResult, result);
     }
+
+    @Override
+    public void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException {
+        bookCopiesManager.updateAcquisitionByCopyID(copy_id,date);
+    }
+
+    @Override
+    public void updateBookLocationByCopyID(Integer copy_id, String location) throws SQLException {  //需要多个表都修改
+        try {
+            beginTransaction();
+                bookCopiesManager.updateBookLocationByCopyIDInCopies(copy_id, location);
+                String[] parts = location.split("-");
+                locationsManager.updateLocationByCopyId(copy_id,parts[0],parts[1],parts[2]);
+        } catch (SQLException e) {
+            rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateAuthorByBookID(Integer book_id, String author) throws SQLException {
+        booksManager.updateAuthorByBookID(book_id,author);
+    }
+
+    @Override
+    public void updatePublisherByBookID(Integer book_id, String publisher) throws SQLException {
+        booksManager.updatePublisherByBookID(book_id,publisher);
+    }
+
+    @Override
+    public void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException {
+        booksManager.updateReceiptDateByBookID(book_id,date);
+    }
+
+    @Override
+    public void updateGenreByBookID(Integer book_id, String genre) throws SQLException {
+        booksManager.updateGenreByBookID(book_id,genre);
+    }
+
     @Override
     public ArrayList<BookInfo> getBookByDate(Date date) throws SQLException {
         ArrayList<Object[]> gotResult = null;
