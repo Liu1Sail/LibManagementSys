@@ -505,7 +505,7 @@ public class RegisterInterface extends JFrame {
                 }
                 //
             } else {
-                popMessage.setTitle("");
+                popMessage.setTitle("注册失败");
                 popMessageLabel.setText("输入信息存在错误,请修改信息");
                 popMessage.setVisible(true);
             }

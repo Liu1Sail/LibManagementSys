@@ -76,14 +76,14 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
             }
         });
 
-        var errorPopMessage = new JDialog(frame, true);
-        errorPopMessage.setLocationRelativeTo(null);
-        errorPopMessage.setSize(200, 100);
-        errorPopMessage.setTitle("错误提示");
-        errorPopMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        errorPopMessage.setLayout(new BorderLayout());
-        var errorPopMessageLabel = new JLabel("输入信息存在错误,请修改信息");
-        errorPopMessage.add(errorPopMessageLabel, BorderLayout.CENTER);
+        var popMessage = new JDialog(frame, true);
+        popMessage.setLocationRelativeTo(null);
+        popMessage.setSize(200, 100);
+        popMessage.setTitle("错误提示");
+        popMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        popMessage.setLayout(new BorderLayout());
+        var popMessageLabel = new JLabel("输入信息存在错误,请修改信息");
+        popMessage.add(popMessageLabel, BorderLayout.CENTER);
 
         var inputBorderColor = new Color(84, 157, 248);
         var inputInnerTextColor = new Color(153, 153, 153);
@@ -539,10 +539,15 @@ public class UserCenterAccountChangeInfoPanel extends centerPanelModel {
                     userServiceImpl.modifyLocalUserInfo(name,birthdayPacked,genderPacked,phone,email);
                 }
                 else{
-                    //弹出系统错误信息
+                    popMessage.setTitle("修改失败");
+                    popMessageLabel.setText("修改因系统问题失败，请稍后重试");
+                    popMessage.setVisible(true);
+                    frame.dispose();
                 }
             } else {
-                errorPopMessage.setVisible(true);
+                popMessage.setTitle("修改失败");
+                popMessageLabel.setText("输入信息存在错误,请修改信息");
+                popMessage.setVisible(true);
             }
         });
 

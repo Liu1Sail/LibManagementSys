@@ -162,12 +162,12 @@ public class LoginInterface extends JFrame {
         userInputTextField.setBorder(null);
         userInputTextField.setFont(textFont);
         userInputTextField.setForeground(textColor);
-        userInputTextField.setText("用户名");
+        userInputTextField.setText("账号");
         userInputTextField.setOpaque(false);
         userInputTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (userInputTextField.getText().equals("用户名")) {
+                if (userInputTextField.getText().equals("账号")) {
                     userInputTextField.setText("");
                 }
             }
@@ -175,7 +175,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (userInputTextField.getText().isEmpty()) {
-                    userInputTextField.setText("用户名");
+                    userInputTextField.setText("账号");
                 }
             }
         });
@@ -595,25 +595,23 @@ public class LoginInterface extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
-                String userName = userInputTextField.getText();
+                String userIdTmp = userInputTextField.getText();
                 String password = new String(userPassInputPasswordField.getPassword());
-                if (!Objects.equals(userName, "用户名") && !Objects.equals(password, "密码")) {
-//                System.out.println(userId);
-//                System.out.println(password);
+                if (!Objects.equals(userIdTmp, "账号") && !Objects.equals(password, "密码")) {
                     //从数据库比较用户用户名，密码
+                    int userId = Integer.parseInt(userIdTmp);
                     var userServiceImpl = UserServiceImpl.getInstance();
-                    User user = userServiceImpl.login(userName, password);
+                    User user = userServiceImpl.login(userId, password);
                     if (user == null) {
                         LoginErrorPopMessageLabel.setText("登陆失败，账号或密码错误!");
                         loginErrorPopMessage.setVisible(true);
                     } else {
-                        //若检测通过，跳转到用户开始界面
+                        //若检测通过，跳转到用户.开始界面
                         frame.dispose();
                         new UserInterface(user);
                     }
-                }
-                else{
-                    LoginErrorPopMessageLabel.setText("用户名或密码不能为空!");
+                } else {
+                    LoginErrorPopMessageLabel.setText("账号或密码不能为空!");
                     loginErrorPopMessage.setVisible(true);
                 }
             }
