@@ -51,8 +51,8 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     }
 
     @Override
-    public void changeOnShelfStatus(Integer book_id) throws SQLException {
-        executeUpdate(getChangeOnShelfStatusStatement(),book_id);
+    public void changeOnShelfStatus(Integer copy_id) throws SQLException {
+        executeUpdate(getChangeOnShelfStatusStatement(),copy_id);
     }
 
     public static final String GET_IS_VISIBLE_STATEMENT = """
