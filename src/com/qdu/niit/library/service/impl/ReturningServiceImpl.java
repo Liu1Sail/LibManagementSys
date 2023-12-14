@@ -14,51 +14,93 @@ import java.time.LocalDateTime;
 public class ReturningServiceImpl implements ReturningService {
     @Override
     public boolean ifHaveByUid(int uid) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        if(use.getAllByUid(uid)!=null)
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            if(use.getAllByUid(uid)!=null)
+            {
+                return true;
+            }
+            return false;
+        }catch (SQLException e)
         {
-            return true;
+            throw new SQLException(e);
         }
-        return false;
+
     }
 
     @Override
     public boolean ifHaveByBid(int bid) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        if(use.getAllByBid(bid)!=null)
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            if(use.getAllByBid(bid)!=null)
+            {
+                return true;
+            }
+            return false;
+        }catch (SQLException e)
         {
-            return true;
+            throw new SQLException(e);
         }
-        return false;
+
     }
 
     @Override
     public Returning[] findAllByEndTime(LocalDateTime end_time) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        return use.getAllByBackTime(end_time);
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            return use.getAllByBackTime(end_time);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public Returning[] findAllByUid(int uid) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        return use.getAllByUid(uid);
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            return use.getAllByUid(uid);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public Returning[] findAllByBid(int bid) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        return use.getAllByBid(bid);
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            return use.getAllByBid(bid);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public void insert(Returning in) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        use.insert(in);
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            use.insert(in);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public Returning[] findAllByUidAndBid(int uid, int bid) throws SQLException {
-        ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-        return use.getAllByUidAndBid(uid,bid);
+        try {
+            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            return use.getAllByUidAndBid(uid,bid);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 }

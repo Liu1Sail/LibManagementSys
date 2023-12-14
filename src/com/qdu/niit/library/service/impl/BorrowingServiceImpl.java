@@ -10,86 +10,142 @@ import java.time.LocalDateTime;
 public class BorrowingServiceImpl implements BorrowingService {
     @Override
     public boolean ifHaveByUid(int uid)throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        Borrowing[]receive = use.getAllByUid(uid);
-        if(receive == null)
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            Borrowing[]receive = use.getAllByUid(uid);
+            if(receive == null)
+            {
+                return false;
+            }
+            return true;
+        }catch (SQLException e)
         {
-            return false;
+            throw new SQLException(e);
         }
-        return true;
     }
 
     @Override
     public boolean ifHaveByBid(int bid)throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        Borrowing receive = use.getOneByBid(bid);
-        if(receive == null)
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            Borrowing receive = use.getOneByBid(bid);
+            if(receive == null)
+            {
+                return false;
+            }
+            return true;
+        }catch (SQLException e)
         {
-            return false;
+            throw new SQLException(e);
         }
-        return true;
     }
 
     @Override
     public Borrowing[] findAll() throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        return use.getAll();
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            return use.getAll();
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
     }
 
     @Override
     public Borrowing[] findAllByEndTime(LocalDateTime end_time)throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        return use.getAllByEndTime(end_time);
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            return use.getAllByEndTime(end_time);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public Borrowing[] findAllByUid(int uid)throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        return  use.getAllByUid(uid);
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            return  use.getAllByUid(uid);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public Borrowing findOneByBid(int bid)throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        return use.getOneByBid(bid);
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            return use.getOneByBid(bid);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
+
     }
 
     @Override
     public boolean insert(Borrowing in)throws SQLException {
-        if(ifHaveByBid(in.getBid())==true)
+        try {
+            if(ifHaveByBid(in.getBid())==true)
+            {
+                return false;
+            }
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            use.insert(in);
+            return true;
+        }catch (SQLException e)
         {
-            return false;
+            throw new SQLException(e);
         }
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        use.insert(in);
-        return true;
+
     }
 
     @Override
     public boolean deleteByUid(int uid)throws SQLException {
-        if(ifHaveByUid(uid) == false)
+        try {
+            if(ifHaveByUid(uid) == false)
+            {
+                return false;
+            }
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            use.deleteByUid(uid);
+            return true;
+        }catch (SQLException e)
         {
-            return false;
+            throw new SQLException(e);
         }
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        use.deleteByUid(uid);
-        return true;
+
     }
 
     @Override
     public boolean deleteByBid(int bid)throws SQLException {
-        if(ifHaveByBid(bid) == false)
+        try {
+            if(ifHaveByBid(bid) == false)
+            {
+                return false;
+            }
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            use.deleteByBid(bid);
+            return true;
+        }catch (SQLException e)
         {
-            return false;
+            throw new SQLException(e);
         }
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        use.deleteByBid(bid);
-        return true;
+
     }
 
     @Override
     public Borrowing[] findAllSmallEndTime(LocalDateTime end_time) throws SQLException {
-        BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
-        return use.getAllByEndTime(end_time);
+        try {
+            BorrowingSQLDaoImpl use = BorrowingSQLDaoImpl.getInstance();
+            return use.getAllByEndTime(end_time);
+        }catch (SQLException e)
+        {
+            throw new SQLException(e);
+        }
     }
 }

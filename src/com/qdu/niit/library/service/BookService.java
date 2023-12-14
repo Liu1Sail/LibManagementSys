@@ -1,0 +1,84 @@
+package com.qdu.niit.library.service;
+
+import com.qdu.niit.library.entity.BookInfo;
+import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
+
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+
+public interface BookService {
+    /**
+     * 添加书本
+     * @param in
+     * @throws SQLException
+     * @throws InstantiationException
+     * @throws ObjectHaveNoAttribute
+     */
+    void Bookstorage(ArrayList<BookInfo> in)throws SQLException, InstantiationException, ObjectHaveNoAttribute;
+
+    /**
+     * 删除书本
+     * @param copy_ids
+     * @throws SQLException
+     */
+    void Bookoutbound(ArrayList<Integer> copy_ids) throws SQLException;
+
+    /**
+     * 根据CopyID查找
+     * @param copy_id
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByCopyID(Integer copy_id) throws SQLException;
+
+    /**
+     * 根据date查找
+     * @param date
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByDate(Date date) throws SQLException;
+
+    /**
+     * 根据book_id查找
+     * @param book_id
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByBookID(Integer book_id) throws SQLException;
+
+    /**
+     * 根据author查找
+     * @param author
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByAuthor(String author) throws SQLException;
+
+    /**
+     * 根据title查找
+     * @param title
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByTitle(String title) throws SQLException;
+
+    /**
+     * 根据title，author查找
+     * @param author
+     * @param title
+     * @return
+     * @throws SQLException
+     */
+    ArrayList<BookInfo> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException;
+
+    void borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException;
+    void backBook(Integer copy_id)throws SQLException;
+
+    /**
+     * 等待dao层完善
+     */
+    void changeBook();
+}

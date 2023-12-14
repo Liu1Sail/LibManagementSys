@@ -12,13 +12,13 @@ import java.sql.SQLException;
 abstract public class BOOK_MANAGER extends BaseSQLDaoImpl  {
     Connection connection = null;
     PreparedStatement statement = null;
-    public BOOK_MANAGER() throws SQLException, ConnectException {    //connect MySQL server
+    public BOOK_MANAGER() throws SQLException {    //connect MySQL server
         createTable();
     }
     abstract protected String getCreateTableStatement();
 //    //别忘了在子类调用setTableName
 //    @Override
-    public void createTable() throws ConnectException, SQLException {
+    public void createTable() throws  SQLException {
         executeUpdate(getCreateTableStatement());
     }
 

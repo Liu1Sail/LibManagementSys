@@ -22,7 +22,7 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
     /**
      * 构造函数
      */
-    public BookRepositorySQLDaoImpl() throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, ConnectException {
+    public BookRepositorySQLDaoImpl() throws   SQLException, ConnectException {
 
 //        Class<?> BooksManager = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
 //        Constructor<?> constructorOfBooksManager = BooksManager.getDeclaredConstructor(int.class);
