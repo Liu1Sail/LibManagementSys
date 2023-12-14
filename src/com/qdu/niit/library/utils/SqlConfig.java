@@ -1,13 +1,16 @@
 package com.qdu.niit.library.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+import java.util.Properties;
 /**
  * <p>用来存储sql配置的类, 比如: url,user以及password. <br> 目的为了实现数据全局共享</p>
  */
-public class SqlConfig {
+public class SqlConfig extends Properties {
 
     /**
      * <p style="color : red">用来存储参数需要通过init(),set*()函数来设置</p>
@@ -54,6 +57,21 @@ public class SqlConfig {
         m_Url = url;
         m_User = user;
         m_Password = password;
+    }
+
+    public void load(String path) throws IOException {
+        try(InputStream input = new FileInputStream(path))
+        {
+            load(input);
+        }catch (IOException e){
+            throw new IOException("未找到"+path);
+        }
+        String url = getProperty("url");
+        if(null == url)
+            throw new IOException("Not find url value in config.property");
+        String user = getProperty("user" , "root");
+        String password = getProperty("password" , "root");
+        init(url , user , password);
     }
 
     /**
