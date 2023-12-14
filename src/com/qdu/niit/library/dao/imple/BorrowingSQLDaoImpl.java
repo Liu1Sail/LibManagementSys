@@ -18,8 +18,8 @@ public class BorrowingSQLDaoImpl extends BaseSQLDaoImpl implements BorrowingSQLD
     private static final String SELECT_BorrowingByUid_SQL = "SELECT * FROM Borrowing_Information Where uid = ?";
     private static final String SELECT_BorrowingByBid_SQL = "SELECT * FROM Borrowing_Information Where bid = ?";
     private static final String SELECT_BorrowingByUidAndBid_SQL = "SELECT * FROM Borrowing_Information Where uid = ? and bid = ?";
-    private static final String SELECT_BorrowingByEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)<TO_DAYS(end_time);";
-    private static final String SELECT_BorrowingSmallEndTime_SQL = "SELECT * FROM borrowing_information Where TO_DAYS(?)>TO_DAYS(end_time);";
+    private static final String SELECT_BorrowingByEndTime_SQL = "SELECT * FROM borrowing_information Where ?<end_time;";
+    private static final String SELECT_BorrowingSmallEndTime_SQL = "SELECT * FROM borrowing_information Where ?>end_time;";
     /**
      * 生成表防止表不存在
      */

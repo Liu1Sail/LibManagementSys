@@ -29,6 +29,7 @@ public class AdministratorInterface extends ResizeFrame {
         this.setLayout(new BorderLayout());
         this.setSize(initialWidth, initialHeight);
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("管理系统");
         this.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
         this.addMouseMotionListener(new MouseAdapter() {

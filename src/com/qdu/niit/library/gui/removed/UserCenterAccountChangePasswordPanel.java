@@ -1,6 +1,7 @@
-package com.qdu.niit.library.gui.panel.center;
+package com.qdu.niit.library.gui.removed;
 
 import com.qdu.niit.library.gui.input.InputPasswordPanel;
+import com.qdu.niit.library.gui.panel.center.centerPanelModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,16 +11,19 @@ import java.awt.event.ActionListener;
 /**
  * @author 李冠良
  * @program LibManagementSys
+ * @description 已弃用
  * @description 修改密码面板，仅用于用户界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
 public class UserCenterAccountChangePasswordPanel extends centerPanelModel {
-//    private final UserGui loggedUser;//存储当前用户
-    public UserCenterAccountChangePasswordPanel() {
+    private final JFrame frame;
+    public UserCenterAccountChangePasswordPanel(JFrame frame) {
+        this.frame=frame;
         var inputPanel=new JPanel();
         inputPanel.setBounds(40,40,720,550);
         inputPanel.setBackground(Color.WHITE);
+        inputPanel.setLayout(null);
         this.add(inputPanel);
         var originalPass=new InputPasswordPanel("原密码：");
         var newPass=new InputPasswordPanel("新密码：");

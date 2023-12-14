@@ -22,7 +22,6 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
      * 构造函数
      */
     public BookRepositorySQLDaoImpl() throws  SQLException, ConnectException {
-
         booksManager = new BooksSQLDaoImpl();
         bookCopiesManager = new BookCopiesSQLDaoImpl();
         locationsManager = new LibraryCollectionRoomSQLDaoImpl();

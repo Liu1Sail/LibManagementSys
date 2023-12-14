@@ -1,8 +1,10 @@
 package com.qdu.niit.library.gui;
 
+import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.border.CustomRoundRectBorder;
 import com.qdu.niit.library.gui.component.ImagePanel;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
+import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,16 +27,26 @@ public class LoginInterface extends JFrame {
     private final Dimension initialDimension = Toolkit.getDefaultToolkit().getScreenSize();
     private final int initialX = initialDimension.width / 4;
     private final int initialY = initialDimension.height / 6;
-    private Point offsetMouseToFrame = new Point();
+    private final Point offsetMouseToFrame = new Point();
     private boolean userAndAdminSwitch = false;
+    private final JDialog loginErrorPopMessage = new JDialog(this, true);
+    private final JLabel LoginErrorPopMessageLabel = new JLabel("登陆失败，账号或密码错误!");
+
     public LoginInterface() {
+        loginErrorPopMessage.setLocationRelativeTo(null);
+        loginErrorPopMessage.setSize(200, 100);
+        loginErrorPopMessage.setTitle("错误提示");
+        loginErrorPopMessage.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        loginErrorPopMessage.setLayout(new BorderLayout());
+        loginErrorPopMessage.add(LoginErrorPopMessageLabel, BorderLayout.CENTER);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.WHITE);
         frame.setBounds(initialX, initialY, 800, 600);
         frame.setUndecorated(true);
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setTitle("图书管理系统");
-        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK,1,false));
+        frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, false));
         //鼠标拖动窗口
         frame.addMouseListener(new MouseAdapter() {
             @Override
@@ -77,9 +89,9 @@ public class LoginInterface extends JFrame {
         userLoginPanel.setOpaque(false);
         userLoginPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        var titleLabel=new JLabel("用户登录");
-        titleLabel.setBounds(70,0,150,50);
-        titleLabel.setFont(new Font("宋体",Font.PLAIN,25));
+        var titleLabel = new JLabel("用户登录");
+        titleLabel.setBounds(70, 0, 150, 50);
+        titleLabel.setFont(new Font("宋体", Font.PLAIN, 25));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setVerticalAlignment(SwingConstants.CENTER);
         rightBodyPanel.add(titleLabel);
@@ -93,6 +105,7 @@ public class LoginInterface extends JFrame {
                 this.colorChangeSwitch = colorChangeSwitch;
                 this.repaint();
             }
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -107,8 +120,7 @@ public class LoginInterface extends JFrame {
                 try {
                     var imageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/UserLoginIcon.png")));
                     g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
-                }
-                catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -150,12 +162,12 @@ public class LoginInterface extends JFrame {
         userInputTextField.setBorder(null);
         userInputTextField.setFont(textFont);
         userInputTextField.setForeground(textColor);
-        userInputTextField.setText("用户账号");
+        userInputTextField.setText("用户名");
         userInputTextField.setOpaque(false);
         userInputTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (userInputTextField.getText().equals("用户账号")) {
+                if (userInputTextField.getText().equals("用户名")) {
                     userInputTextField.setText("");
                 }
             }
@@ -163,7 +175,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (userInputTextField.getText().isEmpty()) {
-                    userInputTextField.setText("用户账号");
+                    userInputTextField.setText("用户名");
                 }
             }
         });
@@ -183,7 +195,7 @@ public class LoginInterface extends JFrame {
         var userPassInputPasswordField = getUserInputPasswordField(textFont, textColor);
         userPassInputPasswordBorder.add(userPassInputPasswordField);
         //用户密码输入框中的登录按钮
-        var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField,frame );
+        var userLoginButton = getUserLoginButton(userInputTextField, userPassInputPasswordField, frame);
         userPassInputPasswordBorder.add(userLoginButton);
         userLoginInputPanel.add(userInputTextBorder);
         userLoginInputPanel.add(userPassInputPasswordBorder);
@@ -203,6 +215,7 @@ public class LoginInterface extends JFrame {
                 this.colorChangeSwitch = colorChangeSwitch;
                 this.repaint();
             }
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -215,11 +228,10 @@ public class LoginInterface extends JFrame {
                 }
                 g2d.fillOval(0, 0, 79, 79);
 
-                try{
+                try {
                     var imageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/AdminLoginIcon.png")));
                     g2d.drawImage(imageIcon.getImage(), 20, 20, 40, 40, null);
-                }
-                catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -239,7 +251,7 @@ public class LoginInterface extends JFrame {
         adminLoginPanel.add(adminLoginText);
         rightBodyPanel.add(adminLoginPanel);
         //管理员密码登录输入框Panel
-        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, userPassInputPasswordField, userInputTextField,frame );
+        var adminLoginInputPanel = getAdminLoginInputPanel(textBorderColor, textFont, textColor, frame);
         //用户登录和管理员登陆切换
         userLoginPanel.addMouseListener(new MouseAdapter() {
             private final Color firstColor = new Color(166, 166, 166);
@@ -255,11 +267,13 @@ public class LoginInterface extends JFrame {
                     rightBodyPanel.repaint();
                 }
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 userLoginRound.setColorChangeSwitch(true);
                 userLoginText.setForeground(secondColor);
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 userLoginRound.setColorChangeSwitch(false);
@@ -286,6 +300,7 @@ public class LoginInterface extends JFrame {
                 adminLoginRound.setColorChangeSwitch(true);
                 adminLoginText.setForeground(secondColor);
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 adminLoginRound.setColorChangeSwitch(false);
@@ -302,14 +317,14 @@ public class LoginInterface extends JFrame {
     }
 
     private JPanel getRightBelowPanel() {
-        var rightBelowPanel=new JPanel();
+        var rightBelowPanel = new JPanel();
         rightBelowPanel.setBackground(Color.WHITE);
         rightBelowPanel.setLayout(null);
         rightBelowPanel.setOpaque(false);
-        rightBelowPanel.setBounds(0,430,300,150);
-        var registerLabel=new JLabel();
-        registerLabel.setBounds(0,0,100,50);
-        registerLabel.setFont(new Font("宋体", Font.PLAIN,14));
+        rightBelowPanel.setBounds(0, 430, 300, 150);
+        var registerLabel = new JLabel();
+        registerLabel.setBounds(0, 0, 100, 50);
+        registerLabel.setFont(new Font("宋体", Font.PLAIN, 14));
         registerLabel.setForeground(new Color(117, 117, 117));
         registerLabel.setText("注册账号");
         registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -317,7 +332,7 @@ public class LoginInterface extends JFrame {
         registerLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                registerFrame =new RegisterInterface();
+                registerFrame = new RegisterInterface();
             }
         });
         rightBelowPanel.add(registerLabel);
@@ -355,7 +370,7 @@ public class LoginInterface extends JFrame {
         return userPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JPasswordField userPassInputPasswordField, JTextField userInputTextField, JFrame frame) {
+    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JFrame frame) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
         adminLoginInputPanel.setLayout(null);
@@ -410,7 +425,7 @@ public class LoginInterface extends JFrame {
         var adminPassInputPasswordField = getAdminPassInputPasswordField(textFont, textColor);
         adminPassInputPasswordBorder.add(adminPassInputPasswordField);
         //管理员密码输入框中的登录按钮
-        var adminLoginButton = getAdminLoginButton(userInputTextField, userPassInputPasswordField,frame );
+        var adminLoginButton = getAdminLoginButton(frame);
         adminPassInputPasswordBorder.add(adminLoginButton);
         adminLoginInputPanel.add(adminInputTextBorder);
         adminLoginInputPanel.add(adminPassInputPasswordBorder);
@@ -448,7 +463,7 @@ public class LoginInterface extends JFrame {
         return adminPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
+    private static JPanel getAdminLoginButton(JFrame frame) {
         var adminLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -505,12 +520,14 @@ public class LoginInterface extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //获取用户名、密码字段
-                String userId= userInputTextField.getText();
-                String password= new String(userPassInputPasswordField.getPassword());
+                //管理员，获取用户名、密码字段
+//                String userId = userInputTextField.getText();
+//                String password = new String(userPassInputPasswordField.getPassword());
 //                System.out.println(userId);
 //                System.out.println(password);
+//                var userServiceImpl = UserServiceImpl.getInstance();
                 //从数据库比较用户用户名，密码
+//                userServiceImpl.login()
                 //若检测通过，跳转到用户开始界面
                 //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
                 frame.dispose();
@@ -520,7 +537,7 @@ public class LoginInterface extends JFrame {
         return adminLoginButton;
     }
 
-    private static JPanel getUserLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
+    private JPanel getUserLoginButton(JTextField userInputTextField, JPasswordField userPassInputPasswordField, JFrame frame) {
         var userLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -578,14 +595,27 @@ public class LoginInterface extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
-                String userId= userInputTextField.getText();
-                String password= new String(userPassInputPasswordField.getPassword());
+                String userName = userInputTextField.getText();
+                String password = new String(userPassInputPasswordField.getPassword());
+                if (!Objects.equals(userName, "用户名") && !Objects.equals(password, "密码")) {
 //                System.out.println(userId);
 //                System.out.println(password);
-                //从数据库比较用户用户名，密码
-                //若检测通过，跳转到用户开始界面
-                //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
-                frame.dispose();
+                    //从数据库比较用户用户名，密码
+                    var userServiceImpl = UserServiceImpl.getInstance();
+                    User user = userServiceImpl.login(userName, password);
+                    if (user == null) {
+                        LoginErrorPopMessageLabel.setText("登陆失败，账号或密码错误!");
+                        loginErrorPopMessage.setVisible(true);
+                    } else {
+                        //若检测通过，跳转到用户开始界面
+                        frame.dispose();
+                        new UserInterface(user);
+                    }
+                }
+                else{
+                    LoginErrorPopMessageLabel.setText("用户名或密码不能为空!");
+                    loginErrorPopMessage.setVisible(true);
+                }
             }
         });
         return userLoginButton;
@@ -601,8 +631,7 @@ public class LoginInterface extends JFrame {
             var leftImageIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("img/login/LeftImage.jpg")));
             var leftImagePanel = new ImagePanel(leftImageIcon, 0, 0, 600, 500);
             leftPanel.add(leftImagePanel);
-        }
-        catch(NullPointerException e){
+        } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
         return leftPanel;

@@ -6,7 +6,7 @@ package com.qdu.niit.library.gui.tool;
  * @description 实体类。保存一个用户的所有信息
  * @date 2023/11/29
  */
-
+@SuppressWarnings("unused")
 public class UserGui {
     private String id;
     private String name;
@@ -15,8 +15,9 @@ public class UserGui {
     private String gender;
     private String phone;
     private String email;
+    private String birthday;
 
-    public UserGui(String id, String name, String password, String age, String gender, String phone, String email) {
+    public UserGui(String id, String name, String password, String age, String gender, String phone, String email, String birthday) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -24,6 +25,7 @@ public class UserGui {
         this.gender = gender;
         this.phone = phone;
         this.email = email;
+        this.birthday = birthday;
     }
 
     public UserGui(String id, String name, String password) {
@@ -90,5 +92,13 @@ public class UserGui {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }
