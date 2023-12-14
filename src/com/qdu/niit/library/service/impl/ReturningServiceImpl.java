@@ -96,7 +96,7 @@ public class ReturningServiceImpl implements ReturningService {
     public Returning[] findAllByUidAndBid(int uid, int bid) throws SQLException {
         try {
             ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
-            return use.getAllByUidAndBid(uid,bid);
+            return use.getAllByUidAndBid(uid,bid);//
         }catch (SQLException e)
         {
             throw new SQLException(e);
