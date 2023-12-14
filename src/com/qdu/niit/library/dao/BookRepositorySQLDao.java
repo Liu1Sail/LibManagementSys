@@ -24,6 +24,7 @@ public interface BookRepositorySQLDao {
 
     ArrayList<BookInfo> getBookByAuthorAndTitle(String author, String title) throws SQLException;
 
+    void changeOnShelfStatus(Integer copy_id) throws SQLException;
     default ArrayList<BookInfo> getBookInfos(ArrayList<Object[]> gotResult, ArrayList<BookInfo> result) {
         BookInfo bookInfo;
         for (Object[] obj : gotResult) {

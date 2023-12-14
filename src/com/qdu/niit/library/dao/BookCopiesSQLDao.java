@@ -14,10 +14,10 @@ public interface BookCopiesSQLDao {
 
     /**
      * 每次对在架状态取反
-     * @param book_id
+     * @param copy_id
      * @throws SQLException
      */
-    void changeOnShelfStatus(Integer book_id) throws SQLException;
+    void changeOnShelfStatus(Integer copy_id) throws SQLException;
 
     /**
      * 获得书籍是否可见

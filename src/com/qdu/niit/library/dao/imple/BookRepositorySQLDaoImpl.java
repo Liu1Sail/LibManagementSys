@@ -267,4 +267,9 @@ public class BookRepositorySQLDaoImpl extends BaseSQLDaoImpl implements  BookRep
         return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
 
+    @Override
+    public void changeOnShelfStatus(Integer copy_id) throws SQLException {
+        bookCopiesManager.changeOnShelfStatus(copy_id);
+    }
+
 }
