@@ -242,7 +242,7 @@ public class UserInterface extends ResizeFrame {
                     }
                     case 3->{
                         switch (childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(UserCenterRoomPanel.getinstance());frame.repaint();}
+                            case 1->{centerBottomPanel.add(UserCenterRoomPanel.getinstance());frame.repaint();frame.setVisible(true);}
                         }
                     }
                 }
