@@ -162,13 +162,13 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     /*删*/
     private static final String DELETE_USERS_SQL = "DELETE FROM USERS WHERE uId = ?";
     /*查*/
-    private static final String SELECT_USERS_BY_ID_AND_PASSWORD_SQL = "SELECT uName FROM USERS WHERE uId = ?AND uPwd = ?";
+    private static final String SELECT_USERS_BY_ID_AND_PASSWORD_SQL = "SELECT uName FROM USERS WHERE uId = ? AND uPwd = ?";
 
-    private static final String SELECT_USER_BY_NAME_AND_PASSWORD_SQL= "SELECT uId FROM USERS WHERE uName = ?AND uPwd = ?";
-    private static final String SELECT_USERS_ALL_ID_AND_NAME_SQL="SELECT uId,uName FROM USERS";
+    private static final String SELECT_USER_BY_NAME_AND_PASSWORD_SQL= "SELECT uId FROM USERS WHERE uName = ? AND uPwd = ?";
+    private static final String SELECT_USERS_ALL_ID_AND_NAME_SQL="SELECT uId  ,uName FROM USERS";
     /*改*/
     private static final String UPDATE_USERS_SQL ="""
-                    UPDATE USERS SET uName = ?,uPwd = ? WHERE uId = ?""";
+                    UPDATE USERS SET uName = ? , uPwd = ? WHERE uId = ?""";
     private static final String UPDATE_USERS_PASSWORD_SQL ="""
                     UPDATE USERS SET uPwd = ? WHERE uId = ?""";
 
@@ -237,7 +237,7 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
             );
             """;
     private static final String INSERT_USERINFO_SQL= "INSERT INTO USERINFO (uId,uName,uBirthday,uGender, uPhone , uEmail) VALUES (?,?,?,?,?,?)";
-    private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?,uBirthday = ?,uGender = ?,uPhone = ?,uEmail = ? where uId = ?";
+    private static final String UPDATE_USERINFO_SQL="UPDATE USERINFO SET uName = ?  ,uBirthday = ? , uGender = ? , uPhone = ? , uEmail = ? where uId = ? ";
     private static final String SELECT_USERINFO_SQL = "SELECT * FROM USERINFO WHERE uId = ?";
     private static final String SELECT_USERINFO_BY_USER_NAME_SQL= "SELECT USERINFO.* FROM USERINFO , USERS WHERE USERS.uName = ? AND USERS.uId = USERINFO.uId";
 }
