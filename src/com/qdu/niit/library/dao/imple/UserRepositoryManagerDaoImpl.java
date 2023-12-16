@@ -162,9 +162,9 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     /*删*/
     private static final String DELETE_USERS_SQL = "DELETE FROM USERS WHERE uId = ?";
     /*查*/
-    private static final String SELECT_USERS_BY_ID_AND_PASSWORD_SQL = "SELECT uName FROM USERS WHERE uId = ?AND uPwd = ?";
+    private static final String SELECT_USERS_BY_ID_AND_PASSWORD_SQL = "SELECT uName FROM USERS WHERE uId = ? AND uPwd =?";
 
-    private static final String SELECT_USER_BY_NAME_AND_PASSWORD_SQL= "SELECT uId FROM USERS WHERE uName = ?AND uPwd = ?";
+    private static final String SELECT_USER_BY_NAME_AND_PASSWORD_SQL= "SELECT uId FROM USERS WHERE uName = ? AND uPwd = ?";
     private static final String SELECT_USERS_ALL_ID_AND_NAME_SQL="SELECT uId,uName FROM USERS";
     /*改*/
     private static final String UPDATE_USERS_SQL ="""
