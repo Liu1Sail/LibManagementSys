@@ -50,7 +50,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     public static final String TABLE_CREATE_BOOK_COPIES_STATEMENT = """
                 CREATE TABLE IF NOT EXISTS BookCopies (
                 copy_id INT AUTO_INCREMENT PRIMARY KEY,
-                book_id INT UNIQUE NOT NULL,
+                book_id INT NOT NULL,
                 acquisition_date DATE NOT NULL,
                 on_shelf_status BOOLEAN DEFAULT TRUE,
                 book_location VARCHAR(50) UNIQUE NOT NULL,
@@ -137,7 +137,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
 
 
 
-    public BookCopiesSQLDaoImpl() throws SQLException, ConnectException {
+    private BookCopiesSQLDaoImpl() throws SQLException {
         super();
     }
     public String getTableName() {

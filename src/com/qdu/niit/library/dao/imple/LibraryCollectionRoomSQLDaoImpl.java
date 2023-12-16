@@ -78,7 +78,7 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
     public void delete(Integer book_id) throws SQLException {
         executeTransactionUpdate(getDeleteByCopyIdStatement(),book_id);
     }
-    public LibraryCollectionRoomSQLDaoImpl() throws SQLException, ConnectException {
+    private LibraryCollectionRoomSQLDaoImpl() throws SQLException {
         super();
     }
 

@@ -16,7 +16,7 @@ public interface BookRepositorySQLDao {
      * @throws ObjectHaveNoAttribute   自定义异常，指示对象缺少必需的属性。
      * @throws RuntimeException        如果在事务执行过程中发生意外错误，导致回滚。
      */
-    void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException, ObjectHaveNoAttribute;
+    void insert(ArrayList<BookInfo> insertArrayOutGet) throws SQLException;
 
     void delete(ArrayList<Integer> copy_ids) throws SQLException;
 
@@ -45,6 +45,7 @@ public interface BookRepositorySQLDao {
     ArrayList<BookInfo> getBookByAuthorAndTitle(String author, String title) throws SQLException;
 
     void changeOnShelfStatus(Integer copy_id) throws SQLException;
+
 
     default ArrayList<BookInfo> getBookInfos(ArrayList<Object[]> gotResult, ArrayList<BookInfo> result) {
         BookInfo bookInfo;
