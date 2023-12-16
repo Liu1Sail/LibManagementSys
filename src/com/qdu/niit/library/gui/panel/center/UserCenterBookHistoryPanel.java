@@ -3,6 +3,7 @@ package com.qdu.niit.library.gui.panel.center;
 import com.qdu.niit.library.entity.Borrowing;
 import com.qdu.niit.library.entity.Returning;
 import com.qdu.niit.library.entity.User;
+import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.BorrowingService;
 import com.qdu.niit.library.service.ReturningService;
 import com.qdu.niit.library.service.impl.BorrowingServiceImpl;
@@ -26,7 +27,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
     private final User user;
     private final BorrowingService borrowService = new BorrowingServiceImpl();
     private final ReturningService returnService = new ReturningServiceImpl();
-
+    private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
 
     public UserCenterBookHistoryPanel(User user) {
         this.user = user;
@@ -62,7 +63,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
             resultDisplayTable.setModel(tableModel);
         }
         else{
-            //显示记录为空
+            resultDisplayTable.setModel(nonResultTableModel);
         }
         borrowHistoryButton.addActionListener(new ActionListener() {
             @Override
@@ -77,7 +78,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
                     resultDisplayTable.setModel(tableModel);
                 }
                 else{
-                    //显示记录为空
+                    resultDisplayTable.setModel(nonResultTableModel);
                 }
             }
         });
@@ -94,7 +95,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
                     resultDisplayTable.setModel(tableModel);
                 }
                 else{
-                    //显示记录为空
+                    resultDisplayTable.setModel(nonResultTableModel);
                 }
             }
         });
@@ -135,10 +136,5 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
             }
             return new DefaultTableModel(rowData, columnName);
         } else return null;
-    }
-    private static class nonResultTableModel extends DefaultTableModel{
-        public nonResultTableModel(){
-//            String[][] rowData =new String[][]{{"未查找到数据"}};
-        }
     }
 }
