@@ -51,30 +51,34 @@ class RoundButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        Graphics2D g2d=(Graphics2D) g;
         if (getModel().isArmed()) {
 
         } else {
             switch ((colorFlag)) {
                 case -1:
-                    g.setColor(Color.gray);
+                    g2d.setColor(Color.gray);
                     break;
                 case 0:
-                    g.setColor(Color.blue);
+                    g2d.setColor(Color.blue);
                     break;
                 case 1:
-                    g.setColor(Color.green);
+                    g2d.setColor(Color.green);
                     break;
             }
         }
-        g.drawString(String.valueOf(bid), 5, 40);
-        g.fillOval(0, 0, 20, 20);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.drawString(String.valueOf(bid), 5, 40);
+        g2d.fillOval(1, 1, 19, 19);
         super.paintComponent(g);
     }
 
     @Override
     protected void paintBorder(Graphics g) {
         g.setColor(getForeground());
-        g.drawOval(0, 0, 20, 20);
+        Graphics2D g2d=(Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.drawOval(1, 1, 19, 19);
     }
 
     @Override
@@ -254,7 +258,8 @@ public class UserCenterRoomPanel {
         //
         only.setSize(800, 640);
         only.setLayout(new GridLayout(hang + 1, lie));
-        only.setBackground(Color.gray);
+        only.setBackground(new Color(255, 251, 240));
+        only.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
         only.add(tableUse);
         only.add(chooseHour);
         chooseText.setEditable(false);

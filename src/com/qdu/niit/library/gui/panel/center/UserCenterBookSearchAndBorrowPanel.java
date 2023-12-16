@@ -12,24 +12,24 @@ import java.awt.event.MouseEvent;
 /**
  * @author 李冠良
  * @program LibManagementSys
- * @description 图书搜索面板，仅用于管理员界面中心面板
+ * @description 图书搜索和借阅面板，仅用于管理员界面中心面板
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class UserCenterBookSearchPanel extends centerPanelModel {
+public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
     private final InputTextPanel bookIdInput;
     private final InputTextPanel bookKeyWordInput;
     private final InputTextPanel bookStorageTimeInput;
     private int nowTabNum=1;
 
-    public UserCenterBookSearchPanel() {
+    public UserCenterBookSearchAndBorrowPanel() {
         var inputBottomPanel = new JPanel();
         inputBottomPanel.setBounds(40, 40, 720, 210);
         inputBottomPanel.setBackground(Color.WHITE);
         inputBottomPanel.setLayout(null);
         this.add(inputBottomPanel);
 
-        var titleLabel = new JLabel("搜索图书信息");
+        var titleLabel = new JLabel("搜索借阅图书");
         bookIdInput=new InputTextPanel("作者：");
         bookIdInput.setLocation(100,50);
         bookKeyWordInput=new InputTextPanel("书名：");

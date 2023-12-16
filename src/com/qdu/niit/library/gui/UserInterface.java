@@ -3,10 +3,7 @@ package com.qdu.niit.library.gui;
 import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookBorrowPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterRoomPanel;
+import com.qdu.niit.library.gui.panel.center.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -163,7 +160,7 @@ public class UserInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"查询图书",2,1,1);
+        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"搜索借阅图书",2,1,1);
         bookOption.add(bookAddChildOption);
         var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"查询个人借书记录",2,2,1);
         bookOption.add(bookDeleteChildOption);
@@ -231,8 +228,8 @@ public class UserInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterBookSearchPanel());frame.repaint();}
-                            case 2->{centerBottomPanel.add(new UserCenterBookBorrowPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterBookSearchAndBorrowPanel());frame.repaint();}
+                            case 2->{centerBottomPanel.add(new UserCenterBookHistoryPanel(user));frame.repaint();}
                         }
                     }
                     case 2->{
