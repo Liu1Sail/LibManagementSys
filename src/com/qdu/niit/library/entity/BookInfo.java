@@ -26,7 +26,7 @@ public class BookInfo {
 
 
     /**
-     * //插入copy的生成
+     * //插入copy的生成 冠良用这个  ·v·
      * @param title
      * @param isbn
      * @param author

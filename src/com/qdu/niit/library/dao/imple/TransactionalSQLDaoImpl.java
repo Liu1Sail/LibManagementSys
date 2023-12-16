@@ -12,21 +12,22 @@ import java.util.ArrayList;
 public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements TransactionalSQLDao  {
     @Override
     public void beginTransaction() throws SQLException {
-        connection = SqlConfig.getInstance().getConnection();
+        if(connection == null)
+            connection = SqlConfig.getInstance().getConnection();
         connection.setAutoCommit(false);
     }
 
     @Override
-    public void commit() throws SQLException {
-        try {
-            if (connection != null) {
-                connection.commit();
-            }
-        } finally {
-            if(null!=connection && !connection.isClosed()){
-                connection.close();
-                connection = null;
-            }
+            public void commit() throws SQLException {
+                try {
+                    if (connection != null) {
+                        connection.commit();
+                    }
+                } finally {
+                    if(null!=connection && !connection.isClosed()){
+                        connection.close();
+                        connection = null;
+                    }
         }
     }
 
@@ -93,5 +94,5 @@ public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements Transacti
     }
 
 
-    private Connection connection  = null;
+    private static Connection connection  = null;
 }

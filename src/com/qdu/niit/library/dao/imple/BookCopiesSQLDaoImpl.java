@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLDao {
 
@@ -16,13 +17,43 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     protected String getCreateTableStatement(){
         return TABLE_CREATE_BOOK_COPIES_STATEMENT;
     }
+    public static final String UPDATE_ACQUISITION_BY_COPY_ID_STATEMENT = """
+            UPDATE BookCopies
+            SET acquisition_date = ?
+            WHERE copy_id = ?;
+            """;
+    public String getUpdateAcquisitionByCopyIdStatement(){
+        return  UPDATE_ACQUISITION_BY_COPY_ID_STATEMENT;
+    }
+    void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException {
+        executeUpdate(getUpdateAcquisitionByCopyIdStatement(),date,copy_id);
+    }
+    public static final String UPDATE_BOOK_LOCATION_BY_COPY_ID_STATEMENT = """
+            UPDATE BookCopies
+            SET book_location = ?
+            WHERE copy_id = ?;
+            """;
+    public String getUpdateBookLocationByCopyIdStatement(){
+        return  UPDATE_ACQUISITION_BY_COPY_ID_STATEMENT;
+    }
+
+    /**
+     * 需要连锁修改
+     * @param copy_id
+     * @param location
+     * @throws SQLException
+     */
+    void updateBookLocationByCopyIDInCopies(Integer copy_id, String location) throws SQLException {
+        executeTransactionUpdate(getUpdateBookLocationByCopyIdStatement(),location,copy_id);
+    }
+
     public static final String TABLE_CREATE_BOOK_COPIES_STATEMENT = """
                 CREATE TABLE IF NOT EXISTS BookCopies (
                 copy_id INT AUTO_INCREMENT PRIMARY KEY,
-                book_id INT,
-                acquisition_date DATE,
+                book_id INT UNIQUE NOT NULL,
+                acquisition_date DATE NOT NULL,
                 on_shelf_status BOOLEAN DEFAULT TRUE,
-                book_location VARCHAR(50) UNIQUE,
+                book_location VARCHAR(50) UNIQUE NOT NULL,
                 is_visible BOOLEAN DEFAULT TRUE,
                 FOREIGN KEY (book_id) REFERENCES Books(book_id)
             );""";
@@ -51,8 +82,8 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     }
 
     @Override
-    public void changeOnShelfStatus(Integer book_id) throws SQLException {
-        executeUpdate(getChangeOnShelfStatusStatement(),book_id);
+    public void changeOnShelfStatus(Integer copy_id) throws SQLException {
+        executeUpdate(getChangeOnShelfStatusStatement(),copy_id);
     }
 
     public static final String GET_IS_VISIBLE_STATEMENT = """
@@ -79,7 +110,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
 
     @Override
     public void delete(Integer copy_id) throws SQLException {
-        executeUpdate(getDeleteByCopyIdStatement(),copy_id);
+        executeTransactionUpdate(getDeleteByCopyIdStatement(),copy_id);
     }
 
     @Override
@@ -89,7 +120,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
             return -1;
         }
         theKeys = (
-                executeUpdateAndGetGeneratedKeys(
+                executeTransactionUpdateAndGetKeys(
                         getInsertWithoutKeyStatement(),
                         element.getBook_id(),
                         element.getAcquisition_date(),

@@ -16,6 +16,7 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     private static final String SELECT_ReturningByBid_SQL = "SELECT * FROM Returning_Information Where bid = ?";
     private static final String SELECT_ReturningByUidAndBid_SQL = "SELECT * FROM Returning_Information Where uid = ? and bid = ?";
     private static final String SELECT_ReturningByEndTime_SQL = "SELECT * FROM Returning_Information Where ?<end_time;";
+    private static final String SELECT_DeleteByTime_SQL = "DELETE FROM  Returning_Information Where ?=end_time;";
     public ReturningSQLDaoImpl() throws SQLException {
         executeUpdate(CREATE_TABLE_Returning_SQL);
     }
@@ -31,6 +32,11 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     @Override
     public void insert(Returning in) throws SQLException {
         executeUpdate(INSERT_Returning_SQL);
+    }
+
+    @Override
+    public void deleteByTime(LocalDateTime in) throws SQLException {
+        executeUpdate(SELECT_DeleteByTime_SQL,in);
     }
 
     @Override
