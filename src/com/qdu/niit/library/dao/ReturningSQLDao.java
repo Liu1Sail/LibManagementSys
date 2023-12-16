@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public interface ReturningSQLDao {
     void insert(Returning in)throws SQLException;
+    void deleteByTime(LocalDateTime in)throws SQLException;
 
     Returning[]getAll()throws SQLException;
 

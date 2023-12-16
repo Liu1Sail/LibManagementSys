@@ -76,9 +76,15 @@ public interface BookService {
 
     void borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException;
     void backBook(Integer copy_id)throws SQLException;
+    void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException;
 
-    /**
-     * 等待dao层完善
-     */
-    void changeBook();
+    void updateBookLocationByCopyID(Integer copy_id, String location) throws SQLException;  //需要回滚
+
+    void updateAuthorByBookID(Integer book_id, String author) throws SQLException;
+
+    void updatePublisherByBookID(Integer book_id, String publisher) throws SQLException;
+
+    void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException;
+
+    void updateGenreByBookID(Integer book_id, String genre) throws SQLException;
 }
