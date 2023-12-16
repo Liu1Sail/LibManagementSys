@@ -18,8 +18,8 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
                 copy_id INT PRIMARY KEY,
                 room VARCHAR(10) NOT NULL,
                 shelf_id CHAR(2) NOT NULL,
-                compartment_id CHAR(3),
-                inner_number CHAR(5),
+                compartment_id CHAR(3) NOT NULL,
+                inner_number CHAR(5) NOT NULL,
                 FOREIGN KEY (copy_id) REFERENCES BookCopies(copy_id)
             );""";
     public static final String INSERT_STATEMENT = """
@@ -32,9 +32,28 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
                                 ) VALUES
                                 (?,?,?,?,?);"""
             ;
+    private static final String UPDATE_LOCATION_BY_COPY_ID = """
+            UPDATE LibraryCollectionRoom
+            SET shelf_id = ?,compartment_id = ?,inner_number = ?
+            WHERE copy_id = ?;
+            """ ;
+
+    public static String getUpdateLocationByCopyId() {
+        return UPDATE_LOCATION_BY_COPY_ID;
+    }
+    void updateLocationByCopyId(     //需要事务
+            Integer copy_id,
+            String shelf_id,
+            String compartment_id,
+            String inner_number) throws SQLException {
+
+        executeTransactionUpdate(shelf_id,compartment_id,inner_number,copy_id);
+    }
+
     public String getInsertStatement(){
         return INSERT_STATEMENT;
     }
+
     public static final String DELETE_BY_COPY_ID_STATEMENT = """
             DELETE FROM LibraryCollectionRoom
             WHERE copy_id = ?;"""
@@ -46,7 +65,7 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
 
     @Override
     public void insert(LibraryCollectionRoom element) throws SQLException {
-        executeUpdate(
+        executeTransactionUpdate(
                 getInsertStatement(),
                 element.getCopy_id(),
                 element.getRoom(),
@@ -57,7 +76,7 @@ public class LibraryCollectionRoomSQLDaoImpl extends BOOK_MANAGER implements Lib
     }
     @Override
     public void delete(Integer book_id) throws SQLException {
-        executeUpdate(getDeleteByCopyIdStatement(),book_id);
+        executeTransactionUpdate(getDeleteByCopyIdStatement(),book_id);
     }
     public LibraryCollectionRoomSQLDaoImpl() throws SQLException, ConnectException {
         super();
