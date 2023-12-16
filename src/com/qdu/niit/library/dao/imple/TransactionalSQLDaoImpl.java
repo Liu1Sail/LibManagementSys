@@ -17,16 +17,16 @@ public class TransactionalSQLDaoImpl extends BaseSQLDaoImpl implements Transacti
     }
 
     @Override
-    public void commit() throws SQLException {
-        try {
-            if (connection != null) {
-                connection.commit();
-            }
-        } finally {
-            if(null!=connection && !connection.isClosed()){
-                connection.close();
-                connection = null;
-            }
+            public void commit() throws SQLException {
+                try {
+                    if (connection != null) {
+                        connection.commit();
+                    }
+                } finally {
+                    if(null!=connection && !connection.isClosed()){
+                        connection.close();
+                        connection = null;
+                    }
         }
     }
 

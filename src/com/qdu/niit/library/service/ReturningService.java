@@ -62,4 +62,11 @@ public interface ReturningService {
      * @throws SQLException
      */
     Returning[] findAllByUidAndBid(int uid,int bid)throws SQLException;
+
+    /**
+     * 按归还时间删除
+     * @param in
+     * @throws SQLException
+     */
+    void deleteByTime(LocalDateTime in)throws SQLException;
 }
