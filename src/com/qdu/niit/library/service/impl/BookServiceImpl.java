@@ -231,7 +231,93 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void changeBook() {
-
+    public void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updateAcquisitionByCopyID(copy_id,date);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updateAcquisitionByCopyID(copy_id,date);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
     }
+
+    @Override
+    public void updateBookLocationByCopyID(Integer copy_id, String location) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updateBookLocationByCopyID(copy_id,location);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updateBookLocationByCopyID(copy_id,location);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+    }
+
+    @Override
+    public void updateAuthorByBookID(Integer book_id, String author) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updateAuthorByBookID(book_id,author);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updateAuthorByBookID(book_id,author);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+    }
+
+    @Override
+    public void updatePublisherByBookID(Integer book_id, String publisher) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updatePublisherByBookID(book_id,publisher);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updatePublisherByBookID(book_id,publisher);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+    }
+
+    @Override
+    public void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updateReceiptDateByBookID(book_id,date);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updateReceiptDateByBookID(book_id,date);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+    }
+
+    @Override
+    public void updateGenreByBookID(Integer book_id, String genre) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            apollo.updateGenreByBookID(book_id,genre);
+        } catch (Exception e) {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                apollo.updateGenreByBookID(book_id,genre);
+            } catch (Exception e1) {
+                throw new RuntimeException(e1);
+            }
+        }
+    }
+
 }
