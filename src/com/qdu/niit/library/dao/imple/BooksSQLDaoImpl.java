@@ -121,7 +121,7 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     void updateGenreByBookID(Integer book_id, String genre) throws SQLException {
         executeUpdate(getUpdateGenreByBookIdStatement(),genre,book_id);
     }
-    public BooksSQLDaoImpl() throws SQLException, ConnectException {
+    private BooksSQLDaoImpl() throws SQLException {
         super();
     }
 

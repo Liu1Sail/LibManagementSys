@@ -34,6 +34,7 @@ public class BookTest {
         books.add(bookInfo);
 
         bookRepositoryManager.insert(books);
+       // bookRepositoryManager.updateBookLocationByCopyID();
 //         bookRepositoryManager.getBookByBookID(1);
 //        ArrayList<BookInfo> bookss = bookRepositoryManager.getBookByCopyID(1);
 //        ArrayList<Integer> copy_ids= new ArrayList<>();
