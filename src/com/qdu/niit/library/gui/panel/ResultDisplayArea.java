@@ -22,28 +22,33 @@ public class ResultDisplayArea extends JPanel {
     private final DefaultTableModel tableModel;
     private final JTable textTable;
 
-    public ResultDisplayArea(Object[][] rowData,Object[] columnName) {
+    public ResultDisplayArea(Object[][] rowData, Object[] columnName) {
         this.setBounds(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setBackground(Color.WHITE);
         this.setLayout(null);
         buttonPanel = new JPanel();
-        tableModel=new DefaultTableModel(rowData,columnName);
+        tableModel = new DefaultTableModel(rowData, columnName);
         textTable = new JTable(tableModel);
-        scrollPane=new JScrollPane();
+        scrollPane = new JScrollPane();
         buttonPanel.setBounds(0, 0, 720, 50);
         buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+        buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         this.add(buttonPanel);
         textTable.setBounds(0, 50, 720, 250);
         scrollPane.getViewport().setBackground(Color.WHITE);
-        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
-        scrollPane.setBounds(0,50,720,250);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        scrollPane.setBounds(0, 50, 720, 250);
         scrollPane.setViewportView(textTable);
         this.add(scrollPane);
-        //测试代码区域
-        //
     }
+
     public DefaultTableModel getTextTableModel() {
         return tableModel;
     }
+
+//    @Override
+//    public void setBounds(int x, int y, int width, int height) {
+//        super.setBounds(x, y, width, height);
+//        scrollPane.setBounds(0, 50, width, height - 50);
+//    }
 }

@@ -18,7 +18,7 @@ public class UserTest {
     public static void main(String[] args) {
         SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/library","root","12345678");
         EventQueue.invokeLater(()->{
-            new UserInterface(UserServiceImpl.getInstance().login("1th","111111@L"));
+            new UserInterface(UserServiceImpl.getInstance().login(20,"111111@L"));
         });
     }
 }
