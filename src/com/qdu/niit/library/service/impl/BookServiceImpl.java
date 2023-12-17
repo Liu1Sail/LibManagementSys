@@ -21,7 +21,7 @@ import java.util.Date;
 
 public class BookServiceImpl implements BookService {
     @Override
-    public void Bookstorage(ArrayList<BookInfo> in) throws SQLException, InstantiationException, ObjectHaveNoAttribute {
+    public void Bookstorage(ArrayList<BookInfo> in) throws SQLException, InstantiationException, ObjectHaveNoAttribute{
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.insert(in);
