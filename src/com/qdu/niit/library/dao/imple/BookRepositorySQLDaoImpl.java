@@ -15,12 +15,13 @@ import java.util.Date;
 
 public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements  BookRepositorySQLDao {
 
-    BooksSQLDaoImpl booksManager;
-    BookCopiesSQLDaoImpl bookCopiesManager;
-    LibraryCollectionRoomSQLDaoImpl locationsManager;
+    private BooksSQLDaoImpl booksManager;
+    private BookCopiesSQLDaoImpl bookCopiesManager;
+    private LibraryCollectionRoomSQLDaoImpl locationsManager;
 
     /**
      * 构造函数
+     * 全是private
      */
     public BookRepositorySQLDaoImpl() throws SQLException,  ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Class<?> Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
