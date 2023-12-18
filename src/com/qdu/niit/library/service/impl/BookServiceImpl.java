@@ -21,7 +21,7 @@ import java.util.Date;
 
 public class BookServiceImpl implements BookService {
     @Override
-    public void Bookstorage(ArrayList<BookInfo> in) throws SQLException, InstantiationException, ObjectHaveNoAttribute {
+    public void Bookstorage(ArrayList<BookInfo> in) throws SQLException{
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.insert(in);
@@ -240,7 +240,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateAcquisitionByCopyID(copy_id,date);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
@@ -255,7 +255,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateBookLocationByCopyID(copy_id,location);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
@@ -270,7 +270,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateAuthorByBookID(book_id,author);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
@@ -285,7 +285,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updatePublisherByBookID(book_id,publisher);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
@@ -300,7 +300,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateReceiptDateByBookID(book_id,date);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
@@ -315,7 +315,7 @@ public class BookServiceImpl implements BookService {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateGenreByBookID(book_id,genre);
             } catch (Exception e1) {
-                throw new RuntimeException(e1);
+                throw new SQLException(e1);
             }
         }
     }
