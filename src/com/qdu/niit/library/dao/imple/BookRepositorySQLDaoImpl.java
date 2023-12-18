@@ -23,21 +23,25 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
      * 构造函数
      * 全是private
      */
-    public BookRepositorySQLDaoImpl() throws SQLException,  ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
-        Constructor<?> Manager_constructor = Manager_CLASS.getDeclaredConstructor();
-        Manager_constructor.setAccessible(true);
-        booksManager = (BooksSQLDaoImpl) Manager_constructor.newInstance();
+    public BookRepositorySQLDaoImpl() throws SQLException {
+        try {
+            Class<?> Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.BooksSQLDaoImpl");
+            Constructor<?> Manager_constructor = Manager_CLASS.getDeclaredConstructor();
+            Manager_constructor.setAccessible(true);
+            booksManager = (BooksSQLDaoImpl) Manager_constructor.newInstance();
 
-        Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.BookCopiesSQLDaoImpl");
-        Manager_constructor = Manager_CLASS.getDeclaredConstructor();
-        Manager_constructor.setAccessible(true);
-        bookCopiesManager = (BookCopiesSQLDaoImpl) Manager_constructor.newInstance();
+            Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.BookCopiesSQLDaoImpl");
+            Manager_constructor = Manager_CLASS.getDeclaredConstructor();
+            Manager_constructor.setAccessible(true);
+            bookCopiesManager = (BookCopiesSQLDaoImpl) Manager_constructor.newInstance();
 
-        Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.LibraryCollectionRoomSQLDaoImpl");
-        Manager_constructor = Manager_CLASS.getDeclaredConstructor();
-        Manager_constructor.setAccessible(true);
-        locationsManager = (LibraryCollectionRoomSQLDaoImpl) Manager_constructor.newInstance();
+            Manager_CLASS = Class.forName("com.qdu.niit.library.dao.imple.LibraryCollectionRoomSQLDaoImpl");
+            Manager_constructor = Manager_CLASS.getDeclaredConstructor();
+            Manager_constructor.setAccessible(true);
+            locationsManager = (LibraryCollectionRoomSQLDaoImpl) Manager_constructor.newInstance();
+        } catch (ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException |
+                 IllegalAccessException ignored) {}
+
 
     }
     public void insert_function(BookInfo bookInfo) throws RuntimeException, SQLException {
