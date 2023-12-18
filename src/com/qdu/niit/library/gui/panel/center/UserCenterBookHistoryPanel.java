@@ -12,9 +12,8 @@ import com.qdu.niit.library.service.impl.ReturningServiceImpl;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * @author 李冠良
@@ -28,8 +27,27 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
     private final BorrowingService borrowService = new BorrowingServiceImpl();
     private final ReturningService returnService = new ReturningServiceImpl();
     private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
+    private final JDialog popMessageDialog;
 
-    public UserCenterBookHistoryPanel(User user) {
+    public UserCenterBookHistoryPanel(Frame frame,User user) {
+        popMessageDialog = new JDialog(frame, true);
+        popMessageDialog.setLocationRelativeTo(null);
+        popMessageDialog.setSize(300, 200);
+        popMessageDialog.setTitle("错误提示");
+        popMessageDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        popMessageDialog.setLayout(new BorderLayout());
+        var popMessageLabel = new JLabel("读取借书记录失败，请检查数据库是否连接");
+        popMessageLabel.setVerticalAlignment(SwingConstants.CENTER);
+        popMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        popMessageLabel.setFont(new Font("宋体",Font.PLAIN,14));
+        popMessageDialog.add(popMessageLabel, BorderLayout.CENTER);
+        var popMessageButtonPanel=new JPanel();
+        var popMessageButtonExit=new JButton("退出程序");
+        popMessageButtonExit.setPreferredSize(new Dimension(90,30));
+        popMessageButtonExit.setFocusPainted(false);
+        popMessageButtonPanel.add(popMessageButtonExit);
+        popMessageButtonExit.addActionListener(e -> frame.dispose());
+        popMessageDialog.add(popMessageButtonPanel,BorderLayout.SOUTH);
         this.user = user;
         var resultBottomPanel = new JPanel();
         resultBottomPanel.setBounds(40, 40, 720, 560);
@@ -52,7 +70,8 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
         try {
             tableModel = getBorrowHistory();
         } catch (SQLException e) {
-            //弹出错误提示，并可以选择退出程序或者重试
+            popMessageLabel.setText("读取借书记录失败，请检查数据库是否连接");
+            popMessageDialog.setVisible(true);
         }
         var resultDisplayTable = new JTable();
         resultDisplayTable.setRowHeight(30);
@@ -65,39 +84,25 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
         else{
             resultDisplayTable.setModel(nonResultTableModel);
         }
-        borrowHistoryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DefaultTableModel tableModel = null;
-                try {
-                    tableModel = getBorrowHistory();
-                } catch (SQLException ex) {
-                    //弹出错误提示，并可以选择退出程序或者重试
-                }
-                if (tableModel != null) {
-                    resultDisplayTable.setModel(tableModel);
-                }
-                else{
-                    resultDisplayTable.setModel(nonResultTableModel);
-                }
+        borrowHistoryButton.addActionListener(e -> {
+            DefaultTableModel tableModel1 = null;
+            try {
+                tableModel1 = getBorrowHistory();
+            } catch (SQLException ex) {
+                popMessageLabel.setText("读取借书记录失败，请检查数据库是否连接");
+                popMessageDialog.setVisible(true);
             }
+            resultDisplayTable.setModel(Objects.requireNonNullElse(tableModel1, nonResultTableModel));
         });
-        returnHistoryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DefaultTableModel tableModel = null;
-                try {
-                    tableModel = getReturnHistory();
-                } catch (SQLException ex) {
-                    //弹出错误提示，并可以选择退出程序或者重试
-                }
-                if (tableModel != null) {
-                    resultDisplayTable.setModel(tableModel);
-                }
-                else{
-                    resultDisplayTable.setModel(nonResultTableModel);
-                }
+        returnHistoryButton.addActionListener(e -> {
+            DefaultTableModel tableModel12 = null;
+            try {
+                tableModel12 = getReturnHistory();
+            } catch (SQLException ex) {
+                popMessageLabel.setText("读取还书记录失败，请检查数据库是否连接");
+                popMessageDialog.setVisible(true);
             }
+            resultDisplayTable.setModel(Objects.requireNonNullElse(tableModel12, nonResultTableModel));
         });
     }
 
