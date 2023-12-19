@@ -1,6 +1,7 @@
 package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.Borrowing;
+import com.qdu.niit.library.entity.Returning;
 import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.BorrowingService;
@@ -81,11 +82,12 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
                 //删除借书记录，添加还书记录
                 borrowingServiceImpl.deleteByBid(selectedBookId);
                 Calendar nowCal=Calendar.getInstance();
-                LocalDateTime localDateTime= LocalDateTime.of(nowCal.get(Calendar.YEAR),nowCal.get(Calendar.MONTH),
-                        nowCal.get(Calendar.DATE), nowCal.get(Calendar.HOUR),
-                            nowCal.get(Calendar.MONTH), nowCal.get(Calendar.SECOND));
-                //添加还书信息时出错
-//                returningServiceImpl.insert(new Returning(user.getUID(),selectedBookId,localDateTime));
+//                LocalDateTime localDateTime= LocalDateTime.of(nowCal.get(Calendar.YEAR),nowCal.get(Calendar.MONTH),
+//                        nowCal.get(Calendar.DATE), nowCal.get(Calendar.HOUR),
+//                            nowCal.get(Calendar.MONTH), nowCal.get(Calendar.SECOND));
+                LocalDateTime localDateTime=LocalDateTime.now();
+//                添加还书信息时出错
+                returningServiceImpl.insert(new Returning(user.getUID(),selectedBookId,localDateTime));
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
             }
@@ -109,11 +111,11 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
                     rowData[i][2] = borrowHistory[i].getEnd_time().toString().substring(0, 10);
                 }
                 return new DefaultTableModel(rowData, columnName);
-            } else return null;
+            } else return nonResultTableModel;
         }
         catch (SQLException e){
             popMessageDialog.setVisible(true);
         }
-        return null;
+        return nonResultTableModel;
     }
 }
