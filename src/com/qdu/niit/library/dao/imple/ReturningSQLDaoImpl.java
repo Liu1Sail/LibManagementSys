@@ -31,7 +31,7 @@ public class ReturningSQLDaoImpl extends BaseSQLDaoImpl implements ReturningSQLD
     }
     @Override
     public void insert(Returning in) throws SQLException {
-        executeUpdate(INSERT_Returning_SQL);
+        executeUpdate(INSERT_Returning_SQL,in.getUid(),in.getbid(),in.getBack_time());
     }
 
     @Override
