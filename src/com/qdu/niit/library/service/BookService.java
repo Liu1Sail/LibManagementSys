@@ -19,7 +19,7 @@ public interface BookService {
     void Bookstorage(ArrayList<BookInfo> in)throws SQLException, InstantiationException, ObjectHaveNoAttribute;
 
     /**
-     * 删除书本
+     * 删除书本,不是借书，直接移除
      * @param copy_ids
      * @throws SQLException
      */
@@ -74,7 +74,7 @@ public interface BookService {
      */
     ArrayList<BookInfo> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException;
 
-    void borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException;
+    ArrayList<BookInfo> borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException;
     void backBook(Integer copy_id)throws SQLException;
     void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException;
 
