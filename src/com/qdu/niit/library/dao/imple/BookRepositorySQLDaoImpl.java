@@ -188,57 +188,24 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
     }
 
     private static final String GET_BOOK_BY_AUTHOR_STATEMENT = """
-            SELECT b.book_id,c.copy_id, b.title,
-                                 b.isbn,
-                                 b.author,
-                                 b.publisher,
-                                 b.receipt_date,
-                                 b.genre,
-                                 c.acquisition_date,
-                             		l.room,
-                                 c.book_location,
-                             		c.on_shelf_status,
-                                 c.is_visible
-                             FROM Books b INNER JOIN BookCopies c ON b.book_id = c.book_id INNER JOIN LibraryCollectionRoom l ON c.copy_id = l.copy_id
-                             WHERE b.author LIKE ?;
+            SELECT * FROM Books
+            WHERE author LIKE ?;
             """;
 
     public static String getGetBookByAuthorStatement() {
         return GET_BOOK_BY_AUTHOR_STATEMENT;
     }
     private static final String GET_BOOK_BY_TITLE_STATEMENT = """
-            SELECT b.book_id,c.copy_id, b.title,
-                b.isbn,
-                b.author,
-                b.publisher,
-                b.receipt_date,
-                b.genre,
-                c.acquisition_date,
-            	l.room,
-                c.book_location,
-            	c.on_shelf_status,
-                c.is_visible
-            FROM Books b INNER JOIN BookCopies c ON b.book_id = c.book_id INNER JOIN LibraryCollectionRoom l ON c.copy_id = l.copy_id
-            WHERE b.title LIKE ?;
+             SELECT * FROM Books
+             WHERE title LIKE ?;
             """;
 
     public static String getGetBookByTitleStatement() {
         return GET_BOOK_BY_TITLE_STATEMENT;
     }
     private static final String GET_BOOK_BY_AUTHOR_AND_TITLE_STATEMENT = """
-            SELECT b.book_id,c.copy_id, b.title,
-                                         b.isbn,
-                                         b.author,
-                                         b.publisher,
-                                         b.receipt_date,
-                                         b.genre,
-                                         c.acquisition_date,
-                                     		l.room,
-                                         c.book_location,
-                                     		c.on_shelf_status,
-                                         c.is_visible
-                                     FROM Books b INNER JOIN BookCopies c ON b.book_id = c.book_id INNER JOIN LibraryCollectionRoom l ON c.copy_id = l.copy_id
-                                     WHERE b.author LIKE ? && b.title LIKE ?;
+            SELECT * FROM Books
+            WHERE author LIKE ? && title LIKE ?;
             """;
 
     public static String getGetBookByAuthorAndTitleStatement() {
@@ -310,30 +277,52 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
     }
 
     @Override
-    public ArrayList<BookInfo> getBookByAuthor(String author) throws SQLException {
+    public ArrayList<Book> getBookByAuthor(String author) throws SQLException {
         ArrayList<Object[]> gotResult = null;
-        ArrayList<BookInfo> result = new ArrayList<>();
+        ArrayList<Book> result = new ArrayList<>();
         gotResult = getMany(getGetBookByAuthorStatement(),getLikeStatement(author));
-        return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
+        return getBooks(gotResult, result);  //通过Object[]获得ArrayList<Book>
     }
     @Override
-    public ArrayList<BookInfo> getBookByTitle(String title) throws SQLException {
+    public ArrayList<Book> getBookByTitle(String title) throws SQLException {
         ArrayList<Object[]> gotResult = null;
-        ArrayList<BookInfo> result = new ArrayList<>();
+        ArrayList<Book> result = new ArrayList<>();
         gotResult = getMany(getGetBookByTitleStatement(),getLikeStatement(title));
-        return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
+        return getBooks(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
     @Override
-    public ArrayList<BookInfo> getBookByAuthorAndTitle(String author, String title) throws SQLException {
+    public ArrayList<Book> getBookByAuthorAndTitle(String author, String title) throws SQLException {
         ArrayList<Object[]> gotResult = null;
-        ArrayList<BookInfo> result = new ArrayList<>();
+        ArrayList<Book> result = new ArrayList<>();
         gotResult = getMany(getGetBookByAuthorAndTitleStatement(),getLikeStatement(author),getLikeStatement(title));
-        return getBookInfos(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
+        return getBooks(gotResult, result);  //通过Object[]获得ArrayList<BookInfo>
     }
 
     @Override
     public void changeOnShelfStatus(Integer copy_id) throws SQLException {
         bookCopiesManager.changeOnShelfStatus(copy_id);
     }
-
+    ArrayList<BookInfo> getBookInfos(ArrayList<Object[]> gotResult, ArrayList<BookInfo> result) {
+        BookInfo bookInfo;
+        for (Object[] obj : gotResult) {
+            bookInfo = new BookInfo((Integer) obj[0], (Integer) obj[1], (String) obj[2], (String) obj[3], (String) obj[4], (String) obj[5], (Date) obj[6], (String) obj[7], (Date) obj[8], (String) obj[9], (String) obj[10], (Boolean) obj[11], (Boolean) obj[12]);
+            result.add(bookInfo);
+        }
+        return result;
+    }
+    ArrayList<Book> getBooks(ArrayList<Object[]> gotResult, ArrayList<Book> result){
+        Book book;
+        for (Object[] obj : gotResult) {
+            book = new Book((Integer) obj[0],(String) obj[1],
+                    (String) obj[2],(String)obj[3],(String)obj[4],
+                    (Date)obj[5],(String)obj[6],(Integer)obj[7],
+                    (Integer)obj[8], (Integer)obj[7]+(Integer)obj[8]);
+            result.add(book);
+        }
+        return result;
+    }
+    @Override
+    public boolean getOnShelfStatus(Integer copy_id) throws SQLException{
+        return bookCopiesManager.getOnShelfStatus(copy_id);
+    }
 }

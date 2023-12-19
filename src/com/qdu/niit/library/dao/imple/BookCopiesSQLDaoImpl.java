@@ -17,7 +17,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     protected String getCreateTableStatement(){
         return TABLE_CREATE_BOOK_COPIES_STATEMENT;
     }
-    public static final String UPDATE_ACQUISITION_BY_COPY_ID_STATEMENT = """
+    private static final String UPDATE_ACQUISITION_BY_COPY_ID_STATEMENT = """
             UPDATE BookCopies
             SET acquisition_date = ?
             WHERE copy_id = ?;
@@ -28,7 +28,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException {
         executeUpdate(getUpdateAcquisitionByCopyIdStatement(),date,copy_id);
     }
-    public static final String UPDATE_BOOK_LOCATION_BY_COPY_ID_STATEMENT = """
+    private static final String UPDATE_BOOK_LOCATION_BY_COPY_ID_STATEMENT = """
             UPDATE BookCopies
             SET book_location = ?
             WHERE copy_id = ?;
@@ -47,7 +47,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
         executeTransactionUpdate(getUpdateBookLocationByCopyIdStatement(),location,copy_id);
     }
 
-    public static final String TABLE_CREATE_BOOK_COPIES_STATEMENT = """
+    private static final String TABLE_CREATE_BOOK_COPIES_STATEMENT = """
                 CREATE TABLE IF NOT EXISTS BookCopies (
                 copy_id INT AUTO_INCREMENT PRIMARY KEY,
                 book_id INT NOT NULL,
@@ -58,7 +58,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
                 FOREIGN KEY (book_id) REFERENCES Books(book_id)
             );""";
 
-    public static final String INSERT_WITHOUT_KEY = """
+    private static final String INSERT_WITHOUT_KEY = """
             INSERT INTO BookCopies(  book_id,
                                 acquisition_date,
                                 on_shelf_status,
@@ -86,7 +86,7 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
         executeUpdate(getChangeOnShelfStatusStatement(),copy_id);
     }
 
-    public static final String GET_IS_VISIBLE_STATEMENT = """
+    private static final String GET_IS_VISIBLE_STATEMENT = """
             SELECT is_visible FROM BookCopies
             WHERE copy_id = ?;
             """;
@@ -97,6 +97,22 @@ public class BookCopiesSQLDaoImpl extends BOOK_MANAGER implements BookCopiesSQLD
     public boolean getIsVisibleByCopyID(Integer copy_id) throws SQLException {
         Object[] result = null;
         result = getOne(getGetIsVisibleStatement(),copy_id);
+        return (boolean) result[0];
+    }
+
+    private static final String GET_ON_SHELF_STATUS_STATEMENT = """
+            SELECT on_shelf_status FROM BookCopies
+            WHERE copy_id = ?;
+            """;
+
+    public static String getGetOnShelfStatusStatement() {
+        return GET_ON_SHELF_STATUS_STATEMENT;
+    }
+
+    @Override
+    public boolean getOnShelfStatus(Integer copy_id) throws SQLException {
+        Object[] result = null;
+        result = getOne(getGetOnShelfStatusStatement(),copy_id);
         return (boolean) result[0];
     }
 
