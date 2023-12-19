@@ -8,13 +8,12 @@ import com.qdu.niit.library.service.impl.BookServiceImpl;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -33,6 +32,10 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
     private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
     private final JDialog popMessageDialog;
     private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
+    /**
+     * 借阅期限，单位天
+     */
+    private static final int borrowTimeLimit=60;
 
     public UserCenterBookSearchAndBorrowPanel(Frame frame) {
         JTable resultTable=new JTable();
@@ -113,7 +116,7 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
                         rowData[i][2]=tmp.getIsbn();
                         rowData[i][3]=tmp.getAuthor();
                         rowData[i][4]=tmp.getPublisher();
-                        rowData[i][5]= tmpDate.getYear() - 1900 + "-" + tmpDate.getMonth() + "-" + tmpDate.getDate();
+                        rowData[i][5]= tmpDate.getYear() + 1900 + "-" + (tmpDate.getMonth()+1) + "-" + tmpDate.getDate();
                         rowData[i][6]=tmp.getGenre();
                     }
                     resultTable.setModel(new DefaultTableModel(rowData,columnName));
@@ -125,8 +128,6 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
             else{
                 popMessageDialog.setVisible(true);
             }
-
-
             //获取信息
             resetInputContent();
             //得到结果后显示在结果显示区域
@@ -147,12 +148,19 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
         resultDisplayPanel.add(resultButtonPanel);
         var borrowButton=new JButton("借阅");
         borrowButton.setBounds(50,5,80,40);
-        borrowButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow=resultTable.getSelectedRows()[0];
-                String copyId= (String) resultTable.getValueAt(selectedRow,0);
-                System.out.println(copyId);
+        borrowButton.addActionListener(e -> {
+            int selectedRow=resultTable.getSelectedRows()[0];
+            int copyId= Integer.parseInt((String) resultTable.getValueAt(selectedRow,0));
+            Calendar nowCal=Calendar.getInstance();
+            LocalDateTime localDateTime= LocalDateTime.of(nowCal.get(Calendar.YEAR),nowCal.get(Calendar.MONTH),
+                    nowCal.get(Calendar.DATE), nowCal.get(Calendar.HOUR),
+                    nowCal.get(Calendar.MINUTE), nowCal.get(Calendar.SECOND));
+            LocalDateTime endDateTime=localDateTime.plusDays(borrowTimeLimit);
+            //添加节约时间选择
+            try {
+                bookServiceImpl.borrowingBook(copyId,endDateTime);
+            } catch (SQLException ex) {
+                popMessageDialog.setVisible(true);
             }
         });
         resultButtonPanel.add(borrowButton);

@@ -22,8 +22,8 @@ import java.awt.event.MouseEvent;
 public class UserInterface extends ResizeFrame {
     private final UserInterface frame = this;
     private final JPanel centerBottomPanel;
-    private final int initialWidth=1000;
-    private final int initialHeight=700;
+    private static final int initialWidth=1000;
+    private static final int initialHeight=700;
     private int mouseX;
     private int mouseY;
     private final User user;
