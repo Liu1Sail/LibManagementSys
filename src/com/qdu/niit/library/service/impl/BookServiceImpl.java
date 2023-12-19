@@ -25,13 +25,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.insert(in);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.insert(in);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -40,13 +48,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.delete(copy_ids);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.delete(copy_ids);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -55,13 +71,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByCopyID(copy_id);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByCopyID(copy_id);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -70,13 +94,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByDate(date);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByDate(date);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -85,13 +117,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByBookID(book_id);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByBookID(book_id);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -100,13 +140,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthor(author);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByAuthor(author);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -115,13 +163,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByTitle(title);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByTitle(title);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -130,13 +186,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthorAndTitle(author,title);
-        }  catch (Exception e) {
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 return apollo.getBookByAuthorAndTitle(author,title);
-            }  catch (Exception e1) {
+            }  catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -147,39 +211,61 @@ public class BookServiceImpl implements BookService {
      * @throws SQLException
      */
     @Override
-    public void borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException {
+    public ArrayList<BookInfo> borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException {
         try {
             UserService fan = UserServiceImpl.getInstance();
             Borrowing in = new Borrowing(fan.getLocalUser().getUID(),copy_id, LocalDateTime.now(),end_time);
             BorrowingService lyy = new BorrowingServiceImpl();
             lyy.insert(in);
-        }catch (Exception e)
+        }catch (SQLException e)
         {
             try {
                 UserService fan = UserServiceImpl.getInstance();
                 Borrowing in = new Borrowing(fan.getLocalUser().getUID(),copy_id, LocalDateTime.now(),end_time);
                 BorrowingService lyy = new BorrowingServiceImpl();
                 lyy.insert(in);
-            }catch (Exception e1)
+            }catch (SQLException e1)
             {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
 
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.changeOnShelfStatus(copy_id);
-        }  catch (Exception e) {
+            return apollo.getBookByCopyID(copy_id);
+        }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                if(true)
+                {
+                    //等待华庆的完善
+                }
                 apollo.changeOnShelfStatus(copy_id);
-            } catch (Exception e1) {
+                return apollo.getBookByCopyID(copy_id);
+            } catch (SQLException e1) {
                 //执行回滚
                 BorrowingService lyy = new BorrowingServiceImpl();
                 lyy.deleteByBid(copy_id);
                 //
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+                return new ArrayList<BookInfo>();
+            }
+        }
+        catch (Exception e2)
+        {
+            return new ArrayList<BookInfo>();
         }
     }
 
@@ -197,35 +283,51 @@ public class BookServiceImpl implements BookService {
             Returning in = new Returning(fan.getLocalUser().getUID(),copy_id,use);
             ReturningService lyy = new ReturningServiceImpl();
             lyy.insert(in);
-        }catch (Exception e)
+        }catch (SQLException e)
         {
             try {
                 UserService fan = UserServiceImpl.getInstance();
                 Returning in = new Returning(fan.getLocalUser().getUID(),copy_id,LocalDateTime.now());
-                ReturningSQLDao lyy = new ReturningSQLDaoImpl();
+                ReturningSQLDao lyy = ReturningSQLDaoImpl.getInstance();
                 lyy.insert(in);
-            }catch (Exception e1)
+            }catch (SQLException e1)
             {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+
+        }
+        catch (Exception e2)
+        {
 
         }
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.changeOnShelfStatus(copy_id);
-        }  catch (Exception e)
+        }  catch (SQLException e)
         {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.changeOnShelfStatus(copy_id);
-            }catch (Exception e1)
+            }catch (SQLException e1)
             {
                 //执行回滚
-                ReturningSQLDao lyy = new ReturningSQLDaoImpl();
+                ReturningSQLDao lyy = ReturningSQLDaoImpl.getInstance();
                 lyy.deleteByTime(use);
                 //
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+
+        }
+        catch (Exception e2)
+        {
 
         }
     }
@@ -235,13 +337,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updateAcquisitionByCopyID(copy_id,date);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateAcquisitionByCopyID(copy_id,date);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -250,13 +360,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updateBookLocationByCopyID(copy_id,location);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateBookLocationByCopyID(copy_id,location);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -265,13 +383,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updateAuthorByBookID(book_id,author);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateAuthorByBookID(book_id,author);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -280,13 +406,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updatePublisherByBookID(book_id,publisher);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updatePublisherByBookID(book_id,publisher);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -295,13 +429,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updateReceiptDateByBookID(book_id,date);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateReceiptDateByBookID(book_id,date);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
@@ -310,13 +452,21 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.updateGenreByBookID(book_id,genre);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.updateGenreByBookID(book_id,genre);
-            } catch (Exception e1) {
+            } catch (SQLException e1) {
                 throw new SQLException(e1);
             }
+            catch (Exception e2)
+            {
+
+            }
+        }
+        catch (Exception e2)
+        {
+
         }
     }
 
