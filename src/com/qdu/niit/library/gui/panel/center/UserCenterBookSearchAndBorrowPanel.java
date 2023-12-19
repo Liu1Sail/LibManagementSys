@@ -1,14 +1,21 @@
 package com.qdu.niit.library.gui.panel.center;
 
+import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.BookServiceImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author 李冠良
@@ -25,10 +32,12 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
     private int nowTabNum = 1;
     private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
     private final JDialog popMessageDialog;
-    private final JTable resultTable=new JTable();
-    private final DefaultTableModel resultTableModel=new DefaultTableModel();
+    private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
 
     public UserCenterBookSearchAndBorrowPanel(Frame frame) {
+        JTable resultTable=new JTable();
+        resultTable.setRowHeight(30);
+        resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         popMessageDialog = new JDialog(frame, true);
         popMessageDialog.setLocationRelativeTo(null);
         popMessageDialog.setSize(300, 200);
@@ -72,68 +81,98 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570, 145, 130, 35);
         defineButton.addActionListener(e -> {
+            ArrayList<BookInfo> resultList=null;
             try {
                 switch (nowTabNum) {
                     case 1 -> {
                         var name = bookNameInput.getInputText();
-                        bookServiceImpl.getBookInfoByTitle(name);
+                        resultList=bookServiceImpl.getBookInfoByTitle(name);
                     }
                     case 2 -> {
-                        var title = bookAuthorInput.getInputText();
-                        bookServiceImpl.getBookInfoByTitle(title);
+                        var author = bookAuthorInput.getInputText();
+                        resultList=bookServiceImpl.getBookInfoByAuthor(author);
                     }
                     case 3 -> {
+                        var author = bookNameAndAuthorAuthorInput.getInputText();
                         var name = bookNameAndAuthorNameInput.getInputText();
-                        var title = bookNameAndAuthorAuthorInput.getInputText();
-                        bookServiceImpl.getBookInfoByAuthorAndTitle(title, name);
+                        resultList=bookServiceImpl.getBookInfoByAuthorAndTitle(author, name);
                     }
                 }
-
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
             }
+            if(resultList!=null){
+                if(!resultList.isEmpty()){
+                    String[][] rowData=new String[resultList.size()][7];
+                    String[] columnName=new String[]{"书本编号", "书名", "ISBN", "作者", "出版社", "出版时间", "类型"};
+                    for(int i=0;i<resultList.size();i++){
+                        BookInfo tmp=resultList.get(i);
+                        Date tmpDate=tmp.getReceipt_date();
+                        rowData[i][0]= String.valueOf(tmp.getCopy_id());
+                        rowData[i][1]=tmp.getTitle();
+                        rowData[i][2]=tmp.getIsbn();
+                        rowData[i][3]=tmp.getAuthor();
+                        rowData[i][4]=tmp.getPublisher();
+                        rowData[i][5]= tmpDate.getYear() - 1900 + "-" + tmpDate.getMonth() + "-" + tmpDate.getDate();
+                        rowData[i][6]=tmp.getGenre();
+                    }
+                    resultTable.setModel(new DefaultTableModel(rowData,columnName));
+                }
+                else{
+                    resultTable.setModel(nonResultTableModel);
+                }
+            }
+            else{
+                popMessageDialog.setVisible(true);
+            }
+
 
             //获取信息
             resetInputContent();
-            //SwingWorker调用中间层
-            //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
+            //得到结果后显示在结果显示区域
         });
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
 
         //结果显示区域
-//        String[] columnName = new String[]{"图书编号", "书名", "ISBN", "作者", "出版社", "出版时间", "类型"};
         var resultDisplayPanel=new JPanel();
         resultDisplayPanel.setBounds(40,280,720,300);
         resultDisplayPanel.setBackground(Color.WHITE);
         resultDisplayPanel.setLayout(null);
+        this.add(resultDisplayPanel);
         var resultButtonPanel=new JPanel();
         resultButtonPanel.setBounds(0,0,720,50);
         resultButtonPanel.setBackground(Color.WHITE);
         resultDisplayPanel.add(resultButtonPanel);
         var borrowButton=new JButton("借阅");
         borrowButton.setBounds(50,5,80,40);
+        borrowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow=resultTable.getSelectedRows()[0];
+                String copyId= (String) resultTable.getValueAt(selectedRow,0);
+                System.out.println(copyId);
+            }
+        });
         resultButtonPanel.add(borrowButton);
         var resultScrollPane=new JScrollPane(resultTable);
         resultScrollPane.setBounds(0,50,720,250);
+        resultScrollPane.getViewport().setBackground(Color.WHITE);
         resultDisplayPanel.add(resultScrollPane);
-        this.add(resultDisplayPanel);
-
         //搜索切换选项卡
         var tabNameFont = new Font("宋体", Font.PLAIN, 15);
-
-        var bookIdPanel = new JPanel();
-        bookIdPanel.setBounds(150, 5, 80, 25);
-        bookIdPanel.setBackground(new Color(164, 232, 255));
-        var bookIdPanelText = new JLabel("作者查询");
-        bookIdPanelText.setBounds(0, 0, 80, 25);
-        bookIdPanelText.setFont(tabNameFont);
-        bookIdPanelText.setVerticalAlignment(SwingConstants.CENTER);
-        bookIdPanelText.setHorizontalAlignment(SwingConstants.CENTER);
-        bookIdPanel.add(bookIdPanelText);
-        inputBottomPanel.add(bookIdPanel);
-        bookIdPanel.addMouseListener(new MouseAdapter() {
+        var bookNamePanel = new JPanel();
+        bookNamePanel.setBounds(150, 5, 80, 25);
+        bookNamePanel.setBackground(new Color(164, 232, 255));
+        var bookNamePanelText = new JLabel("书名查询");
+        bookNamePanelText.setBounds(0, 0, 80, 25);
+        bookNamePanelText.setFont(tabNameFont);
+        bookNamePanelText.setVerticalAlignment(SwingConstants.CENTER);
+        bookNamePanelText.setHorizontalAlignment(SwingConstants.CENTER);
+        bookNamePanel.add(bookNamePanelText);
+        inputBottomPanel.add(bookNamePanel);
+        bookNamePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 removeNowTab(inputBottomPanel);
@@ -146,7 +185,7 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
         var bookKeyWordPanel = new JPanel();
         bookKeyWordPanel.setBounds(230, 5, 80, 25);
         bookKeyWordPanel.setBackground(new Color(164, 232, 255));
-        var bookKeyWordPanelText = new JLabel("书名查询");
+        var bookKeyWordPanelText = new JLabel("作者查询");
         bookKeyWordPanelText.setBounds(0, 0, 80, 25);
         bookKeyWordPanelText.setFont(tabNameFont);
         bookKeyWordPanelText.setVerticalAlignment(SwingConstants.CENTER);

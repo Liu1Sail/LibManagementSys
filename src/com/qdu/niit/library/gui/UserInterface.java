@@ -3,10 +3,7 @@ package com.qdu.niit.library.gui;
 import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.gui.frame.ResizeFrame;
-import com.qdu.niit.library.gui.panel.center.UserCenterAccountChangeInfoPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookHistoryPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterBookSearchAndBorrowPanel;
-import com.qdu.niit.library.gui.panel.center.UserCenterRoomPanel;
+import com.qdu.niit.library.gui.panel.center.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +70,7 @@ public class UserInterface extends ResizeFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                bookOption.setBounds(0,0,200,480);
+                bookOption.setBounds(0,0,200,320);
             }
 
             @Override
@@ -163,10 +160,12 @@ public class UserInterface extends ResizeFrame {
         bookOptionText.setVerticalAlignment(SwingConstants.CENTER);
         bookOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         bookOption.add(bookOptionText);
-        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"搜索借阅图书",2,1,1);
+        var bookAddChildOption = getChildOption(sideBarOptionFont,80,"搜索借阅图书",3,1,1);
         bookOption.add(bookAddChildOption);
-        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"查询个人借书记录",2,2,1);
+        var bookDeleteChildOption = getChildOption(sideBarOptionFont,160,"查询个人借书记录",3,2,1);
         bookOption.add(bookDeleteChildOption);
+        var bookReturnChildOption = getChildOption(sideBarOptionFont,240,"还书",3,3,1);
+        bookOption.add(bookReturnChildOption);
         return bookOption;
     }
     private JPanel getAccountOption(Font sideBarOptionFont) {
@@ -231,8 +230,9 @@ public class UserInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new UserCenterBookSearchAndBorrowPanel(frame));frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterBookSearchAndBorrowPanel(frame));frame.setVisible(true);frame.repaint();}
                             case 2->{centerBottomPanel.add(new UserCenterBookHistoryPanel(frame,user));frame.repaint();}
+                            case 3->{centerBottomPanel.add(new UserCenterBookReturnPanel(frame,user));frame.repaint();}
                         }
                     }
                     case 2->{
