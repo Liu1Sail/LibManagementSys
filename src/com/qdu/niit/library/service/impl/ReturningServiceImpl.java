@@ -15,7 +15,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public boolean ifHaveByUid(int uid) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             if(use.getAllByUid(uid)!=null)
             {
                 return true;
@@ -31,7 +31,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public boolean ifHaveByBid(int bid) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             if(use.getAllByBid(bid)!=null)
             {
                 return true;
@@ -47,7 +47,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public Returning[] findAllByEndTime(LocalDateTime end_time) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             return use.getAllByBackTime(end_time);
         }catch (SQLException e)
         {
@@ -59,7 +59,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public Returning[] findAllByUid(int uid) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             return use.getAllByUid(uid);
         }catch (SQLException e)
         {
@@ -71,7 +71,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public Returning[] findAllByBid(int bid) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             return use.getAllByBid(bid);
         }catch (SQLException e)
         {
@@ -83,7 +83,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public void insert(Returning in) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             use.insert(in);
         }catch (SQLException e)
         {
@@ -95,7 +95,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public Returning[] findAllByUidAndBid(int uid, int bid) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             return use.getAllByUidAndBid(uid,bid);
         }catch (SQLException e)
         {
@@ -107,7 +107,7 @@ public class ReturningServiceImpl implements ReturningService {
     @Override
     public void deleteByTime(LocalDateTime in) throws SQLException {
         try {
-            ReturningSQLDaoImpl use = new ReturningSQLDaoImpl();
+            ReturningSQLDaoImpl use = ReturningSQLDaoImpl.getInstance();
             use.deleteByTime(in);
         }catch (SQLException e)
         {
