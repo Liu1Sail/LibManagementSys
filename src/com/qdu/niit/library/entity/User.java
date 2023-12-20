@@ -12,12 +12,19 @@ public class User {
         m_UName = newUname;
     }
     public void setUPassword(String newPassword){m_UPassword = newPassword;}
-
+    public boolean isSuperUser(){return isSuperUser;}
 
     public User(Integer uId , String uName , String uPassword) {
         m_UId = uId ;
         m_UName = uName;
         m_UPassword = uPassword;
+    }
+
+    public User(Integer uId , String uName , String uPassword , boolean isSuperUser){
+        m_UId = uId ;
+        m_UName = uName;
+        m_UPassword = uPassword;
+        this.isSuperUser = isSuperUser;
     }
 
     @Override
@@ -29,4 +36,5 @@ public class User {
     private final Integer  m_UId;
     private String m_UName;
     private String m_UPassword;
+    private boolean isSuperUser = false;
 }
