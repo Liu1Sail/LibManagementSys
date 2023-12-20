@@ -64,7 +64,7 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<Book> getBookInfoByTitle(String title) throws SQLException;
+    ArrayList<Book> getBookByTitle(String title) throws SQLException;
 
     /**
      * 根据title，author查找
@@ -73,7 +73,7 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<Book> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException;
+    ArrayList<Book> getBookByAuthorAndTitle(String author, String title) throws SQLException;
 
     /**
      * 对于书本已经被借出的情况返回null，对于华庆函数报出非sql错误以及没有查找到这本书，则返回空ArrayList<BookInfo>
@@ -102,4 +102,5 @@ public interface BookService {
     void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException;
 
     void updateGenreByBookID(Integer book_id, String genre) throws SQLException;
+    ArrayList<BookInfo>getCopyIdByBookId(Integer BookId)throws SQLException;//
 }
