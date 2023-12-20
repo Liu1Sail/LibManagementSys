@@ -82,11 +82,7 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
                 //删除借书记录，添加还书记录
                 borrowingServiceImpl.deleteByBid(selectedBookId);
                 Calendar nowCal=Calendar.getInstance();
-//                LocalDateTime localDateTime= LocalDateTime.of(nowCal.get(Calendar.YEAR),nowCal.get(Calendar.MONTH),
-//                        nowCal.get(Calendar.DATE), nowCal.get(Calendar.HOUR),
-//                            nowCal.get(Calendar.MONTH), nowCal.get(Calendar.SECOND));
                 LocalDateTime localDateTime=LocalDateTime.now();
-//                添加还书信息时出错
                 returningServiceImpl.insert(new Returning(user.getUID(),selectedBookId,localDateTime));
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
