@@ -116,7 +116,6 @@ public class UserServiceImpl implements UserService , SuperUserService {
     @Override
     public UserInfo getUserInfo(String userName) {
         assert userName!=null : "userName不能为空";
-        if(localUser.isSuperUser())return null;
         try {
             return UserRepositoryManagerDaoImpl.getInstance().getUserInfoByUserName(userName);
         }catch (SQLException e)

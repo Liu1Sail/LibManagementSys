@@ -24,35 +24,6 @@ public interface UserService extends BaseUserService {
      */
     int register(String userName, String password, String name, Date birth, UserInfo.Gender gender, String phone, String email);
 
-    /**
-     * 获取本地用户对象。
-     *
-     * @return 本地用户对象
-     */
-    @Override
-    User getLocalUser();
-    /**
-     * 注销(登出)当前用户。
-     */
-    @Override
-    void logout();
-
-    /**
-     * 修改本地用户密码。
-     *
-     * @param newPassword  新的密码
-     * @return 修改是否成功
-     */
-    @Override
-    boolean modifyLocalUserPassword(String newPassword);
-
-    /**
-     * 验证本地用户密码是否正确。
-     *
-     * @return 验证结果，true 表示密码正确，false 表示密码不正确
-     */
-    @Override
-    boolean isLocalUserPasswordCorrect();
 
     /**
      * 用户登录操作。
@@ -100,6 +71,20 @@ public interface UserService extends BaseUserService {
      */
     boolean userExists(String userName);
 
+
+
+
+
+    //============================继承=================================//
+
     @Override
     boolean isLocalUserSuperUser();
+    @Override
+    User getLocalUser();
+    @Override
+    void logout();
+    @Override
+    boolean modifyLocalUserPassword(String newPassword);
+    @Override
+    boolean isLocalUserPasswordCorrect();
 }
