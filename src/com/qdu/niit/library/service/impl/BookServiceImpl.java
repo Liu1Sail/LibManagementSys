@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class BookServiceImpl implements BookService {
     @Override
-    public void Bookstorage(ArrayList<BookInfo> in) throws SQLException{
+    public void BookAdd(ArrayList<BookInfo> in) throws SQLException{
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.insert(in);
@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
             }
             catch (Exception e2)
             {
-//
+
             }
         }
         catch (Exception e2)
@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void Bookoutbound(ArrayList<Integer> copy_ids) throws SQLException {
+    public void BookDelete(ArrayList<Integer> copy_ids) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.delete(copy_ids);
@@ -135,7 +135,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ArrayList<Book> getBookInfoByAuthor(String author) throws SQLException {
+    public ArrayList<Book> getBookByAuthor(String author) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthor(author);
@@ -476,7 +476,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ArrayList<BookInfo> getCopyIdByBookId(Integer BookId) throws SQLException {
         try {
-            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();//
             return apollo.getBookByBookID(BookId);
         }catch (SQLException e)
         {
