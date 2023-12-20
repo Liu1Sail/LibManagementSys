@@ -23,7 +23,7 @@ public class SuperUserManagerDaoImpl extends BaseSQLDaoImpl implements UserSQLDa
                 password
         );
         if(meta == null || meta.length<1)return null;
-        return new User(id, Cast(meta[0])  ,password);
+        return new User(id, Cast(meta[0])  ,password ,true);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SuperUserManagerDaoImpl extends BaseSQLDaoImpl implements UserSQLDa
                 password
         );
         if(meta == null || meta.length<1)return null;
-        return new User(Cast(meta[0]), name  ,password);
+        return new User(Cast(meta[0]), name  ,password , true);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SuperUserManagerDaoImpl extends BaseSQLDaoImpl implements UserSQLDa
         for(int i = 0; i < list.size() ;++i) {
             Object[] arr = list.get(i);
             if(arr==null||arr.length<2)return null;
-            result[i] = new User((int)arr[0] , (String)arr[1],null);
+            result[i] = new User((int)arr[0] , (String)arr[1],null , true);
         }
         return result;
     }
