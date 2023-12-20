@@ -467,4 +467,31 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    /**
+     * 根据bookid查找copyid,出现非sql错误返回null,未找到返回空ArrayList<BookInfo>
+     * @param BookId
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public ArrayList<BookInfo> getCopyIdByBookId(Integer BookId) throws SQLException {
+        try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            return apollo.getBookByBookID(BookId);
+        }catch (SQLException e)
+        {
+            try {
+                BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+                return apollo.getBookByBookID(BookId);
+            }catch (SQLException e1)
+            {
+                throw new SQLException(e1);
+            }
+        }
+        catch (Exception e1)
+        {
+            return null;
+        }
+    }
+
 }
