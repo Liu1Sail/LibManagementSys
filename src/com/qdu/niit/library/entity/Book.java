@@ -10,9 +10,27 @@ public class Book {
     String publisher;
     Date receipt_date;
     String genre;
+
+    public Book(Integer book_id, String title,
+                String isbn, String author,
+                String publisher, Date receipt_date,
+                String genre, Integer book_quantity_visible,
+                Integer book_quantity_hidden, Integer total) {
+        this.book_id = book_id;
+        this.title = title;
+        this.isbn = isbn;
+        this.author = author;
+        this.publisher = publisher;
+        this.receipt_date = receipt_date;
+        this.genre = genre;
+        this.book_quantity_visible = book_quantity_visible;
+        this.book_quantity_hidden = book_quantity_hidden;
+        this.total = total;
+    }
+
     Integer book_quantity_visible;
     Integer book_quantity_hidden;
-
+    Integer total;
     public Integer getBook_id() {
         return book_id;
     }

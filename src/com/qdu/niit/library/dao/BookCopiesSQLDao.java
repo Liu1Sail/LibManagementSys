@@ -33,4 +33,5 @@ public interface BookCopiesSQLDao {
      * @param copy_id
      */
     void delete(Integer copy_id) throws SQLException;
+    boolean getOnShelfStatus(Integer copy_id) throws SQLException;
 }
