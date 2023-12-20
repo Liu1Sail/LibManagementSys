@@ -118,6 +118,8 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
     }
 
     //=========================||   UserInfo    ||===========================//
+
+
     @Override
     public void updateUserInfoAll(UserInfo info) throws SQLException {
         assert info != null : "info不能传入空指针";
@@ -142,14 +144,28 @@ public class UserRepositoryManagerDaoImpl extends TransactionalSQLDaoImpl implem
                getOne(SELECT_USERINFO_BY_USER_NAME_SQL , userName)
        );
     }
+
+
+
     /*====================================================================*/
     /*======================||     PRIVATE        ||==========================*/
     /*====================================================================*/
+
+
+
     private UserRepositoryManagerDaoImpl() throws SQLException {/*初始化User表 防止表被删除*/
         executeUpdate(CREATE_TABLE_USERS_SQL);
         executeUpdate(CREATE_TABLE_USERINFO_SQL);
     }
+
+
+
     /*======================||        USER        ||===========================*/
+
+
+
+
+
     private static UserRepositoryManagerDaoImpl instance;
     private static final String CREATE_TABLE_USERS_SQL =
             "CREATE TABLE IF NOT EXISTS USERS(" +

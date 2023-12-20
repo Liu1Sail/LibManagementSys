@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * 用户服务接口定义了一系列与用户相关的操作。
  */
-public interface UserService {
+public interface UserService extends BaseUserService {
 
     /**
      * 注册新用户并保存用户信息。
@@ -24,12 +24,6 @@ public interface UserService {
      */
     int register(String userName, String password, String name, Date birth, UserInfo.Gender gender, String phone, String email);
 
-    /**
-     * 获取本地用户对象。
-     *
-     * @return 本地用户对象
-     */
-    User getLocalUser();
 
     /**
      * 用户登录操作。
@@ -48,12 +42,6 @@ public interface UserService {
      * @return 登录成功时返回用户对象，否则返回 null
      */
     User login(int id, String password);
-
-    /**
-     * 注销(登出)当前用户。
-     */
-    void logout();
-
     /**
      * 获取指定用户名的用户信息。
      *
@@ -74,20 +62,6 @@ public interface UserService {
      */
     boolean modifyLocalUserInfo(String name, Date birth, UserInfo.Gender gender, String phone, String email);
 
-    /**
-     * 修改本地用户密码。
-     *
-     * @param newPassword  新的密码
-     * @return 修改是否成功
-     */
-    boolean modifyLocalUserPassword(String newPassword);
-
-    /**
-     * 验证本地用户密码是否正确。
-     *
-     * @return 验证结果，true 表示密码正确，false 表示密码不正确
-     */
-    boolean isLocalUserPasswordCorrect();
 
     /**
      * 判断指定用户名的用户是否存在。
@@ -96,4 +70,21 @@ public interface UserService {
      * @return 如果用户存在则返回 true，否则返回 false
      */
     boolean userExists(String userName);
+
+
+
+
+
+    //============================继承=================================//
+
+    @Override
+    boolean isLocalUserSuperUser();
+    @Override
+    User getLocalUser();
+    @Override
+    void logout();
+    @Override
+    boolean modifyLocalUserPassword(String newPassword);
+    @Override
+    boolean isLocalUserPasswordCorrect();
 }
