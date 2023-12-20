@@ -8,13 +8,11 @@ import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.Borrowing;
 import com.qdu.niit.library.entity.Returning;
-import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.service.BookService;
 import com.qdu.niit.library.service.BorrowingService;
 import com.qdu.niit.library.service.ReturningService;
 import com.qdu.niit.library.service.UserService;
 
-import java.net.ConnectException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -159,8 +157,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    @Override
-    public ArrayList<Book> getBookInfoByTitle(String title) throws SQLException {
+    public ArrayList<Book> getBookByTitle(String title) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByTitle(title);
@@ -183,7 +180,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ArrayList<Book> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException {
+    public ArrayList<Book> getBookByAuthorAndTitle(String author, String title) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthorAndTitle(author,title);
