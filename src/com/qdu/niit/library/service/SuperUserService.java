@@ -14,33 +14,20 @@ public interface SuperUserService extends BaseUserService{
      */
     boolean superUserExists(String userName);
 
-    /**
-     * 获取本地用户对象。
-     *
-     * @return 本地用户对象
-     */
+
+
+
+
+
+
+
+    //============================继承=================================//
     @Override
     User getLocalUser();
-    /**
-     * 注销(登出)当前用户。
-     */
     @Override
     void logout();
-
-    /**
-     * 修改本地用户密码。
-     *
-     * @param newPassword  新的密码
-     * @return 修改是否成功
-     */
     @Override
     boolean modifyLocalUserPassword(String newPassword);
-
-    /**
-     * 验证本地用户密码是否正确。
-     *
-     * @return 验证结果，true 表示密码正确，false 表示密码不正确
-     */
     @Override
     boolean isLocalUserPasswordCorrect();
 
