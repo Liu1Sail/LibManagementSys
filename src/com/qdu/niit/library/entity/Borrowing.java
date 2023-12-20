@@ -18,7 +18,7 @@ public class Borrowing//无主键
      */
     public Borrowing(int uid, int bid, LocalDateTime start_time,LocalDateTime end_time)
     {
-        this.uid = bid;
+        this.uid = uid;
         this.bid = bid;
         this.start_time = start_time;
         this.end_time = end_time;

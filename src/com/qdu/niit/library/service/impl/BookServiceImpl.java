@@ -282,7 +282,7 @@ public class BookServiceImpl implements BookService {
         {
             try {
                 UserService fan = UserServiceImpl.getInstance();
-                Returning in = new Returning(fan.getLocalUser().getUID(),copy_id,LocalDateTime.now());
+                Returning in = new Returning(fan.getLocalUser().getUID(),copy_id,use);
                 ReturningSQLDao lyy = ReturningSQLDaoImpl.getInstance();
                 lyy.insert(in);
             }catch (SQLException e1)
