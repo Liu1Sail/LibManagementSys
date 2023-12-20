@@ -1,5 +1,6 @@
 package com.qdu.niit.library.service;
 
+import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 
@@ -55,7 +56,7 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<BookInfo> getBookInfoByAuthor(String author) throws SQLException;
+    ArrayList<Book> getBookInfoByAuthor(String author) throws SQLException;
 
     /**
      * 根据title查找
@@ -63,7 +64,7 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<BookInfo> getBookInfoByTitle(String title) throws SQLException;
+    ArrayList<Book> getBookInfoByTitle(String title) throws SQLException;
 
     /**
      * 根据title，author查找
@@ -72,10 +73,24 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<BookInfo> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException;
+    ArrayList<Book> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException;
 
+    /**
+     * 对于书本已经被借出的情况返回null，对于华庆函数报出非sql错误以及没有查找到这本书，则返回空ArrayList<BookInfo>
+     * @param copy_id
+     * @param end_time
+     * @return
+     * @throws SQLException
+     */
     ArrayList<BookInfo> borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException;
-    void backBook(Integer copy_id)throws SQLException;
+
+    /**
+     *false代表华庆除sql以外的错误以及该本书以及在库的情况，true代表执行成功
+     * @param copy_id
+     * @return
+     * @throws SQLException
+     */
+    boolean backBook(Integer copy_id)throws SQLException;
     void updateAcquisitionByCopyID(Integer copy_id, Date date) throws SQLException;
 
     void updateBookLocationByCopyID(Integer copy_id, String location) throws SQLException;  //需要回滚
