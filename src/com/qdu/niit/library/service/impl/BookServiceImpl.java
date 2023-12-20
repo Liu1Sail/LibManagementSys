@@ -4,6 +4,7 @@ import com.qdu.niit.library.dao.BookRepositorySQLDao;
 import com.qdu.niit.library.dao.ReturningSQLDao;
 import com.qdu.niit.library.dao.imple.BookRepositorySQLDaoImpl;
 import com.qdu.niit.library.dao.imple.ReturningSQLDaoImpl;
+import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.entity.Borrowing;
 import com.qdu.niit.library.entity.Returning;
@@ -136,7 +137,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ArrayList<BookInfo> getBookInfoByAuthor(String author) throws SQLException {
+    public ArrayList<Book> getBookInfoByAuthor(String author) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthor(author);
@@ -149,17 +150,17 @@ public class BookServiceImpl implements BookService {
             }
             catch (Exception e2)
             {
-                return new ArrayList<BookInfo>();
+                return new ArrayList<Book>();
             }
         }
         catch (Exception e2)
         {
-            return new ArrayList<BookInfo>();
+            return new ArrayList<Book>();
         }
     }
 
     @Override
-    public ArrayList<BookInfo> getBookInfoByTitle(String title) throws SQLException {
+    public ArrayList<Book> getBookInfoByTitle(String title) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByTitle(title);
@@ -172,17 +173,17 @@ public class BookServiceImpl implements BookService {
             }
             catch (Exception e2)
             {
-                return new ArrayList<BookInfo>();
+                return new ArrayList<Book>();
             }
         }
         catch (Exception e2)
         {
-            return new ArrayList<BookInfo>();
+            return new ArrayList<Book>();
         }
     }
 
     @Override
-    public ArrayList<BookInfo> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException {
+    public ArrayList<Book> getBookInfoByAuthorAndTitle(String author, String title) throws SQLException {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             return apollo.getBookByAuthorAndTitle(author,title);
@@ -195,24 +196,25 @@ public class BookServiceImpl implements BookService {
             }
             catch (Exception e2)
             {
-                return new ArrayList<BookInfo>();
+                return new ArrayList<Book>();
             }
         }
         catch (Exception e2)
         {
-            return new ArrayList<BookInfo>();
+            return new ArrayList<Book>();
         }
     }
 
-    /**
-     * 先执行刘依洋的函数，如果出错则停止，然后执行华庆的函数，如果出错，则从刘依洋处删除已经添加进去的记录
-     * @param copy_id
-     * @param end_time LocalDateTime类型
-     * @throws SQLException
-     */
+    //先执行刘依洋的函数，如果出错则停止，然后执行华庆的函数，如果出错，则从刘依洋处删除已经添加进去的记录
+
     @Override
     public ArrayList<BookInfo> borrowingBook(Integer copy_id, LocalDateTime end_time) throws SQLException {
         try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            if(!apollo.getOnShelfStatus(copy_id))
+            {
+                return null;
+            }
             UserService fan = UserServiceImpl.getInstance();
             Borrowing in = new Borrowing(fan.getLocalUser().getUID(),copy_id, LocalDateTime.now(),end_time);
             BorrowingService lyy = new BorrowingServiceImpl();
@@ -245,10 +247,6 @@ public class BookServiceImpl implements BookService {
         }  catch (SQLException e) {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
-                if(true)
-                {
-                    //等待华庆的完善
-                }
                 apollo.changeOnShelfStatus(copy_id);
                 return apollo.getBookByCopyID(copy_id);
             } catch (SQLException e1) {
@@ -269,17 +267,17 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    /**
-     * 先执行刘依洋的函数，如果出错则停止，然后执行华庆的函数，如果出错，则从刘依洋处删除已经添加进去的记录
-     * @param copy_id
-     * @throws SQLException
-     */
+     //先执行刘依洋的函数，如果出错则停止，然后执行华庆的函数，如果出错，则从刘依洋处删除已经添加进去的记录
     @Override
-    public void backBook(Integer copy_id) throws SQLException {
+    public boolean backBook(Integer copy_id) throws SQLException {
         LocalDateTime use = LocalDateTime.now();
         try {
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            if(apollo.getOnShelfStatus(copy_id))
+            {
+                return false;
+            }
             UserService fan = UserServiceImpl.getInstance();
-
             Returning in = new Returning(fan.getLocalUser().getUID(),copy_id,use);
             ReturningService lyy = new ReturningServiceImpl();
             lyy.insert(in);
@@ -307,11 +305,13 @@ public class BookServiceImpl implements BookService {
         try {
             BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
             apollo.changeOnShelfStatus(copy_id);
+            return true;
         }  catch (SQLException e)
         {
             try {
                 BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
                 apollo.changeOnShelfStatus(copy_id);
+                return true;
             }catch (SQLException e1)
             {
                 //执行回滚
@@ -322,13 +322,13 @@ public class BookServiceImpl implements BookService {
             }
             catch (Exception e2)
             {
-
+                return false;
             }
 
         }
         catch (Exception e2)
         {
-
+            return false;
         }
     }
 
