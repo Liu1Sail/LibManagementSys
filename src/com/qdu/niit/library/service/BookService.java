@@ -15,16 +15,16 @@ public interface BookService {
      * @param in
      * @throws SQLException
      * @throws InstantiationException
-     * @throws ObjectHaveNoAttribute
+     * @throws ObjectHaveNoAttribute//
      */
-    void Bookstorage(ArrayList<BookInfo> in)throws SQLException, InstantiationException, ObjectHaveNoAttribute;
+    void BookAdd(ArrayList<BookInfo> in)throws SQLException, InstantiationException, ObjectHaveNoAttribute;
 
     /**
      * 删除书本,不是借书，直接移除
      * @param copy_ids
      * @throws SQLException
      */
-    void Bookoutbound(ArrayList<Integer> copy_ids) throws SQLException;
+    void BookDelete(ArrayList<Integer> copy_ids) throws SQLException;
 
     /**
      * 根据CopyID查找
@@ -56,7 +56,7 @@ public interface BookService {
      * @return
      * @throws SQLException
      */
-    ArrayList<Book> getBookInfoByAuthor(String author) throws SQLException;
+    ArrayList<Book> getBookByAuthor(String author) throws SQLException;
 
     /**
      * 根据title查找
