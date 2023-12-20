@@ -476,7 +476,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ArrayList<BookInfo> getCopyIdByBookId(Integer BookId) throws SQLException {
         try {
-            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();
+            BookRepositorySQLDao apollo = new BookRepositorySQLDaoImpl();//
             return apollo.getBookByBookID(BookId);
         }catch (SQLException e)
         {

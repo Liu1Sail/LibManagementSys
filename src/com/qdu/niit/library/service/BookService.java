@@ -15,7 +15,7 @@ public interface BookService {
      * @param in
      * @throws SQLException
      * @throws InstantiationException
-     * @throws ObjectHaveNoAttribute
+     * @throws ObjectHaveNoAttribute//
      */
     void BookAdd(ArrayList<BookInfo> in)throws SQLException, InstantiationException, ObjectHaveNoAttribute;
 
