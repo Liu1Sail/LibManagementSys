@@ -102,5 +102,5 @@ public interface BookService {
     void updateReceiptDateByBookID(Integer book_id, Date date) throws SQLException;
 
     void updateGenreByBookID(Integer book_id, String genre) throws SQLException;
-    ArrayList<BookInfo>getCopyIdByBookId(Integer BookId)throws SQLException;
+    ArrayList<BookInfo>getCopyIdByBookId(Integer BookId)throws SQLException;//
 }
