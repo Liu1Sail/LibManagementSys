@@ -90,18 +90,18 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
             var bookInfo = new BookInfo(name.getInputText(), isbn.getInputText(), author.getInputText(),
                     publisher.getInputText(), genre.getInputText(), nowDate, nowDate,
                     bookLocation.getInputText(), "301", true);
-            var bookList = new ArrayList<BookInfo>();
-            bookList.add(bookInfo);
-            try {
-                bookServiceImpl.Bookstorage(bookList);
-                //SwingWorker调用中间层
-                var resultList = bookServiceImpl.getBookInfoByTitle(name.getInputText());
-                resetInputContent();
-                if (resultList != null) {
-                    if (!resultList.isEmpty()) {
-                        String[][] rowData = new String[resultList.size()][8];
-                        String[] columnName = new String[]{"图书编号", "书名", "ISBN", "作者", "出版社", "入库时间", "类型", "书本位置"};
-                        for (int i = 0; i < resultList.size(); i++) {
+//            var bookList = new ArrayList<BookInfo>();
+//            bookList.add(bookInfo);
+//            try {
+//                bookServiceImpl.Bookstorage(bookList);
+//                //SwingWorker调用中间层
+//                var resultList = bookServiceImpl.getBookInfoByTitle(name.getInputText());
+//                resetInputContent();
+//                if (resultList != null) {
+//                    if (!resultList.isEmpty()) {
+//                        String[][] rowData = new String[resultList.size()][8];
+//                        String[] columnName = new String[]{"图书编号", "书名", "ISBN", "作者", "出版社", "入库时间", "类型", "书本位置"};
+//                        for (int i = 0; i < resultList.size(); i++) {
 //                            BookInfo tmp = resultList.get(i);
 //                            Date tmpDate = tmp.getReceipt_date();
 //                            rowData[i][0] = String.valueOf(tmp.getCopy_id());
@@ -112,17 +112,17 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
 //                            rowData[i][5] = tmpDate.getYear() + 1900 + "-" + (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate();
 //                            rowData[i][6] = tmp.getGenre();
 //                            rowData[i][7] = tmp.getBook_location();
-                        }
-                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
-                    } else {
-                        resultTable.setModel(nonResultTableModel);
-                    }
-                } else {
-                    popMessageDialog.setVisible(true);
-                }
-            } catch (SQLException ex) {
-                popMessageDialog.setVisible(true);
-            }
+//                        }
+//                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
+//                    } else {
+//                        resultTable.setModel(nonResultTableModel);
+//                    }
+//                } else {
+//                    popMessageDialog.setVisible(true);
+//                }
+//            } catch (SQLException ex) {
+//                popMessageDialog.setVisible(true);
+//            }
             //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
         });
         inputBottomPanel.add(titleLabel);

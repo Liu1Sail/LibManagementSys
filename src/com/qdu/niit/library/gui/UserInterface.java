@@ -230,7 +230,7 @@ public class UserInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-//                            case 1->{centerBottomPanel.add(new UserCenterBookSearchAndBorrowPanel(frame));frame.setVisible(true);frame.repaint();}
+                            case 1->{centerBottomPanel.add(new UserCenterBookSearchAndBorrowPanel(frame,user));frame.setVisible(true);frame.repaint();}
                             case 2->{centerBottomPanel.add(new UserCenterBookHistoryPanel(frame,user));frame.repaint();}
                             case 3->{centerBottomPanel.add(new UserCenterBookReturnPanel(frame,user));frame.repaint();}
                         }

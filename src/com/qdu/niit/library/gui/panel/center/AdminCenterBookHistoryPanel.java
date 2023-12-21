@@ -2,9 +2,6 @@ package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.Borrowing;
 import com.qdu.niit.library.entity.Returning;
-import com.qdu.niit.library.entity.User;
-import com.qdu.niit.library.gui.input.InputTextPanel;
-import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.BorrowingService;
 import com.qdu.niit.library.service.ReturningService;

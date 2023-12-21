@@ -2,10 +2,12 @@ package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.Book;
 import com.qdu.niit.library.entity.BookInfo;
-import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
+import com.qdu.niit.library.entity.Borrowing;
+import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.input.InputTextPanel;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.BookServiceImpl;
+import com.qdu.niit.library.service.impl.BorrowingServiceImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -30,16 +32,17 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
     private final InputTextPanel bookNameAndAuthorNameInput;
     private final InputTextPanel bookNameAndAuthorAuthorInput;
     private int nowTabNum = 1;
-    private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
     private final JDialog popMessageDialog;
-    private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
+    private final NonResultTableModel nonResultTableModel = new NonResultTableModel();
+    private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
+    private final BorrowingServiceImpl borrowServiceImpl = new BorrowingServiceImpl();
     /**
      * 借阅期限，单位天
      */
-    private static final int borrowTimeLimit=60;
+    private static final int borrowTimeLimit = 60;
 
-    public UserCenterBookSearchAndBorrowPanel(Frame frame) {
-        JTable resultTable=new JTable();
+    public UserCenterBookSearchAndBorrowPanel(Frame frame, User user) {
+        JTable resultTable = new JTable();
         resultTable.setRowHeight(30);
         resultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         popMessageDialog = new JDialog(frame, true);
@@ -85,46 +88,50 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570, 145, 130, 35);
         defineButton.addActionListener(e -> {
-            ArrayList<Book> resultBookList=null;
+            ArrayList<Book> resultBookList = null;
             try {
                 switch (nowTabNum) {
                     case 1 -> {
                         var name = bookNameInput.getInputText();
-                        resultBookList=bookServiceImpl.getBookByTitle(name);
+                        resultBookList = bookServiceImpl.getBookByTitle(name);
                     }
                     case 2 -> {
                         var author = bookAuthorInput.getInputText();
-                        resultBookList=bookServiceImpl.getBookByAuthor(author);
+                        resultBookList = bookServiceImpl.getBookByAuthor(author);
                     }
                     case 3 -> {
                         var author = bookNameAndAuthorAuthorInput.getInputText();
                         var name = bookNameAndAuthorNameInput.getInputText();
-                        resultBookList=bookServiceImpl.getBookByAuthorAndTitle(author, name);
+                        resultBookList = bookServiceImpl.getBookByAuthorAndTitle(author, name);
                     }
                 }
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
             }
-            if(resultBookList!=null){
-                if(!resultBookList.isEmpty()){
-                    ArrayList<BookInfo> copyList=getBookUnBorrowed(resultBookList);
+            if (resultBookList != null) {
+                if (!resultBookList.isEmpty()) {
+                    ArrayList<BookInfo> copyList = getBookUnBorrowed(resultBookList);
                     if (copyList != null) {
-                        String[][] rowData=new String[resultBookList.size()][7];
-                        String[] columnName=new String[]{"书本编号", "书名", "ISBN", "作者", "出版社", "出版时间", "类型"};
-                        for(int i=0;i<copyList.size();i++){
-
+                        String[][] rowData = new String[copyList.size()][7];
+                        String[] columnName = new String[]{"书本编号", "书名", "ISBN", "作者", "出版社", "出版时间", "类型"};
+                        for (int i = 0; i < copyList.size(); i++) {
+                            BookInfo tmp = copyList.get(i);
+                            rowData[i][0] = String.valueOf(tmp.getCopy_id());
+                            rowData[i][1] = tmp.getTitle();
+                            rowData[i][2] = tmp.getIsbn();
+                            rowData[i][3] = tmp.getAuthor();
+                            rowData[i][4] = tmp.getPublisher();
+                            rowData[i][5] = String.valueOf(tmp.getReceipt_date());
+                            rowData[i][6] = tmp.getGenre();
                         }
-                        resultTable.setModel(new DefaultTableModel(rowData,columnName));
-                    }
-                    else{
+                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
+                    } else {
                         resultTable.setModel(nonResultTableModel);
                     }
-                }
-                else{
+                } else {
                     resultTable.setModel(nonResultTableModel);
                 }
-            }
-            else{
+            } else {
                 popMessageDialog.setVisible(true);
             }
             //获取信息
@@ -136,35 +143,39 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
         inputBottomPanel.add(defineButton);
 
         //结果显示区域
-        var resultDisplayPanel=new JPanel();
-        resultDisplayPanel.setBounds(40,280,720,300);
+        var resultDisplayPanel = new JPanel();
+        resultDisplayPanel.setBounds(40, 280, 720, 300);
         resultDisplayPanel.setBackground(Color.WHITE);
         resultDisplayPanel.setLayout(null);
         this.add(resultDisplayPanel);
-        var resultButtonPanel=new JPanel();
-        resultButtonPanel.setBounds(0,0,720,50);
+        var resultButtonPanel = new JPanel();
+        resultButtonPanel.setBounds(0, 0, 720, 50);
         resultButtonPanel.setBackground(Color.WHITE);
         resultDisplayPanel.add(resultButtonPanel);
-        var borrowButton=new JButton("借阅");
-        borrowButton.setBounds(50,5,80,40);
+        var borrowButton = new JButton("借阅");
+        borrowButton.setBounds(50, 5, 80, 40);
         borrowButton.addActionListener(e -> {
-            int selectedRow=resultTable.getSelectedRows()[0];
-            int copyId= Integer.parseInt((String) resultTable.getValueAt(selectedRow,0));
-            Calendar nowCal=Calendar.getInstance();
-            LocalDateTime localDateTime= LocalDateTime.of(nowCal.get(Calendar.YEAR),nowCal.get(Calendar.MONTH),
+            int selectedRow = resultTable.getSelectedRows()[0];
+            int copyId = Integer.parseInt((String) resultTable.getValueAt(selectedRow, 0));
+            Calendar nowCal = Calendar.getInstance();
+            LocalDateTime localDateTime = LocalDateTime.of(nowCal.get(Calendar.YEAR), nowCal.get(Calendar.MONTH),
                     nowCal.get(Calendar.DATE), nowCal.get(Calendar.HOUR),
                     nowCal.get(Calendar.MINUTE), nowCal.get(Calendar.SECOND));
-            LocalDateTime endDateTime=localDateTime.plusDays(borrowTimeLimit);
-            //添加节约时间选择
+            LocalDateTime endDateTime = localDateTime.plusDays(borrowTimeLimit);
+            //添加借阅时间选择
             try {
-                bookServiceImpl.borrowingBook(copyId,endDateTime);
+                bookServiceImpl.borrowingBook(copyId, endDateTime);
+                //#
+                System.out.println(user.getUID());
+                //
+                borrowServiceImpl.insert(new Borrowing(user.getUID(),copyId,localDateTime,endDateTime));
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
             }
         });
         resultButtonPanel.add(borrowButton);
-        var resultScrollPane=new JScrollPane(resultTable);
-        resultScrollPane.setBounds(0,50,720,250);
+        var resultScrollPane = new JScrollPane(resultTable);
+        resultScrollPane.setBounds(0, 50, 720, 250);
         resultScrollPane.getViewport().setBackground(Color.WHITE);
         resultDisplayPanel.add(resultScrollPane);
         //搜索切换选项卡
@@ -248,14 +259,15 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
             }
         }
     }
-    public ArrayList<BookInfo> getBookUnBorrowed(ArrayList<Book> bookList){
-        ArrayList<BookInfo> copyList=new ArrayList<>();
-        for (Book a:bookList){
+
+    public ArrayList<BookInfo> getBookUnBorrowed(ArrayList<Book> bookList) {
+        ArrayList<BookInfo> copyList = new ArrayList<>();
+        for (Book a : bookList) {
             ArrayList<BookInfo> allCopyOfBookList;
             try {
-                allCopyOfBookList=bookServiceImpl.getBookInfoByBookID(a.getBook_id());
-                for (BookInfo b:allCopyOfBookList){
-                    if(b.getOn_shelf_status()){
+                allCopyOfBookList = bookServiceImpl.getBookInfoByBookID(a.getBook_id());
+                for (BookInfo b : allCopyOfBookList) {
+                    if (b.getOn_shelf_status()) {
                         copyList.add(b);
                     }
                 }

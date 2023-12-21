@@ -6,6 +6,7 @@ import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.BorrowingService;
 import com.qdu.niit.library.service.ReturningService;
+import com.qdu.niit.library.service.impl.BookServiceImpl;
 import com.qdu.niit.library.service.impl.BorrowingServiceImpl;
 import com.qdu.niit.library.service.impl.ReturningServiceImpl;
 
@@ -30,7 +31,7 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
     private final NonResultTableModel nonResultTableModel = new NonResultTableModel();
     private final JDialog popMessageDialog;
     private final BorrowingServiceImpl borrowingServiceImpl = new BorrowingServiceImpl();
-    private final ReturningServiceImpl returningServiceImpl = new ReturningServiceImpl();
+    private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
 
     public UserCenterBookReturnPanel(Frame frame, User user) {
         popMessageDialog = new JDialog(frame, true);
@@ -77,13 +78,13 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
         resultBottomPanel.add(returnBookButton);
         returnBookButton.addActionListener(e -> {
             int selectedRow=resultDisplayTable.getSelectedRow();
-            int selectedBookId= Integer.parseInt((String) resultDisplayTable.getValueAt(selectedRow,0));
+            int selectedCopyId= Integer.parseInt((String) resultDisplayTable.getValueAt(selectedRow,0));
             try {
-                //删除借书记录，添加还书记录
-                borrowingServiceImpl.deleteByBid(selectedBookId);
+                //删除借书记录，修改在架状态，添加还书记录
+                borrowingServiceImpl.deleteByBid(selectedCopyId);
                 Calendar nowCal=Calendar.getInstance();
                 LocalDateTime localDateTime=LocalDateTime.now();
-                returningServiceImpl.insert(new Returning(user.getUID(),selectedBookId,localDateTime));
+                bookServiceImpl.backBook(selectedCopyId);
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
             }
