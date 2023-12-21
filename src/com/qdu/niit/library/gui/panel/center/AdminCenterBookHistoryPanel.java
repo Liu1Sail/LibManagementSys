@@ -2,7 +2,6 @@ package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.Borrowing;
 import com.qdu.niit.library.entity.Returning;
-import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.BorrowingService;
 import com.qdu.niit.library.service.ReturningService;
@@ -22,14 +21,13 @@ import java.util.Objects;
  * @date 2023/11/22
  */
 @SuppressWarnings("unused")
-public class UserCenterBookHistoryPanel extends centerPanelModel {
-    private final User user;
+public class AdminCenterBookHistoryPanel extends centerPanelModel {
     private final BorrowingService borrowService = new BorrowingServiceImpl();
     private final ReturningService returnService = new ReturningServiceImpl();
     private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
     private final JDialog popMessageDialog;
 
-    public UserCenterBookHistoryPanel(Frame frame,User user) {
+    public AdminCenterBookHistoryPanel(Frame frame) {
         popMessageDialog = new JDialog(frame, true);
         popMessageDialog.setLocationRelativeTo(null);
         popMessageDialog.setSize(300, 200);
@@ -48,7 +46,6 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
         popMessageButtonPanel.add(popMessageButtonExit);
         popMessageButtonExit.addActionListener(e -> frame.dispose());
         popMessageDialog.add(popMessageButtonPanel,BorderLayout.SOUTH);
-        this.user = user;
         var resultBottomPanel = new JPanel();
         resultBottomPanel.setBounds(40, 40, 720, 560);
         resultBottomPanel.setBackground(Color.WHITE);
@@ -112,7 +109,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
      */
     public DefaultTableModel getBorrowHistory() throws SQLException {
         Borrowing[] borrowHistory;
-        borrowHistory = borrowService.findAllByUid(user.getUID());
+        borrowHistory = borrowService.findAllByUid(20);
         if (borrowHistory != null) {
             String[][] rowData = new String[borrowHistory.length][3];
             String[] columnName = new String[]{"图书编号", "借阅开始时间", "借阅结束时间"};//暂时不显示书名
@@ -131,7 +128,7 @@ public class UserCenterBookHistoryPanel extends centerPanelModel {
      */
     public DefaultTableModel getReturnHistory() throws SQLException {
         Returning[] returnHistory;
-        returnHistory = returnService.findAllByUid(user.getUID());
+        returnHistory = returnService.findAllByUid(20);
         if (returnHistory != null) {
             String[][] rowData = new String[returnHistory.length][2];
             String[] columnName = new String[]{"图书编号", "还书时间"};//暂时不显示书名

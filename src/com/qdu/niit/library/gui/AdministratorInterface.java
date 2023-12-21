@@ -203,11 +203,11 @@ public class AdministratorInterface extends ResizeFrame {
                 switch (childOption.panelGroup){
                     case 1->{
                         switch(childOption.panelNumber){
-                            case 1->{centerBottomPanel.add(new AdminCenterBookAddPanel());frame.repaint();}
+                            case 1->{centerBottomPanel.add(new AdminCenterBookAddPanel(frame));frame.repaint();}
                             case 2->{centerBottomPanel.add(new AdminCenterBookDeletePanel());frame.repaint();}
                             case 3->{centerBottomPanel.add(new AdminCenterBookModifyPanel());frame.repaint();}
                             case 4->{centerBottomPanel.add(new AdminCenterBookSearchPanel());frame.repaint();}
-                            case 5->{centerBottomPanel.add(new AdminCenterBookBorrowPanel());frame.repaint();}
+                            case 5->{centerBottomPanel.add(new AdminCenterBookHistoryPanel(frame));frame.repaint();}
                         }
                     }
                     case 2->{
