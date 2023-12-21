@@ -285,8 +285,8 @@ public class UserCenterRoomPanel {
             return;
         }
         for (int i = 0; i < receive.length; i++) {
-            save[receive[i].getBid() - 1].setColorFlag(0);
-            save[receive[i].getBid() - 1].repaint();
+            save[receive[i].getBid()].setColorFlag(0);
+            save[receive[i].getBid()].repaint();
         }
     }
 
