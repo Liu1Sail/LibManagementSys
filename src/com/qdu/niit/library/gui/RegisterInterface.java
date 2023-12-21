@@ -474,6 +474,7 @@ public class RegisterInterface extends JFrame {
             inputTextHandle.setGender(genderNumber);
             inputTextHandle.setPhoneNumber(phoneInput.getText());
             inputTextHandle.setEmailAddress(emailInput.getText());
+            inputTextHandle.setBirthday(birthdayInput.getText());
             if (inputTextHandle.checkInputText() == InputTextHandle.RIGHT) {
                 UserInfo.Gender gender;
                 if(genderNumber==0){
@@ -493,9 +494,10 @@ public class RegisterInterface extends JFrame {
                         inputTextHandle.getPhoneNumber(),inputTextHandle.getEmailAddress());
                 if(uid==-1){
                     popMessage.setTitle("注册失败");
-                    popMessageLabel.setText("注册因系统问题失败，请稍后重试");
+//                    popMessageLabel.setText("注册因系统问题失败，请稍后重试");
+                    popMessageLabel.setText("您的用户名与他人重复，请修改用户名");
                     popMessage.setVisible(true);
-                    frame.dispose();
+//                    frame.dispose();
                 }
                 else{
                     popMessage.setTitle("注册成功！");
@@ -611,13 +613,14 @@ public class RegisterInterface extends JFrame {
         public InputTextHandle() {
         }
 
-        public InputTextHandle(String name, String password, String passwordAgain, int gender, String phoneNumber, String emailAddress) {
+        public InputTextHandle(String name, String password, String passwordAgain, int gender, String phoneNumber, String emailAddress,String birthday) {
             this.name = name;
             this.password = password;
             this.passwordAgain = passwordAgain;
             this.gender = gender;
             this.phoneNumber = phoneNumber;
             this.emailAddress = emailAddress;
+            this.birthday=birthday;
         }
 
         public int checkInputText() {

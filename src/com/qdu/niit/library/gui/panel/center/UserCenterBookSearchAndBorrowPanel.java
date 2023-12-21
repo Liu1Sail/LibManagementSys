@@ -165,9 +165,6 @@ public class UserCenterBookSearchAndBorrowPanel extends centerPanelModel {
             //添加借阅时间选择
             try {
                 bookServiceImpl.borrowingBook(copyId, endDateTime);
-                //#
-                System.out.println(user.getUID());
-                //
                 borrowServiceImpl.insert(new Borrowing(user.getUID(),copyId,localDateTime,endDateTime));
             } catch (SQLException ex) {
                 popMessageDialog.setVisible(true);
