@@ -15,7 +15,7 @@ import java.awt.*;
 public class InputTextPanel extends JPanel {
     private final JLabel textLabel = new JLabel();
     private final JTextField inputField = new JTextField();
-    private final Font defaultFont = new Font("宋体", Font.PLAIN, 18);
+    public static final Font defaultFont = new Font("宋体", Font.PLAIN, 18);
 
     public InputTextPanel(String text) {
         var chProcess = CharacterProcess.getInstance(text);
