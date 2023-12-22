@@ -69,6 +69,7 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         var adminOrUserFont = new Font("宋体", Font.PLAIN, 16);
         var adminOrUserPanel = new JPanel();
         adminOrUser = new ButtonGroupWithNum();
+        adminOrUser.setSelectedButtonNum(2);
         adminOrUserPanel.setBounds(15, 155, 200, 30);
         adminOrUserPanel.setOpaque(false);
         JRadioButton isAdmin = new JRadioButton("管理员");
@@ -102,6 +103,7 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         genderTipLabel.setFont(InputTextPanel.defaultFont);
         genderPanel.add(genderTipLabel);
         genderButtonGroup = new ButtonGroupWithNum();
+        genderButtonGroup.setSelectedButtonNum(1);
         genderPanel.setBounds(15, 100, 200, 30);
         genderPanel.setOpaque(false);
         JRadioButton isMale = new JRadioButton("男");
