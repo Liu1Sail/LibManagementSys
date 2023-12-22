@@ -215,7 +215,7 @@ public class AdministratorInterface extends ResizeFrame {
                             case 1->{centerBottomPanel.add(new AdminCenterAccountAddPanel(frame));frame.repaint();}
 //                            case 2->{centerBottomPanel.add(new AdminCenterAccountDeletePanel(frame));frame.repaint();}
                             case 2->{centerBottomPanel.add(new AdminCenterAccountModifyPanel());frame.repaint();}
-                            case 3->{centerBottomPanel.add(new AdminCenterAccountSearchPanel());frame.repaint();}
+                            case 3->{centerBottomPanel.add(new AdminCenterAccountSearchPanel(frame));frame.repaint();}
                         }
                     }
                 }

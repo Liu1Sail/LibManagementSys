@@ -1,7 +1,8 @@
-package com.qdu.niit.library.gui.panel.center;
+package com.qdu.niit.library.gui.removed;
 
 import com.qdu.niit.library.gui.input.InputTextPanel;
 import com.qdu.niit.library.gui.panel.ResultDisplayArea;
+import com.qdu.niit.library.gui.panel.center.centerPanelModel;
 import com.qdu.niit.library.gui.tool.ButtonGroupWithNum;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
 

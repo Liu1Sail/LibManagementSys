@@ -201,9 +201,9 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         inputBottomPanel.add(adminOrUserPanel);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
+
         String[][] rowData = new String[][]{};
         String[] columnName = new String[]{"账号", "用户名", "密码", "年龄", "性别", "手机号", "邮箱"};
-
         var resultDisplayPanel = new JPanel();
         resultDisplayPanel.setBounds(40, 280, 720, 300);
         resultDisplayPanel.setBackground(Color.WHITE);
