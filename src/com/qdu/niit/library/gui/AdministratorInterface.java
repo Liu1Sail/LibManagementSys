@@ -149,21 +149,21 @@ public class AdministratorInterface extends ResizeFrame {
         accountOption.add(accountAddChildOption);
 //        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除账户",4,2,2);
 //        accountOption.add(accountDeleteChildOption);
-        var accountModifyChildOption = getChildOption(sideBarOptionFont,160,"修改账户信息",3,2,2);
-        accountOption.add(accountModifyChildOption);
-        var accountSearchChildOption = getChildOption(sideBarOptionFont,240,"搜索账户信息",3,3,2);
+//        var accountModifyChildOption = getChildOption(sideBarOptionFont,160,"修改账户信息",3,2,2);
+//        accountOption.add(accountModifyChildOption);
+        var accountSearchChildOption = getChildOption(sideBarOptionFont,160,"搜索账户信息",2,2,2);
         accountOption.add(accountSearchChildOption);
         accountOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                accountOption.setBounds(0,80,200,320);
+                accountOption.setBounds(0,80,200,240);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=320){
+                if(x<0||x>=200||y<0||y>=240){
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     accountOption.setBounds(0,80,200,80);
                 }
@@ -214,8 +214,8 @@ public class AdministratorInterface extends ResizeFrame {
                         switch(childOption.panelNumber){
                             case 1->{centerBottomPanel.add(new AdminCenterAccountAddPanel(frame));frame.repaint();}
 //                            case 2->{centerBottomPanel.add(new AdminCenterAccountDeletePanel(frame));frame.repaint();}
-                            case 2->{centerBottomPanel.add(new AdminCenterAccountModifyPanel());frame.repaint();}
-                            case 3->{centerBottomPanel.add(new AdminCenterAccountSearchPanel(frame));frame.repaint();}
+//                            case 2->{centerBottomPanel.add(new AdminCenterAccountModifyPanel(frame));frame.repaint();}
+                            case 2->{centerBottomPanel.add(new AdminCenterAccountSearchPanel(frame));frame.repaint();}
                         }
                     }
                 }
