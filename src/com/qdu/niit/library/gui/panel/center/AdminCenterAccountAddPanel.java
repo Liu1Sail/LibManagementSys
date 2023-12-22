@@ -3,6 +3,7 @@ package com.qdu.niit.library.gui.panel.center;
 import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.gui.input.InputPasswordPanel;
 import com.qdu.niit.library.gui.input.InputTextPanel;
+import com.qdu.niit.library.gui.tool.ButtonGroupWithNum;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
@@ -156,7 +157,7 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
                         email.getInputText(), birthday.getInputText());
                 if (inputTextHandle.checkInputText() == 0) {
                     UserInfo.Gender tmpGender;
-                    if (genderButtonGroup.selectedButtonNum == 1) {
+                    if (genderButtonGroup.getSelectedButtonNum() == 1) {
                         tmpGender = UserInfo.Gender.MALE;
                     } else {
                         tmpGender = UserInfo.Gender.FEMALE;
@@ -229,19 +230,6 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         email.setInputText("");
         resultTipLabel.setVisible(false);
     }
-
-    private static class ButtonGroupWithNum extends ButtonGroup {
-        private int selectedButtonNum = 1;
-
-        public int getSelectedButtonNum() {
-            return selectedButtonNum;
-        }
-
-        public void setSelectedButtonNum(int selectedButtonNum) {
-            this.selectedButtonNum = selectedButtonNum;
-        }
-    }
-
     @SuppressWarnings("unused")
     private static class InputTextHandle {
         private String name;

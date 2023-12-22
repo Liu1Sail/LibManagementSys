@@ -93,7 +93,7 @@ public class UserInterface extends ResizeFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
+                if(x<0||x>=200||y<0||y>=160){
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     accountOption.setBounds(0,80,200,80);
                 }
@@ -137,8 +137,6 @@ public class UserInterface extends ResizeFrame {
         centerBottomPanel.setBackground(new Color(236,238,245));
         centerBottomPanel.setLayout(null);
         bottomPanel.add(centerBottomPanel,BorderLayout.CENTER);
-        //测试代码区
-        //
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -180,7 +178,7 @@ public class UserInterface extends ResizeFrame {
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改个人信息",2,1,2);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"修改个人信息",1,1,2);
         accountOption.add(accountAddChildOption);
         return accountOption;
     }
