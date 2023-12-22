@@ -3,8 +3,7 @@ package com.qdu.niit.library.gui.panel.center;
 import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.gui.input.InputPasswordPanel;
 import com.qdu.niit.library.gui.input.InputTextPanel;
-import com.qdu.niit.library.gui.panel.ResultDisplayArea;
-import com.qdu.niit.library.gui.table.NonResultTableModel;
+import com.qdu.niit.library.gui.tool.ButtonGroupWithNum;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
 
 import javax.swing.*;
@@ -29,8 +28,10 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
     private final InputTextPanel phone;
     private final InputTextPanel email;
     private final ButtonGroupWithNum adminOrUser;
-    private final UserServiceImpl userServiceImpl=UserServiceImpl.getInstance();
+    private final UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private final JDialog popMessageDialog;
+    private final JLabel resultTipLabel = new JLabel("注册成功！");
+
     public AdminCenterAccountAddPanel(JFrame frame) {
         JTable resultTable = new JTable();
         resultTable.setRowHeight(30);
@@ -66,53 +67,55 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         phone = new InputTextPanel("手机号：");
         email = new InputTextPanel("邮箱：");
 
-        var adminOrUserFont=new Font("宋体",Font.PLAIN,16);
-        var adminOrUserPanel=new JPanel();
-        adminOrUser =new ButtonGroupWithNum();
-        adminOrUserPanel.setBounds(15,155,200,30);
+        var adminOrUserFont = new Font("宋体", Font.PLAIN, 16);
+        var adminOrUserPanel = new JPanel();
+        adminOrUser = new ButtonGroupWithNum();
+        adminOrUser.setSelectedButtonNum(2);
+        adminOrUserPanel.setBounds(15, 155, 200, 30);
         adminOrUserPanel.setOpaque(false);
         JRadioButton isAdmin = new JRadioButton("管理员");
-        isAdmin.setBounds(0,0,80,30);
+        isAdmin.setBounds(0, 0, 80, 30);
         isAdmin.setFont(adminOrUserFont);
         isAdmin.setOpaque(false);
-        isAdmin.setSelected(true);
+        isAdmin.setSelected(false);
         isAdmin.setFocusPainted(false);
         isAdmin.addActionListener(e -> adminOrUser.setSelectedButtonNum(1));
         JRadioButton isUser = new JRadioButton("普通用户");
-        isUser.setBounds(80,0,90,30);
+        isUser.setBounds(80, 0, 90, 30);
         isUser.setFont(adminOrUserFont);
         isUser.setOpaque(false);
-        isUser.setSelected(false);
+        isUser.setSelected(true);
         isUser.setFocusPainted(false);
         isUser.addActionListener(e -> adminOrUser.setSelectedButtonNum(2));
         adminOrUser.add(isAdmin);
         adminOrUser.add(isUser);
         adminOrUserPanel.add(isAdmin);
         adminOrUserPanel.add(isUser);
-        var resetButton=new JButton("清空已填信息");
-        var defineButton=new JButton("确认添加账户");
+        var resetButton = new JButton("清空已填信息");
+        var defineButton = new JButton("确认添加账户");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         name.setLocation(15, 35);
         password.setLocation(220, 35);
         birthday.setLocation(440, 35);
-        var genderPanel=new JPanel();
-        var genderTipLabel=new JLabel("性别：");
-        genderTipLabel.setBounds(0,0,60,30);
+        var genderPanel = new JPanel();
+        var genderTipLabel = new JLabel("性别：");
+        genderTipLabel.setBounds(0, 0, 60, 30);
         genderTipLabel.setFont(InputTextPanel.defaultFont);
         genderPanel.add(genderTipLabel);
-        genderButtonGroup =new ButtonGroupWithNum();
-        genderPanel.setBounds(15,100,200,30);
+        genderButtonGroup = new ButtonGroupWithNum();
+        genderButtonGroup.setSelectedButtonNum(1);
+        genderPanel.setBounds(15, 100, 200, 30);
         genderPanel.setOpaque(false);
         JRadioButton isMale = new JRadioButton("男");
-        isMale.setBounds(60,0,45,30);
+        isMale.setBounds(60, 0, 45, 30);
         isMale.setFont(adminOrUserFont);
         isMale.setOpaque(false);
         isMale.setSelected(true);
         isMale.setFocusPainted(false);
         isMale.addActionListener(e -> genderButtonGroup.setSelectedButtonNum(1));
         JRadioButton isFemale = new JRadioButton("女");
-        isFemale.setBounds(105,0,45,30);
+        isFemale.setBounds(105, 0, 45, 30);
         isFemale.setFont(adminOrUserFont);
         isFemale.setOpaque(false);
         isFemale.setSelected(false);
@@ -123,61 +126,70 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         genderPanel.add(isMale);
         genderPanel.add(isFemale);
         phone.setLocation(220, 90);
-        email.setLocation(440,90);
-        resetButton.setBounds(410,145,130,35);
+        email.setLocation(440, 90);
+        resetButton.setBounds(410, 145, 130, 35);
         resetButton.addActionListener(e -> resetInputContent());
-        defineButton.setBounds(570,145,130,35);
+        defineButton.setBounds(570, 145, 130, 35);
         defineButton.addActionListener(e -> {
-            if(adminOrUser.getSelectedButtonNum()==1){
-                int adminAccountNum=-1;
+            if (adminOrUser.getSelectedButtonNum() == 1) {
                 //管理员
-                var inputTextHandle=new InputTextHandle(name.getInputText(),password.getInputText());
-                if(inputTextHandle.superUserCheckInputText()==0){
-                    adminAccountNum=userServiceImpl.superUserRegister(inputTextHandle.getName(),inputTextHandle.getPassword());
-                    if(adminAccountNum!=-1){
-                        String[] columnName=new String[]{"管理员账号","用户名","密码"};
-                        String[][] rowData=new String[][]{{String.valueOf(adminAccountNum),inputTextHandle.getName(),inputTextHandle.getPassword()}};
+                var inputTextHandle = new InputTextHandle(name.getInputText(), password.getInputText());
+                if (inputTextHandle.superUserCheckInputText() == 0) {
+                    int adminAccountNum = userServiceImpl.superUserRegister(inputTextHandle.getName(), inputTextHandle.getPassword());
+                    if (adminAccountNum != -1) {
+                        String[] columnName = new String[]{"管理员账号", "用户名", "密码"};
+                        String[][] rowData = new String[][]{{String.valueOf(adminAccountNum), inputTextHandle.getName(), inputTextHandle.getPassword()}};
                         //暂时直接从界面上显示注册内容
-                        resultTable.setModel(new DefaultTableModel(rowData,columnName));
-                    }
-                    else{
+                        resultTipLabel.setVisible(true);
+                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
+                    } else {
                         popMessageLabel.setText("用户名已被使用，请修改用户名");
                         popMessageDialog.setVisible(true);
                     }
-                }
-                else{
+                } else {
                     popMessageLabel.setText("填写信息存在错误，请按照规定格式填写");
                     popMessageDialog.setVisible(true);
                 }
-            }
-            else{
+            } else {
                 //用户
-                var inputTextHandle=new InputTextHandle(name.getInputText(),password.getInputText(),
+                var inputTextHandle = new InputTextHandle(name.getInputText(), password.getInputText(),
                         genderButtonGroup.getSelectedButtonNum(), phone.getInputText(),
                         email.getInputText(), birthday.getInputText());
-                if(inputTextHandle.checkInputText()==0){
+                if (inputTextHandle.checkInputText() == 0) {
                     UserInfo.Gender tmpGender;
-                    if(genderButtonGroup.selectedButtonNum==1){
-                        tmpGender= UserInfo.Gender.MALE;
-                    }
-                    else{
-                        tmpGender=UserInfo.Gender.FEMALE;
+                    if (genderButtonGroup.getSelectedButtonNum() == 1) {
+                        tmpGender = UserInfo.Gender.MALE;
+                    } else {
+                        tmpGender = UserInfo.Gender.FEMALE;
                     }
                     String[] resultBirthday = inputTextHandle.getBirthday().split("-");
                     Calendar cal = Calendar.getInstance();
-                    int year=Integer.parseInt(resultBirthday[0])-1900;
-                    int month=Integer.parseInt(resultBirthday[1])-1;
-                    int day=Integer.parseInt(resultBirthday[2]);
-                    Date birthday=new Date(year,month,day);
-                    userServiceImpl.register(inputTextHandle.getName(),inputTextHandle.getPassword(),
-                            inputTextHandle.getName(), birthday,tmpGender, inputTextHandle.getPhoneNumber(),
+                    int year = Integer.parseInt(resultBirthday[0]) - 1900;
+                    int month = Integer.parseInt(resultBirthday[1]) - 1;
+                    int day = Integer.parseInt(resultBirthday[2]);
+                    Date birthday = new Date(year, month, day);
+                    int userAccountNum = userServiceImpl.register(inputTextHandle.getName(), inputTextHandle.getPassword(),
+                            inputTextHandle.getName(), birthday, tmpGender, inputTextHandle.getPhoneNumber(),
                             inputTextHandle.getEmailAddress());
-                }
-                else{
+                    if (userAccountNum != -1) {
+                        String genderString = "男";
+                        if (tmpGender == UserInfo.Gender.FEMALE) {
+                            genderString = "女";
+                        }
+                        String[] columnName = new String[]{"账号", "用户名", "密码", "出生日期", "性别", "手机号", "邮箱"};
+                        String[][] rowData = new String[][]{{String.valueOf(userAccountNum), inputTextHandle.getName(), inputTextHandle.getPassword(),
+                                year + 1900 + "-" + month + 1 + "-" + day, genderString, inputTextHandle.phoneNumber, inputTextHandle.emailAddress}};
+                        //暂时直接从界面上显示注册内容
+                        resultTipLabel.setVisible(true);
+                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
+                    } else {
+                        popMessageLabel.setText("用户名已被使用，请修改用户名");
+                        popMessageDialog.setVisible(true);
+                    }
+                } else {
                     popMessageDialog.setVisible(true);
                 }
             }
-            //得到结果查找一次，显示在结果显示区域，并将相同图书信息也显示在结果显示区域
         });
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(name);
@@ -189,47 +201,40 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
         inputBottomPanel.add(adminOrUserPanel);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
-        String[][] rowData=new String[][]{};
-        String[] columnName=new String[]{"账号","用户名","密码","年龄","性别","手机号","邮箱"};
 
-        var resultDisplayPanel=new JPanel();
-        resultDisplayPanel.setBounds(40,280,720,300);
+        String[][] rowData = new String[][]{};
+        String[] columnName = new String[]{"账号", "用户名", "密码", "年龄", "性别", "手机号", "邮箱"};
+        var resultDisplayPanel = new JPanel();
+        resultDisplayPanel.setBounds(40, 280, 720, 300);
         resultDisplayPanel.setBackground(Color.WHITE);
         resultDisplayPanel.setLayout(null);
         this.add(resultDisplayPanel);
-        var resultTipPanel=new JPanel();
-        resultTipPanel.setBounds(0,0,720,50);
+        var resultTipPanel = new JPanel();
+        resultTipPanel.setBounds(0, 0, 720, 50);
         resultTipPanel.setBackground(Color.WHITE);
         resultDisplayPanel.add(resultTipPanel);
-        var resultTipLabel=new JLabel("图书添加成功");
-        var resultScrollPane=new JScrollPane(resultTable);
-        resultScrollPane.setBounds(0,50,720,250);
+        resultTipLabel.setVisible(false);
+        resultTipLabel.setFont(new Font("宋体",Font.PLAIN,20));
+        resultTipPanel.add(resultTipLabel);
+        var resultScrollPane = new JScrollPane(resultTable);
+        resultScrollPane.setBounds(0, 50, 720, 250);
         resultScrollPane.getViewport().setBackground(Color.WHITE);
         resultDisplayPanel.add(resultScrollPane);
     }
-    public void resetInputContent(){
+
+    public void resetInputContent() {
         name.setInputText("");
         password.setInputText("");
         birthday.setInputText("");
         phone.setInputText("");
         email.setInputText("");
-    }
-    private static class ButtonGroupWithNum extends ButtonGroup{
-        private int selectedButtonNum=1;
-
-        public int getSelectedButtonNum() {
-            return selectedButtonNum;
-        }
-
-        public void setSelectedButtonNum(int selectedButtonNum) {
-            this.selectedButtonNum = selectedButtonNum;
-        }
+        resultTipLabel.setVisible(false);
     }
     @SuppressWarnings("unused")
     private static class InputTextHandle {
         private String name;
         private String password;
-//        private String passwordAgain;
+        //        private String passwordAgain;
         private int gender;
         private String phoneNumber;
         private String emailAddress;
@@ -249,17 +254,19 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
 
         public InputTextHandle() {
         }
+
         public InputTextHandle(String name, String password) {
             this.name = name;
             this.password = password;
         }
-        public InputTextHandle(String name, String password, int gender, String phoneNumber, String emailAddress,String birthday) {
+
+        public InputTextHandle(String name, String password, int gender, String phoneNumber, String emailAddress, String birthday) {
             this.name = name;
             this.password = password;
             this.gender = gender;
             this.phoneNumber = phoneNumber;
             this.emailAddress = emailAddress;
-            this.birthday=birthday;
+            this.birthday = birthday;
         }
 
         public int checkInputText() {
@@ -272,9 +279,10 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
             if (!isRightGender()) return WRONG_GENDER;
             if (!isRightPhoneNumber()) return WRONG_PHONE;
             if (!isRightEmail()) return WRONG_EMAIL;
-            if(!isRightBirthday()) return WRONG_BIRTHDAY;
+            if (!isRightBirthday()) return WRONG_BIRTHDAY;
             return RIGHT;
         }
+
         public int superUserCheckInputText() {
             if (!isNameNotShorter()) return WRONG_NAME_SHORT;
             if (!isNameNotLonger()) return WRONG_NAME_LONG;
@@ -333,27 +341,25 @@ public class AdminCenterAccountAddPanel extends centerPanelModel {
                 return false;
             }
             Calendar cal = Calendar.getInstance();
-            int nowYear=cal.get(Calendar.YEAR);
-            int nowMonth=cal.get(Calendar.MONTH);
-            int nowDay=cal.get(Calendar.DATE);
-            int year=Integer.parseInt(result[0]);
-            int month=Integer.parseInt(result[1]);
-            int day=Integer.parseInt(result[2]);
+            int nowYear = cal.get(Calendar.YEAR);
+            int nowMonth = cal.get(Calendar.MONTH);
+            int nowDay = cal.get(Calendar.DATE);
+            int year = Integer.parseInt(result[0]);
+            int month = Integer.parseInt(result[1]);
+            int day = Integer.parseInt(result[2]);
             //年月日不大于当前日期
-            if(year>nowYear||(year==nowYear&&month>nowMonth)||(year==nowYear&&month==nowMonth&&day>nowDay)){
+            if (year > nowYear || (year == nowYear && month > nowMonth) || (year == nowYear && month == nowMonth && day > nowDay)) {
                 return false;
             }
             //除2月以外日正确
-            if(month<1||month>12||((month==4||month==6||month==9||month==11)&&(day<1||day>30))||
-                    ((month==1||month==3||month==5||month==7||month==8||month==10||month==12)&&(day<1||day>31)))
-            {
+            if (month < 1 || month > 12 || ((month == 4 || month == 6 || month == 9 || month == 11) && (day < 1 || day > 30)) ||
+                    ((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && (day < 1 || day > 31))) {
                 return false;
             }
             //判断闰年
-            if(year%400==0||(year%100!=0&&year%4==0)){
+            if (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)) {
                 return month != 2 || (day >= 1 && day <= 29);
-            }
-            else{
+            } else {
                 return month != 2 || (day >= 1 && day <= 28);
             }
         }

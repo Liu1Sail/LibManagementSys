@@ -146,7 +146,7 @@ public class UserCenterRoomPanel {
     private static int[] test = {1, 2, 3, 4, 5, 6, 7};
     private static JButton pushIn;
     private static JComboBox chooseHour;
-    private static final JTextField chooseText = new JTextField("选择借阅时间");
+    private static final JTextField chooseText = new JTextField("选择预约时长");
     private static final JTextField yearText = new JTextField("选择年份");
     private static final JTextField monthText = new JTextField("选择月份");
     private static final JTextField dayText = new JTextField("选择日");

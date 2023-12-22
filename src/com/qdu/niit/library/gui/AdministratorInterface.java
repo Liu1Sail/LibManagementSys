@@ -124,7 +124,7 @@ public class AdministratorInterface extends ResizeFrame {
             @Override
             public void mouseExited(MouseEvent e) {
                 int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
+                if(x<0||x>=200||y<0||y>=480){
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     bookOption.setBounds(0,0,200,80);
                 }
@@ -145,25 +145,25 @@ public class AdministratorInterface extends ResizeFrame {
         accountOptionText.setVerticalAlignment(SwingConstants.CENTER);
         accountOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         accountOption.add(accountOptionText);
-        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"添加账户",4,1,2);
+        var accountAddChildOption = getChildOption(sideBarOptionFont,80,"添加账户",3,1,2);
         accountOption.add(accountAddChildOption);
-        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除账户",4,2,2);
-        accountOption.add(accountDeleteChildOption);
-        var accountModifyChildOption = getChildOption(sideBarOptionFont,240,"修改账户信息",4,3,2);
+//        var accountDeleteChildOption = getChildOption(sideBarOptionFont,160,"删除账户",4,2,2);
+//        accountOption.add(accountDeleteChildOption);
+        var accountModifyChildOption = getChildOption(sideBarOptionFont,160,"修改账户信息",3,2,2);
         accountOption.add(accountModifyChildOption);
-        var accountSearchChildOption = getChildOption(sideBarOptionFont,320,"搜索账户信息",4,4,2);
+        var accountSearchChildOption = getChildOption(sideBarOptionFont,240,"搜索账户信息",3,3,2);
         accountOption.add(accountSearchChildOption);
         accountOption.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                accountOption.setBounds(0,80,200,400);
+                accountOption.setBounds(0,80,200,320);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 int x=e.getX(),y=e.getY();
-                if(x<0||x>=200||y<0||y>=360){
+                if(x<0||x>=200||y<0||y>=320){
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     accountOption.setBounds(0,80,200,80);
                 }
@@ -213,9 +213,9 @@ public class AdministratorInterface extends ResizeFrame {
                     case 2->{
                         switch(childOption.panelNumber){
                             case 1->{centerBottomPanel.add(new AdminCenterAccountAddPanel(frame));frame.repaint();}
-                            case 2->{centerBottomPanel.add(new AdminCenterAccountDeletePanel());frame.repaint();}
-                            case 3->{centerBottomPanel.add(new AdminCenterAccountModifyPanel());frame.repaint();}
-                            case 4->{centerBottomPanel.add(new AdminCenterAccountSearchPanel());frame.repaint();}
+//                            case 2->{centerBottomPanel.add(new AdminCenterAccountDeletePanel(frame));frame.repaint();}
+                            case 2->{centerBottomPanel.add(new AdminCenterAccountModifyPanel());frame.repaint();}
+                            case 3->{centerBottomPanel.add(new AdminCenterAccountSearchPanel(frame));frame.repaint();}
                         }
                     }
                 }

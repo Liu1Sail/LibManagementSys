@@ -2,16 +2,11 @@ package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.BookInfo;
 import com.qdu.niit.library.gui.input.InputTextPanel;
-import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.BookServiceImpl;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
