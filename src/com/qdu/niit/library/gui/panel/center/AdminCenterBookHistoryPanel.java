@@ -26,6 +26,7 @@ public class AdminCenterBookHistoryPanel extends centerPanelModel {
     private final ReturningService returnService = new ReturningServiceImpl();
     private final NonResultTableModel nonResultTableModel=new NonResultTableModel();
     private final JDialog popMessageDialog;
+    private final BorrowingServiceImpl borrowServiceImpl=new BorrowingServiceImpl();
 
     public AdminCenterBookHistoryPanel(Frame frame) {
         popMessageDialog = new JDialog(frame, true);
