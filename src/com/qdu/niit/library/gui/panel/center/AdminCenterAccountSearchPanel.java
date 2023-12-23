@@ -2,7 +2,6 @@ package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.UserInfo;
 import com.qdu.niit.library.gui.input.InputTextPanel;
-import com.qdu.niit.library.gui.panel.ResultDisplayArea;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
 

@@ -11,8 +11,8 @@ import java.awt.*;
  */
 
 public class centerPanelModel extends JPanel {
-    private JPanel panel=this;
     public centerPanelModel() {
+        JPanel panel = this;
         panel.setLayout(null);
         panel.setBounds(0,0,800,640);
         panel.setBackground(new Color(236,238,245));
