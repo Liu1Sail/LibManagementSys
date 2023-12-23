@@ -30,7 +30,7 @@ public class LoginInterface extends JFrame {
     private final Point offsetMouseToFrame = new Point();
     private boolean userAndAdminSwitch = false;
     private final JDialog loginErrorPopMessage = new JDialog(this, true);
-    private final JLabel LoginErrorPopMessageLabel = new JLabel("登陆失败，账号或密码错误!");
+    private static final JLabel LoginErrorPopMessageLabel = new JLabel("登陆失败，账号或密码错误!");
 
     public LoginInterface() {
         loginErrorPopMessage.setLocationRelativeTo(null);
@@ -370,7 +370,7 @@ public class LoginInterface extends JFrame {
         return userPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JFrame frame) {
+    private JPanel getAdminLoginInputPanel(Color textBorderColor, Font textFont, Color textColor, JFrame frame) {
         var adminLoginInputPanel = new JPanel();
         adminLoginInputPanel.setBounds(25, 200, 250, 120);
         adminLoginInputPanel.setLayout(null);
@@ -392,12 +392,12 @@ public class LoginInterface extends JFrame {
         adminInputTextField.setBorder(null);
         adminInputTextField.setFont(textFont);
         adminInputTextField.setForeground(textColor);
-        adminInputTextField.setText("管理员账号");
+        adminInputTextField.setText("管理员用户名");
         adminInputTextField.setOpaque(false);
         adminInputTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (adminInputTextField.getText().equals("管理员账号")) {
+                if (adminInputTextField.getText().equals("管理员用户名")) {
                     adminInputTextField.setText("");
                 }
             }
@@ -405,7 +405,7 @@ public class LoginInterface extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (adminInputTextField.getText().isEmpty()) {
-                    adminInputTextField.setText("管理员账号");
+                    adminInputTextField.setText("管理员用户名");
                 }
             }
         });
@@ -425,7 +425,7 @@ public class LoginInterface extends JFrame {
         var adminPassInputPasswordField = getAdminPassInputPasswordField(textFont, textColor);
         adminPassInputPasswordBorder.add(adminPassInputPasswordField);
         //管理员密码输入框中的登录按钮
-        var adminLoginButton = getAdminLoginButton(frame);
+        var adminLoginButton = getAdminLoginButton(adminInputTextField, adminPassInputPasswordField, frame);
         adminPassInputPasswordBorder.add(adminLoginButton);
         adminLoginInputPanel.add(adminInputTextBorder);
         adminLoginInputPanel.add(adminPassInputPasswordBorder);
@@ -463,7 +463,7 @@ public class LoginInterface extends JFrame {
         return adminPassInputPasswordField;
     }
 
-    private static JPanel getAdminLoginButton(JFrame frame) {
+    private JPanel getAdminLoginButton(JTextField adminInputTextField, JPasswordField adminPassInputPasswordField, JFrame frame) {
         var adminLoginButton = new JPanel() {
             private final Color color = new Color(230, 230, 230);
             private final Color firstColor = new Color(245, 247, 249);
@@ -520,17 +520,25 @@ public class LoginInterface extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //管理员，获取用户名、密码字段
-//                String userId = userInputTextField.getText();
-//                String password = new String(userPassInputPasswordField.getPassword());
-//                System.out.println(userId);
-//                System.out.println(password);
-//                var userServiceImpl = UserServiceImpl.getInstance();
-                //从数据库比较用户用户名，密码
-//                userServiceImpl.login()
-                //若检测通过，跳转到用户开始界面
-                //dispose登录窗口时，登录窗口对象会被销毁，所以使用界面的对象应从外部传入，保证不会在dispose当前窗口时，关闭其他窗口
-                frame.dispose();
+//                管理员，获取用户名、密码字段
+                String adminId = adminInputTextField.getText();
+                String adminPassword = new String(adminPassInputPasswordField.getPassword());
+                if (!Objects.equals(adminId, "管理员用户名") && !Objects.equals(adminPassword, "密码")) {
+                    var userServiceImpl = UserServiceImpl.getInstance();
+//                从数据库比较用户用户名，密码
+                    User user = userServiceImpl.superUserLogin(adminId, adminPassword);
+                    if (user == null) {
+                        LoginErrorPopMessageLabel.setText("登陆失败，账号或密码错误!");
+                        loginErrorPopMessage.setVisible(true);
+                    } else {
+                        //若检测通过，跳转到用户.开始界面
+                        frame.dispose();
+                        new AdministratorInterface();
+                    }
+                } else {
+                    LoginErrorPopMessageLabel.setText("账号或密码不能为空!");
+                    loginErrorPopMessage.setVisible(true);
+                }
 
             }
         });
