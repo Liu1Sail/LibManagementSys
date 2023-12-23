@@ -14,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 李冠良
@@ -165,7 +167,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
                     }
                     case 3 -> {
                         String receiptTime = bookReceiptTimeInput.getInputText();
-                        if(!receiptTime.isEmpty()){
+                        if(!receiptTime.isEmpty()&& Pattern.matches("^[012][0-9]{3}-[0123]{0,1}[0-9]-[0123]{0,1}[0-9]$",receiptTime)){
                             String[] dateStringSplit = receiptTime.split("-");
                             Date inputDate = new Date(Integer.parseInt(dateStringSplit[0]) - 1900,
                                     Integer.parseInt(dateStringSplit[1]) - 1,
@@ -200,7 +202,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
                     }
                     else{
                         if(isInputEmpty==1){
-                            popMessageLabel.setText("输入为空，请在输入信息后搜索！");
+                            popMessageLabel.setText("输入为空或不合法，请检查输入信息！");
                             popMessageDialog.setVisible(true);
                         }
                         else{
@@ -229,6 +231,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
                         else{
                             resultTable.setModel(nonResultTableModel);
                         }
+                        resetInputContent();
                     }
                     else{
                         if(isInputEmpty==1){
@@ -246,7 +249,6 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
                 popMessageLabel.setText("搜索图书信息失败，请检查数据库是否连接");
                 popMessageDialog.setVisible(true);
             }
-            resetInputContent();
         });
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(resetButton);
