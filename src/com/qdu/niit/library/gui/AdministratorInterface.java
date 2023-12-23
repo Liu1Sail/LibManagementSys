@@ -205,7 +205,7 @@ public class AdministratorInterface extends ResizeFrame {
                         switch(childOption.panelNumber){
                             case 1->{centerBottomPanel.add(new AdminCenterBookAddPanel(frame));frame.repaint();frame.setVisible(true);}
                             case 2->{centerBottomPanel.add(new AdminCenterBookDeletePanel(frame));frame.repaint();frame.setVisible(true);}
-                            case 3->{centerBottomPanel.add(new AdminCenterBookModifyPanel());frame.repaint();frame.setVisible(true);}
+                            case 3->{centerBottomPanel.add(new AdminCenterBookModifyPanel(frame));frame.repaint();frame.setVisible(true);}
                             case 4->{centerBottomPanel.add(new AdminCenterBookSearchPanel(frame));frame.repaint();frame.setVisible(true);}
                             case 5->{centerBottomPanel.add(new AdminCenterBookHistoryPanel(frame));frame.repaint();frame.setVisible(true);}
                         }
