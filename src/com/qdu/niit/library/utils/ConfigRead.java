@@ -1,4 +1,4 @@
-package utils;
+package com.qdu.niit.library.utils;
 
 import java.io.FileReader;
 import java.io.IOException;
