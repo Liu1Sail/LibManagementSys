@@ -15,7 +15,7 @@ public interface BorrowingService {
     boolean ifHaveByUid(int uid)throws SQLException;
 
     /**
-     * 仅判断这个书是否被借走
+     * 仅判断这本书是否被借走
      * @param bid 要查找的书的名字
      * @return true代表这本书已被借走,false代表这本书没有被借走
      * @throws SQLException

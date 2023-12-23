@@ -1,8 +1,6 @@
 package com.qdu.niit.library.gui.panel.center;
 
 import com.qdu.niit.library.entity.BookInfo;
-import com.qdu.niit.library.entity.Borrowing;
-import com.qdu.niit.library.exception.ObjectHaveNoAttribute;
 import com.qdu.niit.library.gui.input.InputTextPanel;
 import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.BookServiceImpl;
@@ -11,9 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * @author 李冠良
@@ -143,6 +139,7 @@ public class AdminCenterBookDeletePanel extends centerPanelModel {
     public void resetInputContent() {
         copyId.setInputText("");
     }
+    @SuppressWarnings("unused")
     private static class DeleteSuccessTableModel extends DefaultTableModel{
         private static final String[][] rowData =new String[][]{{"删除成功"}};
         private static final String[] columnName=new String[]{"无"};
