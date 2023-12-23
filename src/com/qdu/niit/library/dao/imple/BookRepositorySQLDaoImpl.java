@@ -81,6 +81,7 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
 
         } catch (SQLException | ObjectHaveNoAttribute e) {
             rollback();
+            throw new SQLException();
         }
 
 
@@ -115,6 +116,7 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
             commit();
         } catch (SQLException e) {
             rollback();
+            throw new SQLException();
         }
     }
     @Override
@@ -237,7 +239,7 @@ public class BookRepositorySQLDaoImpl extends TransactionalSQLDaoImpl implements
             commit();
         } catch (SQLException e) {
             rollback();
-            throw new RuntimeException(e);
+            throw new SQLException();
         }
     }
 
