@@ -6,7 +6,10 @@ import com.qdu.niit.library.gui.table.NonResultTableModel;
 import com.qdu.niit.library.service.impl.BookServiceImpl;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,7 +30,8 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
     private final InputTextPanel bookLocation;
     private final BookServiceImpl bookServiceImpl = new BookServiceImpl();
     private final JDialog popMessageDialog;
-    private final NonResultTableModel nonResultTableModel = new NonResultTableModel();
+    private static final NonResultTableModel nonResultTableModel = new NonResultTableModel();
+    private static final AddSuccessTableModel addSuccessTableModel=new AddSuccessTableModel();
 
     public AdminCenterBookAddPanel(Frame frame) {
         JTable resultTable = new JTable();
@@ -39,7 +43,7 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
         popMessageDialog.setTitle("错误提示");
         popMessageDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         popMessageDialog.setLayout(new BorderLayout());
-        var popMessageLabel = new JLabel("查询图书信息失败，请检查数据库是否连接");
+        var popMessageLabel = new JLabel("添加图书信息失败，请检查数据库是否连接");
         popMessageLabel.setVerticalAlignment(SwingConstants.CENTER);
         popMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         popMessageLabel.setFont(new Font("宋体", Font.PLAIN, 14));
@@ -80,45 +84,18 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
         defineButton.setBounds(570, 145, 130, 35);
         defineButton.addActionListener(e -> {
             //获取信息
-
             Date nowDate = new Date(Calendar.getInstance().getTimeInMillis());
             var bookInfo = new BookInfo(name.getInputText(), isbn.getInputText(), author.getInputText(),
                     publisher.getInputText(), genre.getInputText(), nowDate, nowDate,
                     bookLocation.getInputText(), "301", true);
-//            var bookList = new ArrayList<BookInfo>();
-//            bookList.add(bookInfo);
-//            try {
-//                bookServiceImpl.Bookstorage(bookList);
-//                //SwingWorker调用中间层
-//                var resultList = bookServiceImpl.getBookInfoByTitle(name.getInputText());
-//                resetInputContent();
-//                if (resultList != null) {
-//                    if (!resultList.isEmpty()) {
-//                        String[][] rowData = new String[resultList.size()][8];
-//                        String[] columnName = new String[]{"图书编号", "书名", "ISBN", "作者", "出版社", "入库时间", "类型", "书本位置"};
-//                        for (int i = 0; i < resultList.size(); i++) {
-//                            BookInfo tmp = resultList.get(i);
-//                            Date tmpDate = tmp.getReceipt_date();
-//                            rowData[i][0] = String.valueOf(tmp.getCopy_id());
-//                            rowData[i][1] = tmp.getTitle();
-//                            rowData[i][2] = tmp.getIsbn();
-//                            rowData[i][3] = tmp.getAuthor();
-//                            rowData[i][4] = tmp.getPublisher();
-//                            rowData[i][5] = tmpDate.getYear() + 1900 + "-" + (tmpDate.getMonth() + 1) + "-" + tmpDate.getDate();
-//                            rowData[i][6] = tmp.getGenre();
-//                            rowData[i][7] = tmp.getBook_location();
-//                        }
-//                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
-//                    } else {
-//                        resultTable.setModel(nonResultTableModel);
-//                    }
-//                } else {
-//                    popMessageDialog.setVisible(true);
-//                }
-//            } catch (SQLException ex) {
-//                popMessageDialog.setVisible(true);
-//            }
-            //得到结果后显示在结果显示区域，并将相同图书信息也显示在结果显示区域
+            var bookList = new ArrayList<BookInfo>();
+            bookList.add(bookInfo);
+            try {
+                bookServiceImpl.BookAdd(bookList);
+                resultTable.setModel(addSuccessTableModel);
+            } catch (SQLException ex) {
+                popMessageDialog.setVisible(true);
+            }
         });
         inputBottomPanel.add(titleLabel);
         inputBottomPanel.add(name);
@@ -155,5 +132,12 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
         pubTime.setInputText("");
         genre.setInputText("");
         bookLocation.setInputText("");
+    }
+    private static class AddSuccessTableModel extends DefaultTableModel {
+        private static final String[][] rowData =new String[][]{{"添加成功"}};
+        private static final String[] columnName=new String[]{"无"};
+        public AddSuccessTableModel(){
+            super(rowData,columnName);
+        }
     }
 }

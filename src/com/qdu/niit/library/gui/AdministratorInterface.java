@@ -5,6 +5,7 @@ import com.qdu.niit.library.gui.frame.ResizeFrame;
 import com.qdu.niit.library.gui.panel.center.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
