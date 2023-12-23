@@ -524,8 +524,6 @@ public class LoginInterface extends JFrame {
                 String adminId = adminInputTextField.getText();
                 String adminPassword = new String(adminPassInputPasswordField.getPassword());
                 if (!Objects.equals(adminId, "管理员用户名") && !Objects.equals(adminPassword, "密码")) {
-                    System.out.println(adminId);
-                    System.out.println(adminPassword);
                     var userServiceImpl = UserServiceImpl.getInstance();
 //                从数据库比较用户用户名，密码
                     User user = userServiceImpl.superUserLogin(adminId, adminPassword);
