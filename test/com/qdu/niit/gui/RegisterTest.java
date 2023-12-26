@@ -16,7 +16,7 @@ public class RegisterTest {
     public static void main(String[] args) {
         SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/library","root","12345678");
         EventQueue.invokeLater(()->{
-            new RegisterInterface();
+            RegisterInterface.getInstance();
         });
 
     }

@@ -332,7 +332,7 @@ public class LoginInterface extends JFrame {
         registerLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                registerFrame = new RegisterInterface();
+                registerFrame=RegisterInterface.getInstance();
             }
         });
         rightBelowPanel.add(registerLabel);
