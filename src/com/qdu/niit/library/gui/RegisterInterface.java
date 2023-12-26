@@ -28,13 +28,15 @@ import java.util.regex.Pattern;
  */
 
 public class RegisterInterface extends JFrame {
+    private static RegisterInterface registerInterface=null;
+    private static boolean isRegisterInterfaceClosed=false;
     private final JFrame frame = this;
     private final Point offsetMouseToFrame = new Point();
     private final InputTextHandle inputTextHandle = new InputTextHandle();
     private int genderNumber = 1;
     private final UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
 
-    public RegisterInterface() {
+    private RegisterInterface() {
         frame.setLayout(null);
 //        frame.getContentPane().setBackground(new Color(212, 239, 223));
         frame.getContentPane().setBackground(new Color(188, 226, 243));
@@ -66,6 +68,13 @@ public class RegisterInterface extends JFrame {
         frame.add(bodyPanel);
         frame.add(buttonClose);
         frame.setVisible(true);
+    }
+    public static RegisterInterface getInstance(){
+        if(registerInterface==null||RegisterInterface.isIsRegisterInterfaceClosed()){
+            registerInterface=new RegisterInterface();
+            RegisterInterface.setIsRegisterInterfaceClosed(false);
+        }
+        return registerInterface;
     }
 
     private JPanel getBodyPanel() {
@@ -497,12 +506,14 @@ public class RegisterInterface extends JFrame {
 //                    popMessageLabel.setText("注册因系统问题失败，请稍后重试");
                     popMessageLabel.setText("您的用户名与他人重复，请修改用户名");
                     popMessage.setVisible(true);
+//                    setIsRegisterInterfaceClosed(true);
 //                    frame.dispose();
                 }
                 else{
                     popMessage.setTitle("注册成功！");
                     popMessageLabel.setText("您的帐号为："+uid);
                     popMessage.setVisible(true);
+                    setIsRegisterInterfaceClosed(true);
                     frame.dispose();
                 }
                 //
@@ -566,6 +577,7 @@ public class RegisterInterface extends JFrame {
         buttonClose.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                setIsRegisterInterfaceClosed(true);
                 frame.dispose();
             }
 
@@ -586,6 +598,14 @@ public class RegisterInterface extends JFrame {
             }
         });
         return buttonClose;
+    }
+
+    public static boolean isIsRegisterInterfaceClosed() {
+        return isRegisterInterfaceClosed;
+    }
+
+    public static void setIsRegisterInterfaceClosed(boolean isRegisterInterfaceClosed) {
+        RegisterInterface.isRegisterInterfaceClosed = isRegisterInterfaceClosed;
     }
 
     @SuppressWarnings("unused")
