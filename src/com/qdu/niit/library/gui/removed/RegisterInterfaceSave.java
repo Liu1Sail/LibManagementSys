@@ -115,7 +115,6 @@ public class RegisterInterfaceSave extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerTextField textField) {
-                System.out.println(1);
                 if (textField.getText().equals("用户名")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(2).getTargetComponent();
@@ -168,7 +167,6 @@ public class RegisterInterfaceSave extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerPasswordField textField) {
-                System.out.println(2);
                 if (new String(textField.getPassword()).equals("密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(4).getTargetComponent();
@@ -225,7 +223,6 @@ public class RegisterInterfaceSave extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerPasswordField textField) {
-                System.out.println(3);
                 if (new String(textField.getPassword()).equals("密码")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(6).getTargetComponent();
@@ -281,7 +278,6 @@ public class RegisterInterfaceSave extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerTextField textField) {
-                System.out.println(4);
                 if (textField.getText().equals("手机号")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(10).getTargetComponent();
@@ -330,7 +326,6 @@ public class RegisterInterfaceSave extends JFrame {
 
             @Override
             public void lostFocusMovement(InputInnerTextField textField) {
-                System.out  .println(5);
                 if (textField.getText().equals("邮箱")) {
                     isInitial = false;
                     TextEmergeLabel tip = (TextEmergeLabel) componentMap.get(12).getTargetComponent();

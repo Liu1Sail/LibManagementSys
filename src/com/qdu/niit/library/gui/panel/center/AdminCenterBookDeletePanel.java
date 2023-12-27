@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * @author 李冠良
@@ -67,31 +68,39 @@ public class AdminCenterBookDeletePanel extends centerPanelModel {
             //获取信息，搜索图书具体信息，显示，进行确认
             String[] columnName = new String[]{"图书编号", "书名", "ISBN", "作者", "出版商", "入库日期", "类型"};
             try {
-                Integer copyIdInt = Integer.parseInt(copyId.getInputText());
-                try {
-                    ArrayList<BookInfo> bookInfoList = bookServiceImpl.getBookInfoByCopyID(copyIdInt);
-                    if (bookInfoList != null) {
-                        String[][] rowData = new String[bookInfoList.size()][7];
-                        for (int i = 0; i < bookInfoList.size(); i++) {
-                            var tmp = bookInfoList.get(i);
-                            rowData[i][0] = String.valueOf(tmp.getBook_id());
-                            rowData[i][1] = tmp.getTitle();
-                            rowData[i][2] = tmp.getIsbn();
-                            rowData[i][3] = tmp.getAuthor();
-                            rowData[i][4] = tmp.getPublisher();
-                            rowData[i][5] = String.valueOf(tmp.getReceipt_date());
-                            rowData[i][6] = tmp.getGenre();
+                if(Pattern.matches("^[0-9]+$",copyId.getInputText())){
+                    Integer copyIdInt = Integer.parseInt(copyId.getInputText());
+                    try {
+                        ArrayList<BookInfo> bookInfoList = bookServiceImpl.getBookInfoByCopyID(copyIdInt);
+                        if (bookInfoList != null) {
+                            String[][] rowData = new String[bookInfoList.size()][7];
+                            for (int i = 0; i < bookInfoList.size(); i++) {
+                                var tmp = bookInfoList.get(i);
+                                rowData[i][0] = String.valueOf(tmp.getBook_id());
+                                rowData[i][1] = tmp.getTitle();
+                                rowData[i][2] = tmp.getIsbn();
+                                rowData[i][3] = tmp.getAuthor();
+                                rowData[i][4] = tmp.getPublisher();
+                                rowData[i][5] = String.valueOf(tmp.getReceipt_date());
+                                rowData[i][6] = tmp.getGenre();
+                            }
+                            resultTable.setModel(new DefaultTableModel(rowData, columnName));
+                        } else {
+                            resultTable.setModel(nonResultTableModel);
                         }
-                        resultTable.setModel(new DefaultTableModel(rowData, columnName));
-                    } else {
-                        resultTable.setModel(nonResultTableModel);
+                    } catch (SQLException ex) {
+                        popMessageLabel.setText("出现系统错误，删除失败，请重试！");
+                        popMessageDialog.setVisible(true);
                     }
-                } catch (SQLException ex) {
-                    popMessageLabel.setText("出现系统错误，删除失败，请重试！");
+                }
+                else{
+                    popMessageLabel.setText("图书编号不为数字，无法搜索");
                     popMessageDialog.setVisible(true);
                 }
+
             } catch (NumberFormatException ex) {
                 popMessageLabel.setText("图书编号为空，无法搜索");
+                popMessageDialog.setVisible(true);
             }
         });
         inputBottomPanel.add(titleLabel);

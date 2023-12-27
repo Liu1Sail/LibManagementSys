@@ -60,9 +60,6 @@ public class AdminCenterAccountSearchPanel extends centerPanelModel {
         var defineButton=new JButton("搜索账户");
         titleLabel.setBounds(10, 5, 120, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
-//        tipLabel.setBounds(10,35,300,30);
-//        tipLabel.setFont(new Font("宋体",Font.PLAIN,18));
-//        id.setLocation(15, 70);
         id.setInputText("");
         name.setLocation(15, 30);
 
@@ -109,8 +106,6 @@ public class AdminCenterAccountSearchPanel extends centerPanelModel {
             resetInputContent();
         });
         inputBottomPanel.add(titleLabel);
-//        inputBottomPanel.add(tipLabel);
-//        inputBottomPanel.add(id);
         inputBottomPanel.add(name);
         inputBottomPanel.add(resetButton);
         inputBottomPanel.add(defineButton);
