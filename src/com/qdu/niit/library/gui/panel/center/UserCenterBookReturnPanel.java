@@ -77,6 +77,7 @@ public class UserCenterBookReturnPanel extends centerPanelModel {
         resultBottomPanel.add(returnBookButton);
         returnBookButton.addActionListener(e -> {
             int selectedRow=resultDisplayTable.getSelectedRow();
+            System.out.println(selectedRow);
             int selectedCopyId= Integer.parseInt((String) resultDisplayTable.getValueAt(selectedRow,0));
             try {
                 //删除借书记录，修改在架状态，添加还书记录
