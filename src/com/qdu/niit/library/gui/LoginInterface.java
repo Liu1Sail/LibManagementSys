@@ -13,6 +13,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * @author 李冠良
@@ -332,7 +333,7 @@ public class LoginInterface extends JFrame {
         registerLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                registerFrame=RegisterInterface.getInstance();
+                registerFrame = RegisterInterface.getInstance();
             }
         });
         rightBelowPanel.add(registerLabel);
@@ -604,8 +605,9 @@ public class LoginInterface extends JFrame {
             public void mouseReleased(MouseEvent e) {
                 //获取用户名、密码字段
                 String userIdTmp = userInputTextField.getText();
+                boolean isNum = Pattern.matches("^[0-9]+$", userIdTmp);
                 String password = new String(userPassInputPasswordField.getPassword());
-                if (!Objects.equals(userIdTmp, "账号") && !Objects.equals(password, "密码")) {
+                if (isNum && !Objects.equals(userIdTmp, "账号") && !Objects.equals(password, "密码")) {
                     //从数据库比较用户用户名，密码
                     int userId = Integer.parseInt(userIdTmp);
                     var userServiceImpl = UserServiceImpl.getInstance();
@@ -619,8 +621,13 @@ public class LoginInterface extends JFrame {
                         new UserInterface(user);
                     }
                 } else {
-                    LoginErrorPopMessageLabel.setText("账号或密码不能为空!");
-                    loginErrorPopMessage.setVisible(true);
+                    if (!isNum) {
+                        LoginErrorPopMessageLabel.setText("账号必须为数字!");
+                        loginErrorPopMessage.setVisible(true);
+                    } else {
+                        LoginErrorPopMessageLabel.setText("账号或密码不能为空!");
+                        loginErrorPopMessage.setVisible(true);
+                    }
                 }
             }
         });

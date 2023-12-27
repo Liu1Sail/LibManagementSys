@@ -15,7 +15,6 @@ import java.util.Date;
 public class TmpTest extends JFrame {
     public TmpTest() {
         var date=new Date(2000-1900, Calendar.APRIL,1);
-        System.out.println(date);
     }
 
     public static void main(String[] args) {

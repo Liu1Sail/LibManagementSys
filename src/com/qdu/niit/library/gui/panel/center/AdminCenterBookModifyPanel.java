@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -116,7 +115,6 @@ public class AdminCenterBookModifyPanel extends centerPanelModel {
         confirmButton.addActionListener(e -> {
             //确认修改
             String copyIdString=this.copyId.getInputText();
-            System.out.println("1:"+copyIdString);
             if(!copyIdString.isEmpty()){
                 Integer copyId= Integer.valueOf(copyIdString);
                 try {

@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -62,7 +61,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
         this.add(inputBottomPanel);
 
         var titleLabel = new JLabel("搜索图书信息");
-        copyIdInput = new InputTextPanel("图书编号：");
+        copyIdInput = new InputTextPanel("书本编号：");
         copyIdInput.setLocation(100, 50);
         bookKeywordInput = new InputTextPanel("图书全名或关键词：");
         bookKeywordInput.setLocation(100, 50);

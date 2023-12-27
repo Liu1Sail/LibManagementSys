@@ -67,7 +67,7 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
         publisher = new InputTextPanel("出版社：");
         pubTime = new InputTextPanel("出版时间：");
         genre = new InputTextPanel("类型：");
-        bookLocation = new InputTextPanel("图书位置：");
+        bookLocation = new InputTextPanel("图书书架编号：");
         var resetButton = new JButton("清空已填信息");
         var defineButton = new JButton("确认添加图书");
         titleLabel.setBounds(10, 5, 120, 30);
@@ -80,8 +80,10 @@ public class AdminCenterBookAddPanel extends centerPanelModel {
         genre.setLocation(465, 90);
         bookLocation.setLocation(15, 145);
         resetButton.setBounds(410, 145, 130, 35);
+        resetButton.setFocusPainted(false);
         resetButton.addActionListener(e -> resetInputContent());
         defineButton.setBounds(570, 145, 130, 35);
+        defineButton.setFocusPainted(false);
         defineButton.addActionListener(e -> {
             //获取信息
             Date nowDate = new Date(Calendar.getInstance().getTimeInMillis());
