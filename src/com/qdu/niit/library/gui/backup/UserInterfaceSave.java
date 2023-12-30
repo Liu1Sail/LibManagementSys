@@ -1,4 +1,4 @@
-package com.qdu.niit.library.gui;
+package com.qdu.niit.library.gui.backup;
 
 import com.qdu.niit.library.entity.User;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
@@ -19,8 +19,8 @@ import java.awt.event.MouseEvent;
  * @date 2023/11/16
  */
 @SuppressWarnings("unused")
-public class UserInterface extends ResizeFrame {
-    private final UserInterface frame = this;
+public class UserInterfaceSave extends ResizeFrame {
+    private final UserInterfaceSave frame = this;
     private final JPanel centerBottomPanel;
     private static final int initialWidth=1000;
     private static final int initialHeight=700;
@@ -28,7 +28,7 @@ public class UserInterface extends ResizeFrame {
     private int mouseY;
     private final User user;
 
-    public UserInterface(User user) {
+    public UserInterfaceSave(User user) {
         this.user=user;
         this.setLayout(new BorderLayout());
         this.setSize(initialWidth, initialHeight);
