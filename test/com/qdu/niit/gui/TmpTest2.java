@@ -17,23 +17,18 @@ public class TmpTest2 extends JFrame {
         bottomPanel.setBackground(Color.WHITE);
         bottomPanel.setLayout(null);
         this.add(bottomPanel);
-        var middlePanel=new JPanel();
-        middlePanel.setBounds(0,100,200,300);
-        middlePanel.setBackground(Color.ORANGE);
-        middlePanel.setLayout(null);
-        bottomPanel.add(middlePanel);
         var option1=new JPanel();
         var option2=new JPanel();
         var option3=new JPanel();
-        option1.setBounds(0,0,200,100);
-        option2.setBounds(0,100,200,100);
-        option3.setBounds(0,200,200,100);
+        option1.setBounds(0,100,200,100);
+        option2.setBounds(0,200,200,100);
+        option3.setBounds(0,300,200,100);
         option1.setBackground(Color.PINK);
         option2.setBackground(Color.BLUE);
         option3.setBackground(Color.YELLOW);
-        middlePanel.add(option1);
-        middlePanel.add(option2);
-        middlePanel.add(option3);
+        bottomPanel.add(option1);
+        bottomPanel.add(option2);
+        bottomPanel.add(option3);
         bottomPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -66,12 +61,6 @@ public class TmpTest2 extends JFrame {
         });
         this.add(btn1);
         this.add(btn2);
-//        this.addMouseMotionListener(new MouseAdapter() {
-//            @Override
-//            public void mouseMoved(MouseEvent e) {
-//                System.out.println(e.getX()+" "+e.getY());
-//            }
-//        });
         this.setVisible(true);
     }
     public static void main(String[] args){

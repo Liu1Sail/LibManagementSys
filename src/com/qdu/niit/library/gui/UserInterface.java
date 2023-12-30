@@ -189,12 +189,12 @@ public class UserInterface extends ResizeFrame {
         readingRoomOption.setBackground(Color.WHITE);
         var readingRoomOptionText=new JLabel();
         readingRoomOptionText.setBounds(0,0,200,80);
-        readingRoomOptionText.setText("查询借阅室");
+        readingRoomOptionText.setText("查询阅览室");
         readingRoomOptionText.setFont(sideBarOptionFont);
         readingRoomOptionText.setVerticalAlignment(SwingConstants.CENTER);
         readingRoomOptionText.setHorizontalAlignment(SwingConstants.CENTER);
         readingRoomOption.add(readingRoomOptionText);
-        var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"借阅室座位",1,1,3);
+        var readingRoomChildOption = getChildOption(sideBarOptionFont,80,"阅览室座位",1,1,3);
         readingRoomOption.add(readingRoomChildOption);
         return readingRoomOption;
     }
