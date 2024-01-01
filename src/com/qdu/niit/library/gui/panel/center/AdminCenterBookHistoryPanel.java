@@ -52,8 +52,8 @@ public class AdminCenterBookHistoryPanel extends centerPanelModel {
         resultBottomPanel.setBackground(Color.WHITE);
         resultBottomPanel.setLayout(null);
         this.add(resultBottomPanel);
-        var titleLabel = new JLabel("个人借阅信息");
-        titleLabel.setBounds(10, 5, 120, 30);
+        var titleLabel = new JLabel("所有图书借阅信息");
+        titleLabel.setBounds(10, 5, 200, 30);
         titleLabel.setFont(new Font("宋体", Font.PLAIN, 20));
         resultBottomPanel.add(titleLabel);
         var borrowHistoryButton=new JButton("显示借书记录");

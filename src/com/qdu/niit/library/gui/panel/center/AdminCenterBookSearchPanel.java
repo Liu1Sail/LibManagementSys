@@ -145,7 +145,7 @@ public class AdminCenterBookSearchPanel extends centerPanelModel {
                 ArrayList<Book> bookListBook=null;
                 switch (nowTabNum) {
                     case 1 -> {
-                        if(!copyIdInput.getInputText().isEmpty()){
+                        if(!copyIdInput.getInputText().isEmpty()&&Pattern.matches("^[0-9]+$",copyIdInput.getInputText())){
                             Integer copyIdInt = Integer.valueOf(copyIdInput.getInputText());
                             bookList = bookServiceImpl.getBookInfoByCopyID(copyIdInt);
                         }
