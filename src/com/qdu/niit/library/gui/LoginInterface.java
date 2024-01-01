@@ -5,6 +5,7 @@ import com.qdu.niit.library.gui.border.CustomRoundRectBorder;
 import com.qdu.niit.library.gui.component.ImagePanel;
 import com.qdu.niit.library.gui.component.ShapeDeepenPanel;
 import com.qdu.niit.library.service.impl.UserServiceImpl;
+import com.qdu.niit.library.utils.SqlConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -749,5 +750,10 @@ public class LoginInterface extends JFrame {
             }
         });
         return buttonClose;
+    }
+
+    public static void main(String[] args) {
+        SqlConfig.getInstance().init("jdbc:mysql://localhost:3306/library","root","12345678");
+        EventQueue.invokeLater(LoginInterface::new);
     }
 }
