@@ -247,7 +247,7 @@ public class BooksSQLDaoImpl extends BOOK_MANAGER implements BooksSQLDao {
     public boolean isEmpty(Integer book_id) throws SQLException {
         Object[] result = null;
         result = getOne(getGetBookQuantityStatement(),book_id);
-        return !((Integer) result[0] != 0 || (Integer) result[1] != 0);
+        return ((Integer) result[0] + (Integer) result[1] <= 1) ;
     }
 
     private static final String DELETE_BY_BOOK_ID = """
